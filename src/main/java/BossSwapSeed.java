@@ -79,6 +79,8 @@ public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscrib
 
     @Override
     public void receiveStartGame() {
+//        timesStartedOver = 0;
+//        System.out.println("reset times started over to 0");
 //        System.out.println("OJB: START GAME");
 //        if (CardCrawlGame.isInARun())
 //            System.out.println("in run");
@@ -98,7 +100,8 @@ public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscrib
 
                 String relic = bossRelics.get(0);
                 if (relic == "Pandora's Box") {
-                    //System.out.println("pandora's found!");
+                    System.out.println("pandora's found after " + timesStartedOver);
+                    timesStartedOver = 0;
                 }
                 else {
                     System.out.println("not pandora -- resetting");
