@@ -1,12 +1,19 @@
 import basemod.BaseMod;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import basemod.interfaces.RenderSubscriber;
 import basemod.interfaces.StartGameSubscriber;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.potions.EntropicBrew;
 import com.megacrit.cardcrawl.unlock.AbstractUnlock;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
@@ -14,11 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpireInitializer
-public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscriber, PostDungeonInitializeSubscriber {
+public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
     public static void initialize() { new BossSwapSeed(); }
 
     private int timesStartedOver = 0;
-    private final int MAX_START_OVER = 100;
+    private final int MAX_START_OVER = 200;
+
+    private boolean isResetting = false;
 
 //    private void unlockAll() {
 //        for (AbstractPlayer.PlayerClass c : AbstractPlayer.PlayerClass.values()) {
@@ -102,12 +111,19 @@ public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscrib
                 if (relic == "Pandora's Box") {
                     System.out.println("pandora's found after " + timesStartedOver);
                     timesStartedOver = 0;
+
+                    isResetting = false;
                 }
                 else {
                     System.out.println("not pandora -- resetting");
                     if (timesStartedOver < MAX_START_OVER) {
+                        isResetting = true;
                         RestartHelper.restartRun();
                         timesStartedOver++;
+                    }
+                    else {
+                        isResetting = false;
+                        System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
                     }
                 }
 
@@ -123,5 +139,45 @@ public class BossSwapSeed implements PostInitializeSubscriber, StartGameSubscrib
 //        else
 //            System.out.println("not in run");
         System.out.println("----------------");
+    }
+
+    private static final String info = "Searching for a suitable seed";
+
+    @Override
+    public void receiveRender(SpriteBatch sb) {
+        if (isResetting) {
+            sb.setColor(Color.BLACK);
+//            sb.draw(ImageMaster.WHITE_SQUARE_IMG,
+//                    Settings.WIDTH / 2.0f,
+//                    Settings.HEIGHT / 2.0f,
+//                    100.0f * Settings.scale,
+//                    100.0f * Settings.scale);
+            sb.draw(ImageMaster.WHITE_SQUARE_IMG,
+                    0,
+                    0,
+                    Settings.WIDTH,
+                    Settings.HEIGHT);
+
+            //float x = (MathUtils.cosDeg((float) (System.currentTimeMillis() / 10L % 360L)) + 1.25F) / 2.3F;
+
+            // Add ellipses to string
+            //int amt = (int)((long)(System.currentTimeMillis() / 500.0f) % 3);
+
+            // Render the loading text
+            FontHelper.renderFontCentered(sb,
+                    FontHelper.dungeonTitleFont,
+                    info,
+                    Settings.WIDTH / 2.0f,
+                    Settings.HEIGHT / 2.0f);
+
+            String seedsSearched = "Seeds searched: " + timesStartedOver;
+
+            FontHelper.renderFontLeftDownAligned(sb,
+                    FontHelper.eventBodyText,
+                    seedsSearched,
+                    100,
+                    100,
+                    Settings.CREAM_COLOR);
+        }
     }
 }
