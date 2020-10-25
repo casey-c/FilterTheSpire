@@ -2,8 +2,8 @@
   "modid": "ojb_bossswapseed",
   "name": "ojb's Pandora's Box Swaps Only",
   "author_list": ["ojb"],
-  "description": "Upon starting a new game, this mod will refresh the run until you have a seed where the boss swap is a guaranteed Pandora's Box. NOTE: This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run.\n\n It is worth noting that the mod will try 100 times to roll a random seed with the Pandora's Box swap. This will eventually be configurable, but as of right now it's a reasonable safety precaution. Should your final seed not be a pandora's box, check to make sure you have it unlocked, and if you do, you probably need to abandon run and try again (you got extremely unlucky to hit like < 1% odds).\n\nThis mod is under construction and may not be stable.",
-  "version": "0.0.2",
+  "description": "Upon starting a new game, this mod will refresh the run until you have a seed where the boss swap is a guaranteed Pandora's Box. NOTE: This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run.\n\n It is worth noting that the mod will try 200 times to roll a random seed with the Pandora's Box swap. This will eventually be configurable, but as of right now it's a reasonable safety precaution. Should your final seed not be a pandora's box, check to make sure you have it unlocked, and if you do, you probably need to abandon run and try again (you got extremely unlucky to hit like < 1% odds).\n\nThis mod is under construction and may not be stable.",
+  "version": "0.0.3",
   "sts_version": "06-22-2020",
   "mts_version": "2.6.0",
   "dependencies": ["basemod"]
