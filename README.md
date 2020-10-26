@@ -20,3 +20,10 @@ This mod requires ModTheSpire and BaseMod, which can be found on the Steam Works
 Please drop me a line here on the [issues page](https://github.com/casey-c/BossSwapSeedRefresh/issues) if you encounter bugs, weird behavior, crashes, mod incompatibilities, etc.
 
 As the mod is under active development, you can also leave feedback, suggestions, or requests there as well. Thank you!
+
+### Other Mods
+
+Feel free to check out some of my other (Github exclusive) mods!
+
+* [InfoMod](https://github.com/casey-c/spiretool-infomod) - display A20 monster AI patterns, potion chances, and other hidden aspects of the game in a user friendly set of overlays
+* [BetterPaths](https://github.com/casey-c/sts_betterpaths) - highlight your map and plan your route in an all new style of path planning. Easily track which nodes you wish to travel to in the future, and which ones to avoid.
