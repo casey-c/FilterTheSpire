@@ -31,8 +31,8 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
     public BossSwapSeed() {
         BaseMod.subscribe(this);
 
-        //validators.add(() -> bossSwapIs("Pandora's Box"));
-        validators.add(() -> bossSwapIs("Snecko Eye"));
+        validators.add(() -> bossSwapIs("Pandora's Box"));
+        //validators.add(() -> bossSwapIs("Snecko Eye"));
     }
 
     // DEBUG
