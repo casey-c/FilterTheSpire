@@ -1,8 +1,7 @@
-package patches;
+package SlayTheSeeds.patches;
 
 import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
-import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.megacrit.cardcrawl.neow.NeowEvent;
 
 @SpirePatch(

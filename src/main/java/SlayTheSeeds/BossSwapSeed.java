@@ -1,14 +1,20 @@
+package SlayTheSeeds;
+
 import basemod.BaseMod;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.RenderSubscriber;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.neow.NeowEvent;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
@@ -31,6 +37,10 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
     public BossSwapSeed() {
         BaseMod.subscribe(this);
 
+        // Example usage - adding filters is as easy as passing a function that returns a bool
+        //   all predicates in the validators list are logical AND together at the end
+        //   logical OR will be more complicated to make it generic, but the idea is the same
+        //   (pass a function that returns the result of the OR condition)
         validators.add(() -> bossSwapIs("Pandora's Box"));
         //validators.add(() -> bossSwapIs("Snecko Eye"));
     }
@@ -48,12 +58,13 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
         }
     }
 
+    // TODO: other filters
     private boolean bossSwapIs(String targetRelic) {
         if (CardCrawlGame.isInARun()) {
             ArrayList<String> bossRelics = AbstractDungeon.bossRelicPool;
 
             // TODO: remove / debug
-            printRelicPool();
+//            printRelicPool();
 
             if (!bossRelics.isEmpty()) {
                 String relic = bossRelics.get(0);
@@ -68,11 +79,77 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
         return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
     }
 
+//    private boolean AMBIANCE_ON_ORIGINAL;
+//    private float SOUND_VOLUME_ORIGINAL;
+
+    public static boolean SEARCHING_FOR_SEEDS;
+
+    private void playNeowSound() {
+        int roll = MathUtils.random(3);
+        if (roll == 0) {
+            CardCrawlGame.sound.play("VO_NEOW_1A");
+        } else if (roll == 1) {
+            CardCrawlGame.sound.play("VO_NEOW_1B");
+        } else if (roll == 2) {
+            CardCrawlGame.sound.play("VO_NEOW_2A");
+        } else {
+            CardCrawlGame.sound.play("VO_NEOW_2B");
+        }
+    }
+
     @Override
     public void receivePostDungeonInitialize() {
+        // Mute when first starting the search
+        if (timesStartedOver == 0) {
+            SEARCHING_FOR_SEEDS = true;
+//            AMBIANCE_ON_ORIGINAL = Settings.AMBIANCE_ON;
+//            SOUND_VOLUME_ORIGINAL = Settings.SOUND_VOLUME;
+
+
+//            if (AbstractDungeon.scene != null) {
+//                AbstractDungeon.scene.fadeOutAmbiance();
+//                CardCrawlGame.sound.playAndLoop("AMBIANCE_BOTTOM");
+//            }
+//
+//            Settings.AMBIANCE_ON = false;
+//            Settings.SOUND_VOLUME = 0;
+
+        }
+
         if (validateSeed()) {
             timesStartedOver = 0;
             isResetting = false;
+
+            SEARCHING_FOR_SEEDS = false;
+            if (AbstractDungeon.scene != null) {
+                // Clear and restart the ambiance?
+                AbstractDungeon.scene.fadeOutAmbiance();
+                CardCrawlGame.sound.playAndLoop("AMBIANCE_BOTTOM");
+
+                // Play the Neow sound we originally patched out
+                playNeowSound();
+
+                //CardCrawlGame.music.fadeAll();
+                //CardCrawlGame.music.silenceBGMInstantly();
+                //CardCrawlGame.music.playTempBgmInstantly("Exordium", true);
+                //CardCrawlGame.music.changeBGM("Exordium");
+
+//                AbstractRoom room = AbstractDungeon.getCurrRoom();
+//                if (room != null) {
+//                    room.playBGM();
+//                }
+            }
+
+            // Revert mute
+//            Settings.AMBIANCE_ON = AMBIANCE_ON_ORIGINAL;
+//            Settings.SOUND_VOLUME = SOUND_VOLUME_ORIGINAL;
+
+            // TODO: start up the ambience again?
+//            if (AbstractDungeon.scene != null) {
+//                AbstractDungeon.scene.fadeInAmbiance();
+//            }
+
+//            CardCrawlGame.sound.play("DUNGEON_TRANSITION");
         }
         else {
             // Haven't reached the reset limit yet, so can reset and try again
