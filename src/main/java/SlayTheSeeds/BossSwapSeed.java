@@ -106,10 +106,6 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
 
             SEARCHING_FOR_SEEDS = false;
             if (AbstractDungeon.scene != null) {
-                // Clear and restart the ambiance?
-                AbstractDungeon.scene.fadeOutAmbiance();
-                CardCrawlGame.sound.playAndLoop("AMBIANCE_BOTTOM");
-
                 // Play the Neow sound we originally patched out
                 playNeowSound();
             }
