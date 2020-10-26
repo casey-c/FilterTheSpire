@@ -10,11 +10,8 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.neow.NeowEvent;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
@@ -27,6 +24,7 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
     private final int MAX_START_OVER = 200;
 
     private boolean isResetting = false;
+    public static boolean SEARCHING_FOR_SEEDS;
 
     // TODO: localization
     private static final String info = "Searching for a suitable seed";
@@ -79,10 +77,6 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
         return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
     }
 
-//    private boolean AMBIANCE_ON_ORIGINAL;
-//    private float SOUND_VOLUME_ORIGINAL;
-
-    public static boolean SEARCHING_FOR_SEEDS;
 
     private void playNeowSound() {
         int roll = MathUtils.random(3);
@@ -102,18 +96,6 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
         // Mute when first starting the search
         if (timesStartedOver == 0) {
             SEARCHING_FOR_SEEDS = true;
-//            AMBIANCE_ON_ORIGINAL = Settings.AMBIANCE_ON;
-//            SOUND_VOLUME_ORIGINAL = Settings.SOUND_VOLUME;
-
-
-//            if (AbstractDungeon.scene != null) {
-//                AbstractDungeon.scene.fadeOutAmbiance();
-//                CardCrawlGame.sound.playAndLoop("AMBIANCE_BOTTOM");
-//            }
-//
-//            Settings.AMBIANCE_ON = false;
-//            Settings.SOUND_VOLUME = 0;
-
         }
 
         if (validateSeed()) {
@@ -128,28 +110,7 @@ public class BossSwapSeed implements PostDungeonInitializeSubscriber, RenderSubs
 
                 // Play the Neow sound we originally patched out
                 playNeowSound();
-
-                //CardCrawlGame.music.fadeAll();
-                //CardCrawlGame.music.silenceBGMInstantly();
-                //CardCrawlGame.music.playTempBgmInstantly("Exordium", true);
-                //CardCrawlGame.music.changeBGM("Exordium");
-
-//                AbstractRoom room = AbstractDungeon.getCurrRoom();
-//                if (room != null) {
-//                    room.playBGM();
-//                }
             }
-
-            // Revert mute
-//            Settings.AMBIANCE_ON = AMBIANCE_ON_ORIGINAL;
-//            Settings.SOUND_VOLUME = SOUND_VOLUME_ORIGINAL;
-
-            // TODO: start up the ambience again?
-//            if (AbstractDungeon.scene != null) {
-//                AbstractDungeon.scene.fadeInAmbiance();
-//            }
-
-//            CardCrawlGame.sound.play("DUNGEON_TRANSITION");
         }
         else {
             // Haven't reached the reset limit yet, so can reset and try again
