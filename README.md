@@ -8,6 +8,7 @@ Customize your Slay The Spire seeds. Upon starting a run, this mod will repeated
 * Seeds are simply rerolled until you get the "Pandora's Box" as the Neow boss swap option - everything else is vanilla! The seed should work identically to those generated without the mod, as no actual changes are made. (This is different than some other Pandora's Box mods, as they forcibly replace the starter relic and can run into other side effects because of it - this just searches for a seed that has the start desired without touching any of the RNG code)
 * A small cheat is in place to guarantee four choices at Neow (usually you would need to reach at least the first boss) - the logic here is that if you have the mod installed you are probably looking to boss swap regardless of whether or not your previous run made it to the Act 1 boss
 * This mod is under active development - more features (especially customization / config) are planned
+* This mod isn't really optimized at all yet - it's much slower than I'd like it to be. I eventually want to rework some of the seed searching code to work a bit closer to ForgottenArbiter's external program and hopefully not rely on the game completely resetting itself each time as it does now (it's much too slow that way)
 
 
 ### Installation
