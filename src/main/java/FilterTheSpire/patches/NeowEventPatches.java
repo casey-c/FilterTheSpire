@@ -1,6 +1,6 @@
-package SlayTheSeeds.patches;
+package FilterTheSpire.patches;
 
-import SlayTheSeeds.BossSwapSeed;
+import FilterTheSpire.FilterTheSpire;
 import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
@@ -31,7 +31,7 @@ public class NeowEventPatches {
     )
     public static class NonOverlappingBubblesPatch {
         public static SpireReturn Prefix(NeowEvent __instance) {
-            return (BossSwapSeed.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
+            return (FilterTheSpire.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
         }
 
     }

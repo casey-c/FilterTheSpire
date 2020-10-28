@@ -1,4 +1,4 @@
-package SlayTheSeeds;
+package FilterTheSpire;
 
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;

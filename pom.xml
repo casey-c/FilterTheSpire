@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>BossSwapSeedMod</groupId>
-    <artifactId>BossSwapSeedMod</artifactId>
+    <groupId>FilterTheSpire</groupId>
+    <artifactId>FilterTheSpire</artifactId>
     <version>v1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>BossSwapSeedMod</name>
-    <description>Attempting to make a mod!</description>
+    <name>FilterTheSpire</name>
+    <description>A seed filtering mod for Slay the Spire</description>
 
     <dependencies>
         <dependency>
@@ -34,7 +34,7 @@
     </dependencies>
 
     <build>
-        <finalName>BossSwapSeedMod</finalName>
+        <finalName>FilterTheSpire</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -54,7 +54,7 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <copy file="target/BossSwapSeedMod.jar" tofile="/home/casey/.steam/steam/steamapps/common/SlayTheSpire/mods/BossSwapSeedMod.jar"/>
+                                <copy file="target/FilterTheSpire.jar" tofile="/home/casey/.steam/steam/steamapps/common/SlayTheSpire/mods/FilterTheSpire.jar"/>
                             </target>
                         </configuration>
                         <goals>

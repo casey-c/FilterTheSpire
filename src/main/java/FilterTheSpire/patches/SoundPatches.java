@@ -1,6 +1,6 @@
-package SlayTheSeeds.patches;
+package FilterTheSpire.patches;
 
-import SlayTheSeeds.BossSwapSeed;
+import FilterTheSpire.FilterTheSpire;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.audio.MusicMaster;
@@ -15,7 +15,7 @@ public class SoundPatches {
     )
     public static class NeowSoundPatch {
         public static SpireReturn Prefix(NeowEvent __instance) {
-            return (BossSwapSeed.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
+            return (FilterTheSpire.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
         }
     }
 
@@ -27,7 +27,7 @@ public class SoundPatches {
     )
     public static class PlayAndLoopStringPatch {
         public static SpireReturn<Long> Prefix(SoundMaster __instance, String _key) {
-            return (BossSwapSeed.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(0L) : SpireReturn.Continue();
+            return (FilterTheSpire.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(0L) : SpireReturn.Continue();
         }
     }
 
@@ -40,7 +40,7 @@ public class SoundPatches {
     )
     public static class MusicMasterPatch {
         public static SpireReturn Prefix(MusicMaster __instance, String _key) {
-            return (BossSwapSeed.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
+            return (FilterTheSpire.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
         }
     }
 }
