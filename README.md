@@ -13,12 +13,12 @@ Customize your Slay The Spire seeds. Upon starting a run, this mod will repeated
 
 ### Installation
 
-This mod requires ModTheSpire and BaseMod, which can be found on the Steam Workshop. To install this mod, head over to the [Releases page](https://github.com/casey-c/BossSwapSeedRefresh/releases), download the latest .jar file, and drag it into the SlayTheSpire/mods folder in your game's install directory. Eventually I'll get around to uploading it to the Steam workshop (I very lazily haven't done so for any of my mods yet because the workshop upload utility is broken for my Linux distribution) but for now you will need to check back manually for updates - sorry!
+This mod requires ModTheSpire and BaseMod, which can be found on the Steam Workshop. To install this mod, head over to the [Releases page](https://github.com/casey-c/FilterTheSpire/releases), download the latest .jar file, and drag it into the SlayTheSpire/mods folder in your game's install directory. Eventually I'll get around to uploading it to the Steam workshop (I very lazily haven't done so for any of my mods yet because the workshop upload utility is broken for my Linux distribution) but for now you will need to check back manually for updates - sorry!
 
 
 ### Issues / Bugs / Feedback
 
-Please drop me a line here on the [issues page](https://github.com/casey-c/BossSwapSeedRefresh/issues) if you encounter bugs, weird behavior, crashes, mod incompatibilities, etc.
+Please drop me a line here on the [issues page](https://github.com/casey-c/FilterTheSpire/issues) if you encounter bugs, weird behavior, crashes, mod incompatibilities, etc.
 
 As the mod is under active development, you can also leave feedback, suggestions, or requests there as well. Thank you!
 
