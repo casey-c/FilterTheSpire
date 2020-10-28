@@ -1,5 +1,7 @@
 Customize your Slay The Spire seeds. Upon starting a run, this mod will repeatedly refresh at the Neow screen until you generate a seed with your desired parameters. Currently, this mod only supports a single filter - "Pandora's Box" boss swaps - but more filters are planned and further customization options are in the works.
 
+![Loading](github/loading.png)
+
 ![Neow](github/neow.png)
 
 ### Important notes
