@@ -152,8 +152,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             FontHelper.renderFontCentered(sb,
                     FontHelper.menuBannerFont,
                     "Searching for the perfect seed...",
-                    (Settings.WIDTH * 0.5f) * Settings.scale,
-                    (Settings.HEIGHT * 0.5f + 224.0f) * Settings.scale,
+                    (Settings.WIDTH * 0.5f),
+                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
                     Settings.CREAM_COLOR
                     );
 
@@ -161,15 +161,15 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     //FontHelper.tipBodyFont,
                     ExtraFonts.largeNumberFont(),
                     "" + timesStartedOver,
-                    (Settings.WIDTH * 0.5f) * Settings.scale,
-                    (Settings.HEIGHT * 0.5f) * Settings.scale,
+                    (Settings.WIDTH * 0.5f),
+                    (Settings.HEIGHT * 0.5f),
                     ExtraColors.PINK_COLOR
             );
 
             FontHelper.renderFontCentered(sb,
                     FontHelper.menuBannerFont,
                     "Seeds Explored",
-                    (Settings.WIDTH * 0.5f) * Settings.scale,
+                    (Settings.WIDTH * 0.5f),
                     321 * Settings.scale,
                     Color.GRAY
             );
@@ -177,15 +177,15 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
                     "Filter the Spire",
-                    (Settings.WIDTH - 85.0f) * Settings.scale,
+                    Settings.WIDTH - (85.0f * Settings.scale),
                     945 * Settings.scale,
                     Color.GRAY
             );
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
-                    "v. 0.0.5",
-                    (Settings.WIDTH - 85.0f) * Settings.scale,
+                    "v0.1.0",
+                    Settings.WIDTH - (85.0f * Settings.scale),
                     890 * Settings.scale,
                     Color.GRAY
             );
