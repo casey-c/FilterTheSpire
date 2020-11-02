@@ -189,7 +189,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
-                    "v0.1.0",
+                    "v0.1.1",
                     Settings.WIDTH - (85.0f * Settings.scale),
                     890 * Settings.scale,
                     Color.GRAY
