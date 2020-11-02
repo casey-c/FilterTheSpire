@@ -67,32 +67,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-    // TODO: other filters
-//    private boolean bossSwapIs(String targetRelic) {
-//        if (CardCrawlGame.isInARun()) {
-//            ArrayList<String> bossRelics = AbstractDungeon.bossRelicPool;
-//
-//            // DEBUG
-//            System.out.println("Checking seed to see if boss swap is " + targetRelic);
-//            System.out.println("testing my own stuff now");
-//            SeedTesting.testing();
-//
-//            // TODO: remove / debug
-////            printRelicPool();
-//
-//            if (!bossRelics.isEmpty()) {
-//                String relic = bossRelics.get(0);
-//                return targetRelic == relic;
-//            }
-//        }
-//
-//        return false;
-//    }
-
     private boolean validateSeed() {
         return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
     }
 
+    // Simulates using the seed to sort the boss swap list
     private boolean bossSwapIs(String targetRelic) {
         Random relicRng = new Random(Settings.seed);
 
@@ -101,7 +80,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         relicRng.randomLong(); // uncommon
         relicRng.randomLong(); // rare
         relicRng.randomLong(); // shop
-        //relicRng.randomLong(); // boss <- this is the one (we perform it below)
+        //relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
 
         ArrayList<String> bossRelicPool = new ArrayList<>();
         RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
@@ -124,103 +103,54 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-//    @Override
-//    public void receivePostDungeonInitialize() {
-//        // Mute when first starting the search
-//        if (timesStartedOver == 0) {
-//            SEARCHING_FOR_SEEDS = true;
-//        }
-//
-//        if (validateSeed()) {
-//            timesStartedOver = 0;
-//            isResetting = false;
-//
-//            SEARCHING_FOR_SEEDS = false;
-//            if (AbstractDungeon.scene != null) {
-//                // Play the Neow sound we originally patched out
-//                playNeowSound();
-//            }
-//        }
-//        else {
-//            // Haven't reached the reset limit yet, so can reset and try again
-//            if (timesStartedOver < MAX_START_OVER) {
-//                isResetting = true;
-//                RestartHelper.restartRun();
-//                timesStartedOver++;
-//            }
-//            else {
-//                isResetting = false;
-//                System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
-//            }
-//        }
-//
-//    }
+    private boolean ignoreInit = false;
 
     @Override
     public void receivePostDungeonInitialize() {
+        // This func is called on our makeReal() - but we know its a valid seed already
+        if (ignoreInit) {
+            System.out.println("RECV POST DUNGEON INIT - ignoring");
+
+            // Reset
+            ignoreInit = false;
+            timesStartedOver = 0;
+            SEARCHING_FOR_SEEDS = false;
+
+            return;
+        }
+        else {
+            System.out.println("RECV POST DUNGEON INIT - FOLLOWING THROUGH");
+        }
+
         while (!validateSeed()) {
-            //isResetting = true;
             SEARCHING_FOR_SEEDS = true;
             RestartHelper.randomSeed();
             timesStartedOver++;
         }
 
-        if (timesStartedOver > 0)
-            RestartHelper.makeReal();
-
         System.out.println("Found a valid start in " + timesStartedOver + " attempts.");
 
-        // Reset
-        timesStartedOver = 0;
-        //isResetting = false;
-        SEARCHING_FOR_SEEDS = false;
+        // If we required at least one reset
+        if (timesStartedOver > 0) {
+            RestartHelper.makeReal();
+            ignoreInit = true;
 
-//        // Mute when first starting the search
-//        if (timesStartedOver == 0) {
-//            SEARCHING_FOR_SEEDS = true;
-//        }
-//
-//        if (validateSeed()) {
-//            if (timesStartedOver != 0)
-//                RestartHelper.makeReal();
-//
-//            timesStartedOver = 0;
-//            isResetting = false;
-//
-//            SEARCHING_FOR_SEEDS = false;
-//            if (AbstractDungeon.scene != null) {
-//                // Play the Neow sound we originally patched out
-//                playNeowSound();
-//            }
-//        }
-//        else {
-//            // Haven't reached the reset limit yet, so can reset and try again
-//            if (timesStartedOver < MAX_START_OVER) {
-//                isResetting = true;
-//                //RestartHelper.restartRun();
-//                RestartHelper.randomSeed();
-//                timesStartedOver++;
-//            }
-//            else {
-//                isResetting = false;
-//                System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
-//            }
-//        }
+            // Everything will be reset on our second pass through this function
+        }
+        else {
+            // Reset
+            ignoreInit = false;
+            timesStartedOver = 0;
+            SEARCHING_FOR_SEEDS = false;
+        }
+
 
     }
 
 
     @Override
     public void receiveRender(SpriteBatch sb) {
-        //if (true) {
-        //if (isResetting) {
         if (SEARCHING_FOR_SEEDS) {
-//            sb.setColor(Color.BLACK);
-//            sb.draw(ImageMaster.WHITE_SQUARE_IMG,
-//                    0,
-//                    0,
-//                    Settings.WIDTH,
-//                    Settings.HEIGHT);
 
             if (BG != null) {
                 sb.setColor(Color.WHITE);
@@ -270,20 +200,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     890 * Settings.scale,
                     Color.GRAY
             );
-
-            // Render the loading text
-//            FontHelper.renderFontCentered(sb,
-//                    FontHelper.dungeonTitleFont,
-//                    info,
-//                    Settings.WIDTH / 2.0f,
-//                    Settings.HEIGHT / 2.0f);
-//
-//            FontHelper.renderFontLeftDownAligned(sb,
-//                    FontHelper.eventBodyText,
-//                    extra_info + timesStartedOver,
-//                    100 * Settings.scale,
-//                    100 * Settings.scale,
-//                    Settings.CREAM_COLOR);
         }
     }
 
