@@ -2,6 +2,7 @@ package FilterTheSpire;
 
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.SeedTesting;
 import basemod.BaseMod;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
@@ -15,8 +16,12 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.random.Random;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.BooleanSupplier;
 
 @SpireInitializer
@@ -26,7 +31,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     private int timesStartedOver = 0;
     private final int MAX_START_OVER = 200;
 
-    private boolean isResetting = false;
+    //private boolean isResetting = false;
     public static boolean SEARCHING_FOR_SEEDS;
 
     // TODO: localization
@@ -63,24 +68,46 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     }
 
     // TODO: other filters
-    private boolean bossSwapIs(String targetRelic) {
-        if (CardCrawlGame.isInARun()) {
-            ArrayList<String> bossRelics = AbstractDungeon.bossRelicPool;
-
-            // TODO: remove / debug
-//            printRelicPool();
-
-            if (!bossRelics.isEmpty()) {
-                String relic = bossRelics.get(0);
-                return targetRelic == relic;
-            }
-        }
-
-        return false;
-    }
+//    private boolean bossSwapIs(String targetRelic) {
+//        if (CardCrawlGame.isInARun()) {
+//            ArrayList<String> bossRelics = AbstractDungeon.bossRelicPool;
+//
+//            // DEBUG
+//            System.out.println("Checking seed to see if boss swap is " + targetRelic);
+//            System.out.println("testing my own stuff now");
+//            SeedTesting.testing();
+//
+//            // TODO: remove / debug
+////            printRelicPool();
+//
+//            if (!bossRelics.isEmpty()) {
+//                String relic = bossRelics.get(0);
+//                return targetRelic == relic;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     private boolean validateSeed() {
         return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+    }
+
+    private boolean bossSwapIs(String targetRelic) {
+        Random relicRng = new Random(Settings.seed);
+
+        // Skip past all these
+        relicRng.randomLong(); // common
+        relicRng.randomLong(); // uncommon
+        relicRng.randomLong(); // rare
+        relicRng.randomLong(); // shop
+        //relicRng.randomLong(); // boss <- this is the one (we perform it below)
+
+        ArrayList<String> bossRelicPool = new ArrayList<>();
+        RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
+        Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
+
+        return !bossRelicPool.isEmpty() && bossRelicPool.get(0) == targetRelic;
     }
 
 
@@ -97,35 +124,88 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
+//    @Override
+//    public void receivePostDungeonInitialize() {
+//        // Mute when first starting the search
+//        if (timesStartedOver == 0) {
+//            SEARCHING_FOR_SEEDS = true;
+//        }
+//
+//        if (validateSeed()) {
+//            timesStartedOver = 0;
+//            isResetting = false;
+//
+//            SEARCHING_FOR_SEEDS = false;
+//            if (AbstractDungeon.scene != null) {
+//                // Play the Neow sound we originally patched out
+//                playNeowSound();
+//            }
+//        }
+//        else {
+//            // Haven't reached the reset limit yet, so can reset and try again
+//            if (timesStartedOver < MAX_START_OVER) {
+//                isResetting = true;
+//                RestartHelper.restartRun();
+//                timesStartedOver++;
+//            }
+//            else {
+//                isResetting = false;
+//                System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
+//            }
+//        }
+//
+//    }
+
     @Override
     public void receivePostDungeonInitialize() {
-        // Mute when first starting the search
-        if (timesStartedOver == 0) {
+        while (!validateSeed()) {
+            //isResetting = true;
             SEARCHING_FOR_SEEDS = true;
+            RestartHelper.randomSeed();
+            timesStartedOver++;
         }
 
-        if (validateSeed()) {
-            timesStartedOver = 0;
-            isResetting = false;
+        if (timesStartedOver > 0)
+            RestartHelper.makeReal();
 
-            SEARCHING_FOR_SEEDS = false;
-            if (AbstractDungeon.scene != null) {
-                // Play the Neow sound we originally patched out
-                playNeowSound();
-            }
-        }
-        else {
-            // Haven't reached the reset limit yet, so can reset and try again
-            if (timesStartedOver < MAX_START_OVER) {
-                isResetting = true;
-                RestartHelper.restartRun();
-                timesStartedOver++;
-            }
-            else {
-                isResetting = false;
-                System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
-            }
-        }
+        System.out.println("Found a valid start in " + timesStartedOver + " attempts.");
+
+        // Reset
+        timesStartedOver = 0;
+        //isResetting = false;
+        SEARCHING_FOR_SEEDS = false;
+
+//        // Mute when first starting the search
+//        if (timesStartedOver == 0) {
+//            SEARCHING_FOR_SEEDS = true;
+//        }
+//
+//        if (validateSeed()) {
+//            if (timesStartedOver != 0)
+//                RestartHelper.makeReal();
+//
+//            timesStartedOver = 0;
+//            isResetting = false;
+//
+//            SEARCHING_FOR_SEEDS = false;
+//            if (AbstractDungeon.scene != null) {
+//                // Play the Neow sound we originally patched out
+//                playNeowSound();
+//            }
+//        }
+//        else {
+//            // Haven't reached the reset limit yet, so can reset and try again
+//            if (timesStartedOver < MAX_START_OVER) {
+//                isResetting = true;
+//                //RestartHelper.restartRun();
+//                RestartHelper.randomSeed();
+//                timesStartedOver++;
+//            }
+//            else {
+//                isResetting = false;
+//                System.out.println("ERROR: ran out of resets"); // TODO: show a warning message on neow
+//            }
+//        }
 
     }
 
@@ -133,7 +213,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     @Override
     public void receiveRender(SpriteBatch sb) {
         //if (true) {
-        if (isResetting) {
+        //if (isResetting) {
+        if (SEARCHING_FOR_SEEDS) {
 //            sb.setColor(Color.BLACK);
 //            sb.draw(ImageMaster.WHITE_SQUARE_IMG,
 //                    0,
