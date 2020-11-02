@@ -109,17 +109,12 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public void receivePostDungeonInitialize() {
         // This func is called on our makeReal() - but we know its a valid seed already
         if (ignoreInit) {
-            System.out.println("RECV POST DUNGEON INIT - ignoring");
-
             // Reset
             ignoreInit = false;
             timesStartedOver = 0;
             SEARCHING_FOR_SEEDS = false;
 
             return;
-        }
-        else {
-            System.out.println("RECV POST DUNGEON INIT - FOLLOWING THROUGH");
         }
 
         while (!validateSeed()) {
@@ -134,7 +129,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         if (timesStartedOver > 0) {
             RestartHelper.makeReal();
             ignoreInit = true;
-
             // Everything will be reset on our second pass through this function
         }
         else {
