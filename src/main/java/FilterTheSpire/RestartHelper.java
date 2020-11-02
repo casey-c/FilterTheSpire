@@ -13,48 +13,6 @@ import com.megacrit.cardcrawl.screens.DungeonTransitionScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 
 public class RestartHelper {
-//        public static void restartRun() {
-//            if (CardCrawlGame.isInARun()) {
-//                if (AbstractDungeon.getCurrMapNode() != null) {
-//                    AbstractRoom room = AbstractDungeon.getCurrRoom();
-//                    if (room != null) {
-//                        room.clearEvent();
-//                    }
-//                }
-//
-//                AbstractDungeon.closeCurrentScreen();
-//                AbstractDungeon.reset();
-//            }
-//
-//            CardCrawlGame.dungeonTransitionScreen = new DungeonTransitionScreen(Exordium.ID);
-//
-//            Settings.hasEmeraldKey = false;
-//            Settings.hasRubyKey = false;
-//            Settings.hasSapphireKey = false;
-//
-//            ShopScreen.resetPurgeCost();
-//            CardCrawlGame.tips.initialize();
-//            CardCrawlGame.metricData.clearData();
-//            CardHelper.clear();
-//            TipTracker.refresh();
-//            System.gc();
-//
-//            if (CardCrawlGame.chosenCharacter == null) {
-//                CardCrawlGame.chosenCharacter = AbstractDungeon.player.chosenClass;
-//            }
-//
-//            if (!Settings.seedSet) {
-//                Long sTime = System.nanoTime();
-//                Random rng = new Random(sTime);
-//                Settings.seedSourceTimestamp = sTime;
-//                Settings.seed = SeedHelper.generateUnoffensiveSeed(rng);
-//                SeedHelper.cachedSeed = null;
-//            }
-//
-//            AbstractDungeon.generateSeeds();
-//            CardCrawlGame.mode = CardCrawlGame.GameMode.CHAR_SELECT;
-//        }
-
         public static void randomSeed() {
             Long sTime = System.nanoTime();
             Random rng = new Random(sTime);
@@ -92,14 +50,6 @@ public class RestartHelper {
             if (CardCrawlGame.chosenCharacter == null) {
                 CardCrawlGame.chosenCharacter = AbstractDungeon.player.chosenClass;
             }
-
-//            if (!Settings.seedSet) {
-//                Long sTime = System.nanoTime();
-//                Random rng = new Random(sTime);
-//                Settings.seedSourceTimestamp = sTime;
-//                Settings.seed = SeedHelper.generateUnoffensiveSeed(rng);
-//                SeedHelper.cachedSeed = null;
-//            }
 
             AbstractDungeon.generateSeeds();
             CardCrawlGame.mode = CardCrawlGame.GameMode.CHAR_SELECT;

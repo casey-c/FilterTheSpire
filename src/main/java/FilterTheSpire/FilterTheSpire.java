@@ -29,16 +29,14 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public static void initialize() { new FilterTheSpire(); }
 
     private int timesStartedOver = 0;
-    private final int MAX_START_OVER = 200;
+    private int MAX_SEEDS = 300;
 
-    //private boolean isResetting = false;
     public static boolean SEARCHING_FOR_SEEDS;
 
     // TODO: localization
     private static final String info = "Searching for a suitable seed";
     private static final String extra_info = "Seeds searched: ";
 
-    //private static Texture BG = new Texture("FilterTheSpire/images/fts_background.png");
     private static Texture BG;
 
     private ArrayList<BooleanSupplier> validators = new ArrayList<>();
@@ -121,6 +119,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             SEARCHING_FOR_SEEDS = true;
             RestartHelper.randomSeed();
             timesStartedOver++;
+
+            if (timesStartedOver > MAX_SEEDS) {
+                System.out.println("FILTER THE SPIRE WARNING: Exceeded max number of seeds to search (" + MAX_SEEDS + "). Results may not match filters.");
+                break;
+            }
         }
 
         System.out.println("Found a valid start in " + timesStartedOver + " attempts.");
@@ -199,6 +202,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostInitialize() {
+        // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
     }
 }
