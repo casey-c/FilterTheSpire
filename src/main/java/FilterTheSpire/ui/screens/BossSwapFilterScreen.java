@@ -19,8 +19,10 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 
+/*
+    Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
+ */
 public class BossSwapFilterScreen {
     // TODO: hitboxes, etc.
     private static class RelicUIObject {
@@ -58,11 +60,6 @@ public class BossSwapFilterScreen {
         }
 
         public void render(SpriteBatch sb) {
-//            if (hb.hovered)
-//                sb.setColor(ExtraColors.TRANSPARENT_GREEN);
-//            else
-//                sb.setColor(Color.WHITE);
-
             // Grow a bit larger when hovered
             float s = (hb.hovered) ? size * 1.10f : size;
 
@@ -77,9 +74,6 @@ public class BossSwapFilterScreen {
 
 
             sb.draw(tex, x * Settings.scale, y * Settings.scale, s * Settings.scale, s * Settings.scale);
-
-//            sb.setColor(ExtraColors.TRANSPARENT_GREEN);
-//            sb.draw(ImageMaster.WHITE_SQUARE_IMG, x * Settings.scale, y * Settings.scale, size * Settings.scale, size * Settings.scale);
 
             // DEBUG
             hb.render(sb);
@@ -167,12 +161,6 @@ public class BossSwapFilterScreen {
         alreadySetup = true;
     }
 
-    public void renderBackground(SpriteBatch sb) {
-        // TODO: something better obv
-//        sb.setColor(Color.BLACK);
-//        sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-    }
-
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 
@@ -207,7 +195,6 @@ public class BossSwapFilterScreen {
         if (!alreadySetup)
             setup();
 
-        renderBackground(sb);
         renderForeground(sb);
     }
 

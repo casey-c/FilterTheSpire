@@ -2,8 +2,8 @@
   "modid": "ojb_FilterTheSpire",
   "name": "Filter the Spire",
   "author_list": ["ojb"],
-  "description": "Upon starting a new game, this mod will refresh the run until you have a seed where the boss swap is a guaranteed Pandora's Box (with a maximum number of 300 tries for safety). NOTE: This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run.\n\n Please see https://github.com/casey-c/FilterTheSpire for further details and upcoming releases.",
-  "version": "0.1.1",
+  "description": "Go to the Main Menu -> Mods -> Filter the Spire -> Config menu to configure the seeds you encounter. This mod currently allows configuring which boss relic swap you get from Neow, and allows choosing randomly from a set of multiple possibilities. Future updates plan on adding more filters beyond just the Boss Swap option. NOTE: This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run.\n\n Please see https://github.com/casey-c/FilterTheSpire for further details and to get new updates when they are released.",
+  "version": "0.1.2",
   "sts_version": "06-22-2020",
   "mts_version": "2.6.0",
   "dependencies": ["basemod"]

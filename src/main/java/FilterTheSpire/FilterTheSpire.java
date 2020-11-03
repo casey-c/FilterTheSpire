@@ -37,45 +37,23 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     private int MAX_SEEDS = 300;
 
     public static boolean SEARCHING_FOR_SEEDS;
-
-    // TODO: localization
-    private static final String info = "Searching for a suitable seed";
-    private static final String extra_info = "Seeds searched: ";
+    private boolean ignoreInit = false;
 
     private static Texture BG;
 
-    //private ArrayList<BooleanSupplier> validators = new ArrayList<>();
-
     public FilterTheSpire() {
         BaseMod.subscribe(this);
-
-        // Example usage - adding filters is as easy as passing a function that returns a bool
-        //   all predicates in the validators list are logical AND together at the end
-        //   logical OR will be more complicated to make it generic, but the idea is the same
-        //   (pass a function that returns the result of the OR condition)
-        //validators.add(() -> bossSwapIs("Pandora's Box"));
-        ////validators.add(() -> bossSwapIs("Snecko Eye"));
     }
 
-    // DEBUG
-    private void printRelicPool() {
-        if (CardCrawlGame.isInARun() && CardCrawlGame.chosenCharacter != null) {
-            ArrayList<String> bossRelics = new ArrayList(AbstractDungeon.bossRelicPool);
-            bossRelics.sort(String::compareTo);
+    @Override
+    public void receivePostInitialize() {
+        // Textures can't be loaded until the post init or it crashes
+        BG = new Texture("FilterTheSpire/images/fts_background.png");
 
-            System.out.println("\n---------------------------------------");
-            System.out.println("\nBoss relics (" + CardCrawlGame.chosenCharacter.name() + "):");
-            bossRelics.forEach(System.out::println);
-            System.out.println("---------------------------------------\n");
-        }
+        Config.setupConfigMenu();
     }
 
-//    private boolean validateSeed() {
-//        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
-//    }
-
-    // Simulates using the seed to sort the boss swap list
-
+    // --------------------------------------------------------------------------------
 
     private void playNeowSound() {
         int roll = MathUtils.random(3);
@@ -90,11 +68,20 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-    private boolean ignoreInit = false;
+    // --------------------------------------------------------------------------------
 
+    /*
+        This is our main seed searching loop; it is called when first entering a dungeon and proceeds to use the
+        FilterManager and RestartHelper in tandem to check through random seeds. Once it finds one that passes the
+        validateFilters() test (i.e. passes all the filters set by the player) it will make that seed into the current
+        run.
+
+        This callback is called twice: once when clicking the menu option to start the run, and once after the
+        call to RestartHelper.makeReal() after we've found a suitable seed.
+     */
     @Override
     public void receivePostDungeonInitialize() {
-        // This func is called on our makeReal() - but we know its a valid seed already
+        // Second time through all we do is reset
         if (ignoreInit) {
             // Reset
             ignoreInit = false;
@@ -104,11 +91,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        FilterManager.print();
 
         while (!FilterManager.validateFilters()) {
-            FilterManager.print();
-        //while (!validateSeed()) {
             SEARCHING_FOR_SEEDS = true;
             RestartHelper.randomSeed();
             timesStartedOver++;
@@ -123,19 +107,20 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
         // If we required at least one reset
         if (timesStartedOver > 0) {
+            // This essentially puts us back at the start of this function with a "real" run
             RestartHelper.makeReal();
             ignoreInit = true;
-            // Everything will be reset on our second pass through this function
         }
         else {
-            // Reset
+            // Found the desired seed on the first try, so do the reset stuff we would usually do when entering the
+            //   second time
             ignoreInit = false;
             timesStartedOver = 0;
             SEARCHING_FOR_SEEDS = false;
         }
-
-
     }
+
+    // --------------------------------------------------------------------------------
 
 
     @Override
@@ -149,6 +134,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             else {
                 System.out.println("OJB WARNING: BG texture not initialized properly");
             }
+
+            // TODO: localization
 
             FontHelper.renderFontCentered(sb,
                     FontHelper.menuBannerFont,
@@ -185,7 +172,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
-                    "v0.1.1",
+                    "v0.1.2",
                     Settings.WIDTH - (85.0f * Settings.scale),
                     890 * Settings.scale,
                     Color.GRAY
@@ -193,11 +180,4 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-    @Override
-    public void receivePostInitialize() {
-        // Textures can't be loaded until the post init or it crashes
-        BG = new Texture("FilterTheSpire/images/fts_background.png");
-
-        Config.setupConfigMenu();
-    }
 }
