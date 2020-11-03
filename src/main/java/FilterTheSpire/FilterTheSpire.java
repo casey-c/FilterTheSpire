@@ -1,5 +1,6 @@
 package FilterTheSpire;
 
+import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.SeedTesting;
@@ -12,16 +13,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.BagOfMarbles;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 
 @SpireInitializer
@@ -39,7 +44,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     private static Texture BG;
 
-    private ArrayList<BooleanSupplier> validators = new ArrayList<>();
+    //private ArrayList<BooleanSupplier> validators = new ArrayList<>();
 
     public FilterTheSpire() {
         BaseMod.subscribe(this);
@@ -48,8 +53,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         //   all predicates in the validators list are logical AND together at the end
         //   logical OR will be more complicated to make it generic, but the idea is the same
         //   (pass a function that returns the result of the OR condition)
-        validators.add(() -> bossSwapIs("Pandora's Box"));
-        //validators.add(() -> bossSwapIs("Snecko Eye"));
+        //validators.add(() -> bossSwapIs("Pandora's Box"));
+        ////validators.add(() -> bossSwapIs("Snecko Eye"));
     }
 
     // DEBUG
@@ -65,27 +70,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-    private boolean validateSeed() {
-        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
-    }
+//    private boolean validateSeed() {
+//        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+//    }
 
     // Simulates using the seed to sort the boss swap list
-    private boolean bossSwapIs(String targetRelic) {
-        Random relicRng = new Random(Settings.seed);
-
-        // Skip past all these
-        relicRng.randomLong(); // common
-        relicRng.randomLong(); // uncommon
-        relicRng.randomLong(); // rare
-        relicRng.randomLong(); // shop
-        //relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
-
-        ArrayList<String> bossRelicPool = new ArrayList<>();
-        RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
-        Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
-
-        return !bossRelicPool.isEmpty() && bossRelicPool.get(0) == targetRelic;
-    }
 
 
     private void playNeowSound() {
@@ -115,7 +104,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        while (!validateSeed()) {
+        FilterManager.print();
+
+        while (!FilterManager.validateFilters()) {
+            FilterManager.print();
+        //while (!validateSeed()) {
             SEARCHING_FOR_SEEDS = true;
             RestartHelper.randomSeed();
             timesStartedOver++;
@@ -204,5 +197,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public void receivePostInitialize() {
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
+
+        Config.setupConfigMenu();
     }
 }

@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// TODO: DEBUG ONLY / REMOVE
 public class SeedTesting {
     // TODO: edit: this works!
     public static void testing() {
