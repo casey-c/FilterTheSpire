@@ -6,7 +6,7 @@ Head down to the [Installation](#installation) section below to learn how to get
 
 ![Loading](github/loading.png)
 
-![Config](github/config.png)
+![Config](github/config_small.png)
 
 ## How it Works
 
