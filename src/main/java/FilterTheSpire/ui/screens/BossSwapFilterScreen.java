@@ -47,12 +47,12 @@ public class BossSwapFilterScreen {
             this.y = y;
             this.parent = parent;
 
-            hb = new Hitbox(hbSize, hbSize);
+            hb = new Hitbox(hbSize * Settings.scale, hbSize * Settings.scale);
         }
 
         public void enableHitbox() {
             // Need to adjust them (hb are centered) -- this random guess is probably totally off
-            hb.move(x + hbOffset, y + hbOffset);
+            hb.move((x + hbOffset) * Settings.scale, (y + hbOffset) * Settings.scale);
         }
 
         public void disableHitbox() {
@@ -80,7 +80,6 @@ public class BossSwapFilterScreen {
         }
 
         public void handleClick() {
-            System.out.println("just clicked " + relicID);
             if (isEnabled)
                 CardCrawlGame.sound.playA("UI_CLICK_1", 0.2f);
             else
@@ -99,7 +98,8 @@ public class BossSwapFilterScreen {
             hb.update();
 
             if (hb.justHovered) {
-                CardCrawlGame.sound.playA("UI_HOVER", -0.5f);
+                //CardCrawlGame.sound.playA("UI_HOVER", -0.4f);
+                CardCrawlGame.sound.playAV("UI_HOVER", -0.4f, 0.5f);
             }
 
             if (this.hb.hovered && InputHelper.justClickedLeft) {
@@ -127,7 +127,6 @@ public class BossSwapFilterScreen {
         RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.WATCHER);
 
         bossRelics.addAll(relics);
-        System.out.println("There are " + bossRelics.size() + " boss relics in the pool.");
     }
 
     private void makeUIObjects() {
@@ -171,18 +170,16 @@ public class BossSwapFilterScreen {
         float leftTextX = 426.0f;
         float topTextY = 863.0f + 18.0f - 60.0f;
 
-        FontHelper.renderFontLeftDownAligned(sb, FontHelper.topPanelAmountFont, "Boss Swap Filter (WIP)", leftTextX, topTextY, Settings.CREAM_COLOR);
-        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Click to toggle enabled relics", leftTextX, topTextY - 50.0f, Color.GRAY);
-        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Shift+Click to force just one relic", leftTextX, topTextY - 87.0f, Color.GRAY);
+        FontHelper.renderFontLeftDownAligned(sb, FontHelper.topPanelAmountFont, "Boss Swap Filter", leftTextX * Settings.scale, topTextY * Settings.scale, Settings.CREAM_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Click to toggle enabled relics", leftTextX * Settings.scale, (topTextY - 50.0f) * Settings.scale, Color.GRAY);
+        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Shift+Click to force just one relic", leftTextX * Settings.scale, (topTextY - 87.0f) * Settings.scale, Color.GRAY);
 
         float rightTextLeft = 1040.0f;
         float rightTextTop = 724.0f - 60.0f;
-        FontHelper.renderSmartText(sb, FontHelper.tipBodyFont, "This filter will let you choose which relics will be available from Neow's Boss Swap option. NL NL When starting a new run, only seeds that can swap into any of the selected relics will be available. If no relics are selected, the game will choose from the entire set.", rightTextLeft, rightTextTop, 444.0f, 30.0f, Color.GRAY);
+        FontHelper.renderSmartText(sb, FontHelper.tipBodyFont, "This filter will let you choose which relics will be available from Neow's Boss Swap option. NL NL When starting a new run, only seeds that can swap into any of the selected relics will be available. If no relics are selected, the game will choose from the entire set. NL NL NOTE: This data is NOT currently saved between launches of the game, so you'll have to reset it manually each time you boot up Slay the Spire. I haven't had time to implement the config saving / loading functionality yet. Sorry!", rightTextLeft * Settings.scale, rightTextTop * Settings.scale, 444.0f * Settings.scale, 30.0f * Settings.scale, Color.GRAY);
     }
 
     public void enableHitboxes(boolean enabled) {
-        System.out.println("Setting hitboxes to be enabled: " + enabled);
-
         for (RelicUIObject obj : relicUIObjects.values()) {
             if (enabled)
                 obj.enableHitbox();
