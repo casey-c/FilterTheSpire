@@ -4,6 +4,7 @@ import FilterTheSpire.FilterManager;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.KeyHelper;
+import FilterTheSpire.utils.SoundHelper;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -81,20 +82,36 @@ public class BossSwapFilterScreen {
             hb.render(sb);
         }
 
-        public void handleClick() {
-            if (isEnabled)
-                CardCrawlGame.sound.playA("UI_CLICK_1", 0.2f);
-            else
-                CardCrawlGame.sound.playA("UI_CLICK_1", -0.4f);
-
+        private void handleClick() {
             if (KeyHelper.isShiftPressed()) {
-                parent.selectOnly(relicID);
+                CardCrawlGame.sound.play("BLOOD_SPLAT");
+                parent.selectAll();
+            }
+            else if (KeyHelper.isAltPressed()) {
+                CardCrawlGame.sound.play("MAP_SELECT_3");
+                parent.invertAll();
             }
             else {
+                if (isEnabled) CardCrawlGame.sound.playA("UI_CLICK_1", 0.2f);
+                else CardCrawlGame.sound.playA("UI_CLICK_1", -0.4f);
+
                 isEnabled = !isEnabled;
                 parent.refreshFilters();
             }
         }
+
+        private void handleRightClick() {
+            if (KeyHelper.isShiftPressed()) {
+                CardCrawlGame.sound.play("APPEAR");
+                parent.clearAll();
+            }
+            else {
+                CardCrawlGame.sound.play("KEY_OBTAIN");
+                parent.selectOnly(relicID);
+            }
+        }
+
+        private boolean mouseDownRight = false;
 
         public void update() {
             hb.update();
@@ -104,6 +121,18 @@ public class BossSwapFilterScreen {
                 CardCrawlGame.sound.playAV("UI_HOVER", -0.4f, 0.5f);
             }
 
+            // Right clicks
+            if (hb.hovered && InputHelper.isMouseDown_R) {
+                mouseDownRight = true;
+            } else {
+                // We already had the mouse down, and now we released, so fire our right click event
+                if (hb.hovered && mouseDownRight) {
+                    handleRightClick();
+                    mouseDownRight = false;
+                }
+            }
+
+            // Left clicks
             if (this.hb.hovered && InputHelper.justClickedLeft) {
                 this.hb.clickStarted = true;
             }
@@ -190,7 +219,7 @@ public class BossSwapFilterScreen {
 
         float infoLeft = 1120.0f;
         float infoTopMain = 667.0f;
-        float infoTopControls = 462.0f;
+        float infoTopControls = 472.0f;
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
@@ -203,7 +232,7 @@ public class BossSwapFilterScreen {
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
-                "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to invert all NL Alt+Click to clear all",
+                "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
                 infoLeft * Settings.scale,
                 infoTopControls * Settings.scale,
                 371.0f * Settings.scale,
@@ -266,6 +295,22 @@ public class BossSwapFilterScreen {
             relicUIObjects.get(id).isEnabled = true;
             refreshFilters();
         }
+    }
+
+    private void invertAll() {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            obj.isEnabled = !obj.isEnabled;
+        }
+
+        refreshFilters();
+    }
+
+    private void selectAll() {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            obj.isEnabled = true;
+        }
+
+        refreshFilters();
     }
 
     // --------------------------------------------------------------------------------
