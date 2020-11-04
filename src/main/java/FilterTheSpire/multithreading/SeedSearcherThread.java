@@ -1,5 +1,6 @@
 package FilterTheSpire.multithreading;
 
+import FilterTheSpire.FilterManager;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
@@ -43,7 +44,9 @@ public class SeedSearcherThread implements Runnable {
         long seed = SeedHelper.generateUnoffensiveSeed(rng);
 
         // Output
-        boolean valid = checkBossRelic(seed, "Pandora's Box");
+        //boolean valid = checkBossRelic(seed, "Pandora's Box");
+        boolean valid = FilterManager.validateFilters(seed);
+
         String seedString = SeedHelper.getString(seed);
 
         System.out.println("Thread " + id + " checked seed " + seedString + " and it was " + valid);
@@ -55,22 +58,22 @@ public class SeedSearcherThread implements Runnable {
 //        SeedHelper.cachedSeed = null;
     }
 
-    private boolean checkBossRelic(long seed, String targetRelic) {
-        Random relicRng = new Random(seed);
-
-        // Skip past all these
-        relicRng.randomLong(); // common
-        relicRng.randomLong(); // uncommon
-        relicRng.randomLong(); // rare
-        relicRng.randomLong(); // shop
-        //relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
-
-        ArrayList<String> bossRelicPool = new ArrayList<>();
-        RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
-        Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
-
-        return !bossRelicPool.isEmpty() && bossRelicPool.get(0) == targetRelic;
-    }
+//    private boolean checkBossRelic(long seed, String targetRelic) {
+//        Random relicRng = new Random(seed);
+//
+//        // Skip past all these
+//        relicRng.randomLong(); // common
+//        relicRng.randomLong(); // uncommon
+//        relicRng.randomLong(); // rare
+//        relicRng.randomLong(); // shop
+//        //relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
+//
+//        ArrayList<String> bossRelicPool = new ArrayList<>();
+//        RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
+//        Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
+//
+//        return !bossRelicPool.isEmpty() && bossRelicPool.get(0) == targetRelic;
+//    }
 
     @Override
     public void run() {

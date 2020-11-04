@@ -10,6 +10,8 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @SpireInitializer
 public class FilterManager {
@@ -18,25 +20,33 @@ public class FilterManager {
     private static FilterManager getInstance() { return FilterManagerHolder.INSTANCE; }
     public static void initialize() { getInstance(); }
 
-    private static ArrayList<BooleanSupplier> validators = new ArrayList<>();
+    //private static ArrayList<BooleanSupplier> validators = new ArrayList<>();
+    private static ArrayList<Function<Long, Boolean>> validators = new ArrayList<>();
 
-    public static boolean validateFilters() {
-        return validators.stream().allMatch(BooleanSupplier::getAsBoolean);
+    // Returns true iff all validation functions are true
+    public static boolean validateFilters(long seed) {
+        //return validators.stream().map(v -> v.apply(seed)).allMatch(Boolean::booleanValue);
+        return validators.stream().allMatch(v -> v.apply(seed));
     }
 
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
         validators.clear();
 
-        ArrayList<BooleanSupplier> group = new ArrayList<>();
-
+        ArrayList<Function<Long, Boolean>> group = new ArrayList<>();
         for (String id : relicIDs)
-            group.add( () -> bossSwapIs(id));
+            group.add((seed) -> bossSwapIs(seed, id));
 
-        validators.add(() -> group.stream().anyMatch(BooleanSupplier::getAsBoolean));
+//        ArrayList<BooleanSupplier> group = new ArrayList<>();
+//
+//        for (String id : relicIDs)
+//            group.add( () -> bossSwapIs(id));
+
+        //validators.add(() -> group.stream().anyMatch(BooleanSupplier::getAsBoolean));
+        validators.add((seed) -> group.stream().anyMatch(v -> v.apply(seed)));
     }
 
-    private static boolean bossSwapIs(String targetRelic) {
-        Random relicRng = new Random(Settings.seed);
+    private static boolean bossSwapIs(long seed, String targetRelic) {
+        Random relicRng = new Random(seed);
 
         // Skip past all these
         relicRng.randomLong(); // common
@@ -49,7 +59,7 @@ public class FilterManager {
         RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
         Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
 
-        return !bossRelicPool.isEmpty() && bossRelicPool.get(0) == targetRelic;
+        return !bossRelicPool.isEmpty() && bossRelicPool.get(0).equals(targetRelic);
     }
 
     public static void print() {
