@@ -156,7 +156,15 @@ public class MonsterRngHelper {
         System.out.println("The seed is: " + SeedHelper.getString(seed));
         System.out.println("Monster List: " + monsterList.toString());
         System.out.println("Elite List: " + eliteMonsterList.toString());
-        System.out.println("Boss: " + bossList.get(0));
+        System.out.println("Bosses: " + bossList.toString());
+    }
+
+    public boolean firstBossIs(String bossName) {
+        return bossList.size() > 0 && bossList.get(0).equals(bossName);
+    }
+
+    public boolean firstEliteIs(String eliteName) {
+        return eliteMonsterList.size() > 0 && eliteMonsterList.get(0).equals(eliteName);
     }
 
 }

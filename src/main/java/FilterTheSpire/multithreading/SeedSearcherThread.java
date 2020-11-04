@@ -37,11 +37,13 @@ public class SeedSearcherThread extends Thread {
             // Unironically kind of like having the delay because it makes the animations cooler lol
             // Without it, there's literally no animation in the base use cases as it goes too fast and finishes in a
             // split second
-//            try {
-//                sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+
+            // TODO: put this behind a config option. (I'm leaving it now because I can and you can't stop me)
+            try {
+                sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

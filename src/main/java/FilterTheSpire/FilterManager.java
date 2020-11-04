@@ -1,5 +1,6 @@
 package FilterTheSpire;
 
+import FilterTheSpire.rng.MonsterRngHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -57,11 +58,14 @@ public class FilterManager {
         validators.put(validatorName, (seed) -> group.stream().anyMatch(v -> v.apply(seed)));
     }
 
+    public static void setValidatorFromString(String validatorName, BiFunction<Long, String, Boolean> validatorFn, String target) {
+        validators.put(validatorName, (seed) -> validatorFn.apply(seed, target));
+    }
+
     // --------------------------------------------------------------------------------
 
-    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
-        setORValidatorFromList("bossSwap", FilterManager::bossSwapIs, relicIDs);
-    }
+    public static void setBossSwapIs(String relic) { setValidatorFromString("bossSwap", FilterManager::bossSwapIs, relic); }
+    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) { setORValidatorFromList("bossSwap", FilterManager::bossSwapIs, relicIDs); }
 
     private static boolean bossSwapIs(long seed, String targetRelic) {
         Random relicRng = new Random(seed);
@@ -93,13 +97,20 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setFirstBossesAre(ArrayList<String> bossNames) {
-        setORValidatorFromList("firstBoss", FilterManager::firstBossIs, bossNames);
-    }
+    public static void setFirstBossIs(String boss) { setValidatorFromString("firstBoss", FilterManager::firstBossIs, boss); }
+    public static void setFirstBossesAre(ArrayList<String> bossNames) { setORValidatorFromList("firstBoss", FilterManager::firstBossIs, bossNames); }
 
     public static boolean firstBossIs(long seed, String bossName) {
-        // TODO
-        return false;
+        return new MonsterRngHelper(seed).firstBossIs(bossName);
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public static void setFirstEliteIs(String elite) { setValidatorFromString("firstElite", FilterManager::firstEliteIs, elite); }
+    public static void setFirstElitesAre(ArrayList<String> elites) { setORValidatorFromList("firstElite", FilterManager::firstEliteIs, elites); }
+
+    public static boolean firstEliteIs(long seed, String elite) {
+        return new MonsterRngHelper(seed).firstEliteIs(elite);
     }
 
     // --------------------------------------------------------------------------------

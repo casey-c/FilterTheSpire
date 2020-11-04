@@ -20,6 +20,8 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Function;
 
 @SpireInitializer
@@ -44,7 +46,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         Config.setupConfigMenu();
 
         // TODO: DEBUG / TEMPORARY - remove
-        //FilterManager
+//        ArrayList<String> bosses = new ArrayList<>(Arrays.asList("Slime Boss"));
+//        FilterManager.setFirstBossesAre(bosses);
+        FilterManager.setFirstBossIs("Slime Boss");
+        FilterManager.setFirstEliteIs("Gremlin Nob");
+        FilterManager.setBossSwapIs("Pandora's Box");
     }
 
     // --------------------------------------------------------------------------------
