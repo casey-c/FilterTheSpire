@@ -13,15 +13,7 @@ import com.megacrit.cardcrawl.screens.DungeonTransitionScreen;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 
 public class RestartHelper {
-        public static void randomSeed() {
-            Long sTime = System.nanoTime();
-            Random rng = new Random(sTime);
-            Settings.seedSourceTimestamp = sTime;
-            Settings.seed = SeedHelper.generateUnoffensiveSeed(rng);
-            SeedHelper.cachedSeed = null;
-        }
-
-        public static void makeReal() {
+        public static void restart() {
             if (CardCrawlGame.isInARun()) {
                 if (AbstractDungeon.getCurrMapNode() != null) {
                     AbstractRoom room = AbstractDungeon.getCurrRoom();

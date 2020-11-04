@@ -20,12 +20,10 @@ public class FilterManager {
     private static FilterManager getInstance() { return FilterManagerHolder.INSTANCE; }
     public static void initialize() { getInstance(); }
 
-    //private static ArrayList<BooleanSupplier> validators = new ArrayList<>();
     private static ArrayList<Function<Long, Boolean>> validators = new ArrayList<>();
 
     // Returns true iff all validation functions are true
     public static boolean validateFilters(long seed) {
-        //return validators.stream().map(v -> v.apply(seed)).allMatch(Boolean::booleanValue);
         return validators.stream().allMatch(v -> v.apply(seed));
     }
 
@@ -36,12 +34,6 @@ public class FilterManager {
         for (String id : relicIDs)
             group.add((seed) -> bossSwapIs(seed, id));
 
-//        ArrayList<BooleanSupplier> group = new ArrayList<>();
-//
-//        for (String id : relicIDs)
-//            group.add( () -> bossSwapIs(id));
-
-        //validators.add(() -> group.stream().anyMatch(BooleanSupplier::getAsBoolean));
         validators.add((seed) -> group.stream().anyMatch(v -> v.apply(seed)));
     }
 

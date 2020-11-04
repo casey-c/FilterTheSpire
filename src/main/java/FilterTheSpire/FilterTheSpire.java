@@ -19,6 +19,8 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
+import java.util.function.Function;
+
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
     private static final String version = "0.1.3";
@@ -61,18 +63,57 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     // --------------------------------------------------------------------------------
 
-    private SeedSearcher searcher;
+//    private SeedSearcher searcher;
+//    private boolean secondTimeThrough = false;
+
+    private boolean firstTimeThrough = true;
 
     @Override
     public void receivePostDungeonInitialize() {
-        searcher = new SeedSearcher();
+        if (firstTimeThrough) {
+            System.out.println("First time through dungeon init ---------------------");
+            SEARCHING_FOR_SEEDS = true;
 
-        System.out.println("RECV dungeon init");
-        searcher.searchForSeed();
-        System.out.println("here");
+            // This occurs on the main runner thread (not the main StS thread)
+            //    and so doesn't have access to the OpenGL stuff called in RestartHelper.restart()
+            SeedSearcher.searchForSeed((Void) -> {
+                System.out.println("Seeds finished callback");
+
+                // Set the results of the search as the new seed
+                firstTimeThrough = false;
+                SeedSearcher.makeSeedReal();
+                RestartHelper.restart();
+            });
+        }
+        else {
+            System.out.println("Second time through dungeon init ---------------------");
+            SEARCHING_FOR_SEEDS = false;
+            firstTimeThrough = true;
+        }
+
+        //Function<SeedSearcher, String> x = SeedSearcher::getNumSeedsExamined;
+
+
+//        if (secondTimeThrough) {
+//            SEARCHING_FOR_SEEDS = false;
+//            return;
+//        }
+//
+//        SEARCHING_FOR_SEEDS = true;
+//        searcher = new SeedSearcher();
+//
+//        System.out.println("RECV dungeon init");
+//        searcher.searchForSeed();
+//        System.out.println("here");
     }
 
-
+    @Override
+    public void receiveRender(SpriteBatch sb) {
+        if (SEARCHING_FOR_SEEDS) {
+            sb.setColor(ExtraColors.TRANSPARENT_GREEN);
+            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
+        }
+    }
 
     /*
         This is our main seed searching loop; it is called when first entering a dungeon and proceeds to use the
@@ -126,6 +167,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     // --------------------------------------------------------------------------------
 
+    /*
     private boolean currentlyFading = false;
     private float fadeTime;
     private static final float maxFadeTime = 2.0f;
@@ -232,6 +274,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             );
         }
     }
+
+     */
 
 
 
