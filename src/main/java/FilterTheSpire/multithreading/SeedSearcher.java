@@ -17,11 +17,6 @@ public class SeedSearcher {
         private boolean running = true;
         private boolean finished = false;
         private ArrayList<SeedSearcherThread> threads = new ArrayList<>();
-        private Consumer<Void> onFinish;
-
-        private MainSeedRunnable(Consumer<Void> onFinish) {
-            this.onFinish = onFinish;
-        }
 
         @Override
         public void run() {
@@ -41,7 +36,7 @@ public class SeedSearcher {
 
             System.out.println("All tasks completed.");
 //            finishUp();
-            onFinish.accept(null);
+            finished = true;
         }
 
 //        private void finishUp() {
@@ -64,6 +59,8 @@ public class SeedSearcher {
 
         protected String getNumSeedsExamined() {
             int sum = threads.stream().mapToInt(t -> t.seedsExamined).sum();
+            if (sum <= numThreads)
+                sum = 1;
             return "" + sum;
         }
     }
@@ -76,19 +73,19 @@ public class SeedSearcher {
     private static MainSeedRunnable runner;
     private static Thread runnerThread;
 
-    public static void searchForSeed(Consumer<Void> onComplete) {
-        runner = new MainSeedRunnable(onComplete);
+    public static void searchForSeed() {
+        runner = new MainSeedRunnable();
         runnerThread = new Thread(runner);
         runnerThread.start();
     }
 
-    public String getNumSeedsExamined() {
+    public static String getNumSeedsExamined() {
         return (runner != null) ? runner.getNumSeedsExamined() : "ERROR";
     }
 
-    public static boolean isRunning() {
-        return (runner != null) && runner.running;
-    }
+//    public static boolean isRunning() {
+//        return (runner != null) && runner.running;
+//    }
 
     public static boolean isFinished() {
         return (runner != null) && runner.finished;
@@ -107,6 +104,8 @@ public class SeedSearcher {
                 Settings.seed = t.seed;
                 Settings.seedSourceTimestamp = t.seedSourceTimestamp;
                 SeedHelper.cachedSeed = null;
+
+                RestartHelper.restart();
 
                 return;
             }

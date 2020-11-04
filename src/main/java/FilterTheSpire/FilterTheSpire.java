@@ -67,23 +67,28 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //    private boolean secondTimeThrough = false;
 
     private boolean firstTimeThrough = true;
+    private boolean searcherActive = false;
 
     @Override
     public void receivePostDungeonInitialize() {
         if (firstTimeThrough) {
             System.out.println("First time through dungeon init ---------------------");
             SEARCHING_FOR_SEEDS = true;
+            firstTimeThrough = false;
+
+            SeedSearcher.searchForSeed();
+            searcherActive = true;
 
             // This occurs on the main runner thread (not the main StS thread)
             //    and so doesn't have access to the OpenGL stuff called in RestartHelper.restart()
-            SeedSearcher.searchForSeed((Void) -> {
-                System.out.println("Seeds finished callback");
-
-                // Set the results of the search as the new seed
-                firstTimeThrough = false;
-                SeedSearcher.makeSeedReal();
-                RestartHelper.restart();
-            });
+//            SeedSearcher.searchForSeed((Void) -> {
+//                System.out.println("Seeds finished callback");
+//
+//                // Set the results of the search as the new seed
+//                firstTimeThrough = false;
+//                SeedSearcher.makeSeedReal();
+//                RestartHelper.restart();
+//            });
         }
         else {
             System.out.println("Second time through dungeon init ---------------------");
@@ -107,13 +112,17 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        System.out.println("here");
     }
 
-    @Override
-    public void receiveRender(SpriteBatch sb) {
-        if (SEARCHING_FOR_SEEDS) {
-            sb.setColor(ExtraColors.TRANSPARENT_GREEN);
-            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-        }
-    }
+//    @Override
+//    public void receiveRender(SpriteBatch sb) {
+//        if (SEARCHING_FOR_SEEDS) {
+//            // Probably the worst place to put this
+//            if (SeedSearcher.isFinished())
+//                SeedSearcher.makeSeedReal();
+//
+//            sb.setColor(ExtraColors.TRANSPARENT_GREEN);
+//            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
+//        }
+//    }
 
     /*
         This is our main seed searching loop; it is called when first entering a dungeon and proceeds to use the
@@ -167,7 +176,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     // --------------------------------------------------------------------------------
 
-    /*
     private boolean currentlyFading = false;
     private float fadeTime;
     private static final float maxFadeTime = 2.0f;
@@ -191,13 +199,100 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receiveRender(SpriteBatch sb) {
-        if (searcher != null) {
-            if (!searcher.isCompleted()) {
-                totalSearched = "" + searcher.getNumChecked();
+        if (searcherActive) {
+            totalSearched = SeedSearcher.getNumSeedsExamined();
+
+            // Active and finished - start fading the loading screen and cancel the active status
+            if (SeedSearcher.isFinished()) {
+                searcherActive = false;
+                currentlyFading = true;
+                fadeTime = maxFadeTime;
+
+                SeedSearcher.makeSeedReal();
+            }
+        }
+        // Not active, and currently fading out the loading screen
+        else if (currentlyFading){
+            fadeTime -= Gdx.graphics.getDeltaTime();
+
+            // Ending criteria
+            if (fadeTime < 0.0f) {
+                currentlyFading = false;
+                totalSearched = "";
+                setColorOpacities(1.0f);
             }
             else {
-                if (totalSearched.isEmpty())
-                    totalSearched = "" + searcher.getNumChecked();
+                if (fadeTime < 1.0f) setColorOpacities(fadeTime);
+                else setColorOpacities(1.0f);
+            }
+        }
+
+        if (searcherActive || currentlyFading) {
+            // BLACK
+            sb.setColor(blackColor);
+            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
+
+            // IMAGE
+            sb.setColor(whiteColor);
+            sb.draw(BG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
+
+            // Main Numbers
+            FontHelper.renderFontCentered(sb, ExtraFonts.largeNumberFont(), totalSearched, Settings.WIDTH / 2.0f, Settings.HEIGHT / 2.0f, pinkTextColor);
+
+            // Extra Info
+            FontHelper.renderFontCentered(sb,
+                    FontHelper.menuBannerFont,
+                    "Searching for the perfect seed...",
+                    (Settings.WIDTH * 0.5f),
+                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
+                    creamTextColor
+            );
+
+            FontHelper.renderFontCentered(sb,
+                    FontHelper.menuBannerFont,
+                    "Seeds Explored",
+                    (Settings.WIDTH * 0.5f),
+                    321 * Settings.scale,
+                    grayTextColor
+            );
+
+            FontHelper.renderFontRightTopAligned(sb,
+                    FontHelper.menuBannerFont,
+                    "Filter the Spire",
+                    Settings.WIDTH - (85.0f * Settings.scale),
+                    945 * Settings.scale,
+                    grayTextColor
+            );
+
+            FontHelper.renderFontRightTopAligned(sb,
+                    FontHelper.menuBannerFont,
+                    version,
+                    Settings.WIDTH - (85.0f * Settings.scale),
+                    890 * Settings.scale,
+                    grayTextColor
+            );
+
+        }
+
+
+//        if (SEARCHING_FOR_SEEDS) {
+//            // Probably the worst place to put this
+//            if (SeedSearcher.isFinished()) {
+//                SeedSearcher.makeSeedReal();
+//            }
+//
+//            totalSearched = SeedSearcher.getNumSeedsExamined();
+//        }
+    }
+
+        /*
+//        if (searcher != null) {
+//            if (!searcher.isCompleted()) {
+//                totalSearched = "" + searcher.getNumChecked();
+//            }
+//            else {
+//                if (totalSearched.isEmpty())
+//                    totalSearched = "" + searcher.getNumChecked();
 
                 System.out.println("********* Completed after " + totalSearched + " seeds");
                 // Completed the search; time to start fade
@@ -275,11 +370,9 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
     }
 
-     */
 
 
 
-    /*
     @Override
     public void receiveRender(SpriteBatch sb) {
         if (SEARCHING_FOR_SEEDS) {
