@@ -4,6 +4,7 @@ import FilterTheSpire.multithreading.SeedSearcher;
 import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.SeedTesting;
 import basemod.BaseMod;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
@@ -41,6 +42,9 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
         Config.setupConfigMenu();
+
+        // TODO: DEBUG / TEMPORARY - remove
+        //FilterManager
     }
 
     // --------------------------------------------------------------------------------
@@ -50,6 +54,15 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
+        if (!FilterManager.hasFilters()) {
+            // Nothing to do (no need for refreshing)
+
+            // TODO: debug remove
+            SeedTesting.bossTest();
+
+            return;
+        }
+
         if (firstTimeThrough) {
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
