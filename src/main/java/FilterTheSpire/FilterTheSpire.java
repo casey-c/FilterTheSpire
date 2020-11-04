@@ -31,6 +31,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     // Used by the patches to not double up VFX and SFX
     public static boolean SEARCHING_FOR_SEEDS;
+    public static Config config;
 
     private static Texture BG;
 
@@ -44,6 +45,10 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
         Config.setupConfigMenu();
+        config = new Config();
+
+        ArrayList<String> list = config.getBossSwapFilter();
+        System.out.println("returned config list: " + list.toString());
 
         // TODO: DEBUG / TEMPORARY - remove
 //        ArrayList<String> bosses = new ArrayList<>(Arrays.asList("Slime Boss"));

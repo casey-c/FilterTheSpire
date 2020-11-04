@@ -1,6 +1,7 @@
 package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterManager;
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.KeyHelper;
@@ -199,10 +200,32 @@ public class BossSwapFilterScreen {
             }
         }
     }
+    private void loadFromConfig() {
+        System.out.println("Loading from config");
+
+        System.out.println("Relics currently tracked: ");
+        for (String relic : relicUIObjects.keySet()) {
+            System.out.println("\t" + relic);
+        }
+        System.out.println("---");
+
+        ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
+        for (String relic : loaded) {
+            System.out.println("Trying " + relic);
+            if (relicUIObjects.containsKey(relic)) {
+                System.out.println("relic objects does have " + relic + ", enabling now");
+                relicUIObjects.get(relic).isEnabled = true;
+            }
+            else {
+                System.out.println("relic objects doesnae have " + relic);
+            }
+        }
+    }
 
     private void setup() {
         populateRelics();
         makeUIObjects();
+        loadFromConfig();
         alreadySetup = true;
     }
 
@@ -330,6 +353,8 @@ public class BossSwapFilterScreen {
     }
 
     public void refreshFilters() {
-        FilterManager.setBossSwapFiltersFromValidList(getEnabledRelics());
+        ArrayList<String> enabledRelics = getEnabledRelics();
+        FilterTheSpire.config.setBossSwapFilter(enabledRelics);
+        FilterManager.setBossSwapFiltersFromValidList(enabledRelics);
     }
 }
