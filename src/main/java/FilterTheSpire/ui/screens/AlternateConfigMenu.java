@@ -1,7 +1,7 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.utils.ExtraColors;
 import basemod.BaseMod;
-import basemod.IUIElement;
 import basemod.ModPanel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,22 +9,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.screens.mainMenu.MainMenuScreen;
 
 public class AlternateConfigMenu extends ModPanel {
-    private static Texture BACKGROUND = new Texture("FilterTheSpire/images/config.png");
+    private static Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
     private BossSwapFilterScreen screen = new BossSwapFilterScreen();
 
     @Override
     public void renderBg(SpriteBatch sb) {
+        // Dim to diminish the rest of the config menu
+        sb.setColor(ExtraColors.SCREEN_DIM);
+        sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
+
+        // Draw our screen texture in the center
         sb.setColor(Color.WHITE);
-        sb.draw(BACKGROUND,
-                (Settings.WIDTH - (BACKGROUND.getWidth() * Settings.scale)) * 0.5f,
-                (Settings.HEIGHT - (BACKGROUND.getHeight() * Settings.scale)) * 0.5f,
-                BACKGROUND.getWidth() * Settings.scale,
-                BACKGROUND.getHeight() * Settings.scale
+        sb.draw(TEX_BG,
+                (Settings.WIDTH - (TEX_BG.getWidth() * Settings.scale)) * 0.5f,
+                (Settings.HEIGHT - (TEX_BG.getHeight() * Settings.scale)) * 0.5f,
+                TEX_BG.getWidth() * Settings.scale,
+                TEX_BG.getHeight() * Settings.scale
         );
+
     }
 
     @Override

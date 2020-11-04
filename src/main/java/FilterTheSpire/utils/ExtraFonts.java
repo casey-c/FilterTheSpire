@@ -17,45 +17,44 @@ import static com.megacrit.cardcrawl.ui.panels.ExhaustPanel.fontScale;
 
 public class ExtraFonts {
     private static BitmapFont LARGE_NUMBER_FONT;
+    private static BitmapFont CONFIG_TITLE_FONT;
+
+    public static BitmapFont configTitleFont() {
+        if (CONFIG_TITLE_FONT == null) {
+            CONFIG_TITLE_FONT = prepFont(34.0f,
+                    false,
+                    0.9f,
+                    0,
+                    0,
+                    ExtraColors.TEXT_BORDER_COLOR,
+                    false,
+                    2.0f,
+                    0.9f,
+                    Settings.QUARTER_TRANSPARENT_BLACK_COLOR.cpy(),
+                    (int)(3.0f * Settings.scale),
+                    (int)(3.0f * Settings.scale),
+                    "font/Kreon-Bold.ttf");
+        }
+
+        return CONFIG_TITLE_FONT;
+    }
 
     public static BitmapFont largeNumberFont() {
         if (LARGE_NUMBER_FONT == null) {
-
-            //BitmapFont font = FontHelper.tipBodyFont;
-            //LARGE_NUMBER_FONT = new BitmapFont(FontHelper.tipBodyFont);
-            float size = 210.0f;
-
-            int shadowOffsetX = (int)(3.0F * Settings.scale);
-            int shadowOffsetY = (int)(3.0F * Settings.scale);
-
-            float gamma = 0.9F;
-            float borderGamma = 0.9F;
-
-            //Color borderColor = new Color(0.4F, 0.1F, 0.1F, 1.0F);
-            Color borderColor = ExtraColors.PINK_BORDER_COLOR;
-            float borderWidth = 8.0F;
-
-            boolean borderStraight = false;
-            int spaceX = 0;
-            int spaceY = 0;
-            Color shadowColor = Settings.QUARTER_TRANSPARENT_BLACK_COLOR.cpy();
-
-            LARGE_NUMBER_FONT = prepFont(size,
+            LARGE_NUMBER_FONT = prepFont(210.0f,
                     false,
-                    gamma,
-                    spaceX,
-                    spaceY,
-                    borderColor,
-                    borderStraight,
-                    borderWidth,
-                    borderGamma,
-                    shadowColor,
-                    shadowOffsetX,
-                    shadowOffsetY);
-
-            //tipBodyFont = prepFont(22.0F, false);
+                    0.9f,
+                    0,
+                    0,
+                    ExtraColors.PINK_BORDER_COLOR,
+                    false,
+                    8.0f,
+                    0.9f,
+                    Settings.QUARTER_TRANSPARENT_BLACK_COLOR.cpy(),
+                    (int)(3.0f * Settings.scale),
+                    (int)(3.0f * Settings.scale),
+                    "font/Kreon-Bold.ttf");
         }
-
         return LARGE_NUMBER_FONT;
     }
 
@@ -70,14 +69,15 @@ public class ExtraFonts {
                                        float borderGamma,
                                        Color shadowColor,
                                        int shadowOffsetX,
-                                       int shadowOffsetY
+                                       int shadowOffsetY,
+                                       String font
     ) {
         FreeTypeFontGenerator g;
 
         HashMap<String, FreeTypeFontGenerator> generators = (HashMap<String, FreeTypeFontGenerator>) ReflectionHacks.getPrivateStatic(FontHelper.class, "generators");
         //FileHandle fontFile = (FileHandle) ReflectionHacks.getPrivateStatic(FontHelper.class, "fontFile");
 
-        FileHandle fontFile = Gdx.files.internal("font/Kreon-Bold.ttf");
+        FileHandle fontFile = Gdx.files.internal(font);
 
         if (generators.containsKey(fontFile.path())) {
             g = (FreeTypeFontGenerator)generators.get(fontFile.path());

@@ -10,4 +10,8 @@ public class ExtraColors {
     public static Color DIM_RELIC = new Color(1.0f, 1.0f, 1.0f, 0.15f);
 
     public static Color SEL_RELIC_BG = new Color(0.91f, 0.918f, 0.651f, 0.15f);
+
+    public static Color SCREEN_DIM = new Color(0.0f, 0.0f, 0.0f, 0.7f);
+
+    public static Color TEXT_BORDER_COLOR = new Color(0.23f, 0.26f, 0.317f, 1.0f);
 }
