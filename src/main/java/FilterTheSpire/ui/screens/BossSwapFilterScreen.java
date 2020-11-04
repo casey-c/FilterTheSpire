@@ -19,6 +19,8 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.function.Consumer;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
@@ -114,7 +116,7 @@ public class BossSwapFilterScreen {
         }
     }
 
-    private HashSet<String> bossRelics = new HashSet<>();
+    private TreeSet<String> bossRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
     private boolean alreadySetup = false;
 
@@ -127,12 +129,27 @@ public class BossSwapFilterScreen {
         RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.WATCHER);
 
         bossRelics.addAll(relics);
+        removeClassUpgradedRelics();
+    }
+
+    // Don't allow unswappable relics to enter the pool
+    private void removeClassUpgradedRelics() {
+        Consumer<String> remove = (relicName) -> {
+            if (bossRelics.contains(relicName))
+                bossRelics.remove(relicName);
+        };
+
+        remove.accept("Black Blood");
+        remove.accept("Ring of the Serpent");
+        remove.accept("FrozenCore");
+        remove.accept("HolyWater");
     }
 
     private void makeUIObjects() {
         // Note: relic textures are 128x128 originally, with some internal spacing
         float left = 400.0f;
-        float bottom = 319.0f - 60.0f;
+        //float bottom = 319.0f - 60.0f;
+        float top = 595.9f;
 
         float spacing = 84.0f;
 
@@ -142,7 +159,7 @@ public class BossSwapFilterScreen {
 
         for (String id : bossRelics) {
             float tx = left + ix * spacing;
-            float ty = bottom + iy * spacing;
+            float ty = top - iy * spacing;
 
             relicUIObjects.put(id, new RelicUIObject(this, id, tx, ty));
 
