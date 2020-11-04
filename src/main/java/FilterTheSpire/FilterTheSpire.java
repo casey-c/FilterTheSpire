@@ -26,11 +26,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     private static final String version = "0.1.3";
     public static void initialize() { new FilterTheSpire(); }
 
-    private int timesStartedOver = 0;
-    private int MAX_SEEDS = 300;
-
+    // Used by the patches to not double up VFX and SFX
     public static boolean SEARCHING_FOR_SEEDS;
-    private boolean ignoreInit = false;
 
     private static Texture BG;
 
@@ -48,134 +45,28 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     // --------------------------------------------------------------------------------
 
-    private void playNeowSound() {
-        int roll = MathUtils.random(3);
-        if (roll == 0) {
-            CardCrawlGame.sound.play("VO_NEOW_1A");
-        } else if (roll == 1) {
-            CardCrawlGame.sound.play("VO_NEOW_1B");
-        } else if (roll == 2) {
-            CardCrawlGame.sound.play("VO_NEOW_2A");
-        } else {
-            CardCrawlGame.sound.play("VO_NEOW_2B");
-        }
-    }
-
-    // --------------------------------------------------------------------------------
-
-//    private SeedSearcher searcher;
-//    private boolean secondTimeThrough = false;
-
     private boolean firstTimeThrough = true;
     private boolean searcherActive = false;
 
     @Override
     public void receivePostDungeonInitialize() {
         if (firstTimeThrough) {
-            System.out.println("First time through dungeon init ---------------------");
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 
             SeedSearcher.searchForSeed();
             searcherActive = true;
-
-            // This occurs on the main runner thread (not the main StS thread)
-            //    and so doesn't have access to the OpenGL stuff called in RestartHelper.restart()
-//            SeedSearcher.searchForSeed((Void) -> {
-//                System.out.println("Seeds finished callback");
-//
-//                // Set the results of the search as the new seed
-//                firstTimeThrough = false;
-//                SeedSearcher.makeSeedReal();
-//                RestartHelper.restart();
-//            });
         }
         else {
-            System.out.println("Second time through dungeon init ---------------------");
             SEARCHING_FOR_SEEDS = false;
             firstTimeThrough = true;
         }
-
-        //Function<SeedSearcher, String> x = SeedSearcher::getNumSeedsExamined;
-
-
-//        if (secondTimeThrough) {
-//            SEARCHING_FOR_SEEDS = false;
-//            return;
-//        }
-//
-//        SEARCHING_FOR_SEEDS = true;
-//        searcher = new SeedSearcher();
-//
-//        System.out.println("RECV dungeon init");
-//        searcher.searchForSeed();
-//        System.out.println("here");
     }
 
-//    @Override
-//    public void receiveRender(SpriteBatch sb) {
-//        if (SEARCHING_FOR_SEEDS) {
-//            // Probably the worst place to put this
-//            if (SeedSearcher.isFinished())
-//                SeedSearcher.makeSeedReal();
-//
-//            sb.setColor(ExtraColors.TRANSPARENT_GREEN);
-//            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-//        }
-//    }
-
-    /*
-        This is our main seed searching loop; it is called when first entering a dungeon and proceeds to use the
-        FilterManager and RestartHelper in tandem to check through random seeds. Once it finds one that passes the
-        validateFilters() test (i.e. passes all the filters set by the player) it will make that seed into the current
-        run.
-
-        This callback is called twice: once when clicking the menu option to start the run, and once after the
-        call to RestartHelper.makeReal() after we've found a suitable seed.
-    @Override
-    public void receivePostDungeonInitialize() {
-        // Second time through all we do is reset
-        if (ignoreInit) {
-            // Reset
-            ignoreInit = false;
-            timesStartedOver = 0;
-            SEARCHING_FOR_SEEDS = false;
-
-            return;
-        }
-
-
-        while (!FilterManager.validateFilters()) {
-            SEARCHING_FOR_SEEDS = true;
-            RestartHelper.randomSeed();
-            timesStartedOver++;
-
-            if (timesStartedOver > MAX_SEEDS) {
-                System.out.println("FILTER THE SPIRE WARNING: Exceeded max number of seeds to search (" + MAX_SEEDS + "). Results may not match filters.");
-                break;
-            }
-        }
-
-        System.out.println("Found a valid start in " + timesStartedOver + " attempts.");
-
-        // If we required at least one reset
-        if (timesStartedOver > 0) {
-            // This essentially puts us back at the start of this function with a "real" run
-            RestartHelper.makeReal();
-            ignoreInit = true;
-        }
-        else {
-            // Found the desired seed on the first try, so do the reset stuff we would usually do when entering the
-            //   second time
-            ignoreInit = false;
-            timesStartedOver = 0;
-            SEARCHING_FOR_SEEDS = false;
-        }
-    }
-     */
 
     // --------------------------------------------------------------------------------
 
+    // All these fields help with making a nice smooth fadeout
     private boolean currentlyFading = false;
     private float fadeTime;
     private static final float maxFadeTime = 2.0f;
@@ -227,6 +118,10 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             }
         }
 
+        // --------------------------------------------------------------------------------
+        // The actual draw calls occur now
+        // --------------------------------------------------------------------------------
+
         if (searcherActive || currentlyFading) {
             // BLACK
             sb.setColor(blackColor);
@@ -273,163 +168,5 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             );
 
         }
-
-
-//        if (SEARCHING_FOR_SEEDS) {
-//            // Probably the worst place to put this
-//            if (SeedSearcher.isFinished()) {
-//                SeedSearcher.makeSeedReal();
-//            }
-//
-//            totalSearched = SeedSearcher.getNumSeedsExamined();
-//        }
     }
-
-        /*
-//        if (searcher != null) {
-//            if (!searcher.isCompleted()) {
-//                totalSearched = "" + searcher.getNumChecked();
-//            }
-//            else {
-//                if (totalSearched.isEmpty())
-//                    totalSearched = "" + searcher.getNumChecked();
-
-                System.out.println("********* Completed after " + totalSearched + " seeds");
-                // Completed the search; time to start fade
-                currentlyFading = true;
-                fadeTime = maxFadeTime;
-
-                // Stop searching
-                searcher = null;
-            }
-        }
-        else if (currentlyFading) {
-            // Not currently searching
-            fadeTime -= Gdx.graphics.getDeltaTime();
-
-            // Finished state after this: (fade finished, searcher is null, and currentlyFading is false)
-            if (fadeTime < 0.0f) {
-                // Reset for next set
-                currentlyFading = false;
-                totalSearched = "";
-                setColorOpacities(1.0f);
-            }
-            else {
-                // Fade out the opacity of the colors
-                if (fadeTime < 1.0f) setColorOpacities(fadeTime);
-                else setColorOpacities(1.0f);
-            }
-
-        }
-
-        // Render
-        if (searcher != null || currentlyFading) {
-            // BLACK
-            sb.setColor(blackColor);
-            sb.draw(ImageMaster.WHITE_SQUARE_IMG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-
-            // IMAGE
-            sb.setColor(whiteColor);
-            sb.draw(BG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-
-            // Main Numbers
-            FontHelper.renderFontCentered(sb, ExtraFonts.largeNumberFont(), totalSearched, Settings.WIDTH / 2.0f, Settings.HEIGHT / 2.0f, pinkTextColor);
-
-            // Extra Info
-            FontHelper.renderFontCentered(sb,
-                    FontHelper.menuBannerFont,
-                    "Searching for the perfect seed...",
-                    (Settings.WIDTH * 0.5f),
-                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
-                    creamTextColor
-            );
-
-            FontHelper.renderFontCentered(sb,
-                    FontHelper.menuBannerFont,
-                    "Seeds Explored",
-                    (Settings.WIDTH * 0.5f),
-                    321 * Settings.scale,
-                    grayTextColor
-            );
-
-            FontHelper.renderFontRightTopAligned(sb,
-                    FontHelper.menuBannerFont,
-                    "Filter the Spire",
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    945 * Settings.scale,
-                    grayTextColor
-            );
-
-            FontHelper.renderFontRightTopAligned(sb,
-                    FontHelper.menuBannerFont,
-                    version,
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    890 * Settings.scale,
-                    grayTextColor
-            );
-        }
-    }
-
-
-
-
-    @Override
-    public void receiveRender(SpriteBatch sb) {
-        if (SEARCHING_FOR_SEEDS) {
-
-            if (BG != null) {
-                sb.setColor(Color.WHITE);
-                sb.draw(BG, 0, 0, Settings.WIDTH, Settings.HEIGHT);
-            }
-            else {
-                System.out.println("OJB WARNING: BG texture not initialized properly");
-            }
-
-            // TODO: localization
-
-            FontHelper.renderFontCentered(sb,
-                    FontHelper.menuBannerFont,
-                    "Searching for the perfect seed...",
-                    (Settings.WIDTH * 0.5f),
-                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
-                    Settings.CREAM_COLOR
-                    );
-
-            FontHelper.renderFontCentered(sb,
-                    //FontHelper.tipBodyFont,
-                    ExtraFonts.largeNumberFont(),
-                    "" + timesStartedOver,
-                    (Settings.WIDTH * 0.5f),
-                    (Settings.HEIGHT * 0.5f),
-                    ExtraColors.PINK_COLOR
-            );
-
-            FontHelper.renderFontCentered(sb,
-                    FontHelper.menuBannerFont,
-                    "Seeds Explored",
-                    (Settings.WIDTH * 0.5f),
-                    321 * Settings.scale,
-                    Color.GRAY
-            );
-
-            FontHelper.renderFontRightTopAligned(sb,
-                    FontHelper.menuBannerFont,
-                    "Filter the Spire",
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    945 * Settings.scale,
-                    Color.GRAY
-            );
-
-            FontHelper.renderFontRightTopAligned(sb,
-                    FontHelper.menuBannerFont,
-                    "v0.1.2",
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    890 * Settings.scale,
-                    Color.GRAY
-            );
-        }
-    }
-
-     */
-
 }

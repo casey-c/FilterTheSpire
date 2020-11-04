@@ -7,12 +7,17 @@ import com.megacrit.cardcrawl.random.Random;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
 
 public class SeedSearcher {
+    // TODO: make this depend on the user's OS
     private static final int numThreads = 2;
     private SeedSearcher() { }
 
+    // --------------------------------------------------------------------------------
+
+    // This runner thread is responsible for initiating and joining all the child threads - the children do the work
+    //    testing all the seeds. This thread is responsible for making them all quit once the target is found by any of
+    //    the children.
     protected static class MainSeedRunnable implements Runnable {
         private boolean running = true;
         private boolean finished = false;
@@ -35,62 +40,42 @@ public class SeedSearcher {
             executor.shutdown();
 
             System.out.println("All tasks completed.");
-//            finishUp();
             finished = true;
         }
 
-//        private void finishUp() {
-//            // Find the winning details
-//            for (SeedSearcherThread t : threads) {
-//                if (t.foundWinningSeed) {
-//                    System.out.println("Seed: " + t.seed);
-//                    System.out.println("Timestamp: " + t.seedSourceTimestamp);
-//                    finished = true;
-//                    onFinish.accept(null);
-//                    return;
-//                }
-//            }
-//
-//            System.out.println("ERROR: Could not find a winning seed!");
-//        }
 
         protected void notifyFinished() { running = false; }
         protected boolean isRunning() { return running; }
 
         protected String getNumSeedsExamined() {
-            int sum = threads.stream().mapToInt(t -> t.seedsExamined).sum();
+            long sum = threads.stream().mapToLong(t -> t.seedsExamined).sum();
             if (sum <= numThreads)
                 sum = 1;
             return "" + sum;
         }
     }
 
-//    private static ArrayList<SeedSearcherThread> threads = new ArrayList<>();
-//
-//    private static Runnable mainThread;
-//    private static boolean searching = true;
-
     private static MainSeedRunnable runner;
     private static Thread runnerThread;
 
+    // --------------------------------------------------------------------------------
+
+    // The main starting point of the searching algorithm - launches a new thread to handle further child threads
     public static void searchForSeed() {
         runner = new MainSeedRunnable();
         runnerThread = new Thread(runner);
         runnerThread.start();
     }
 
-    public static String getNumSeedsExamined() {
-        return (runner != null) ? runner.getNumSeedsExamined() : "ERROR";
-    }
+    // --------------------------------------------------------------------------------
 
-//    public static boolean isRunning() {
-//        return (runner != null) && runner.running;
-//    }
+    // Info getters (for main StS thread to hook into)
+    public static String getNumSeedsExamined() { return (runner != null) ? runner.getNumSeedsExamined() : "ERROR"; }
+    public static boolean isFinished() { return (runner != null) && runner.finished; }
 
-    public static boolean isFinished() {
-        return (runner != null) && runner.finished;
-    }
+    // --------------------------------------------------------------------------------
 
+    // Makes the found seed into a "real" one - by letting the game know it is the seed to use and forcing a restart
     public static void makeSeedReal() {
         if (runner == null)
             return;
@@ -112,99 +97,6 @@ public class SeedSearcher {
         }
 
         System.out.println("ERROR: no winning seed found - called before finished?");
-
     }
-//    private boolean isSearching;
-//
-//    @Override
-//    public void run() {
-//        isSearching = true;
-//
-//        // Make child threads
-//        threads.add(new SeedSearcherThread(this));
-//        threads.add(new SeedSearcherThread(this));
-//        threads.forEach(SeedSearcherThread::start);
-//
-//        // Join the threads
-//        try {
-//            for (SeedSearcherThread thread : threads)
-//                thread.join();
-//
-//            System.out.println("Joined all threads");
-//        }
-//        catch(InterruptedException e){
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public boolean isSearching() { return isSearching; }
-//
-//    public static void searchForSeed() {
-//        Thread thread = new Thread(new SeedSearcher());
-//        thread.start();
-//    }
-
 }
 
-/*
-public class SeedSearcher {
-    private ArrayList<SeedSearcherThread> threads = new ArrayList<>();
-    protected Random rng;
-    private boolean isCompleted = false;
-
-    public SeedSearcher() {
-        Long sTime = System.nanoTime();
-        rng = new Random(sTime);
-    }
-
-    public void searchForSeed() {
-        System.out.println("Seed searcher: making threads");
-        threads.add(new SeedSearcherThread(this, rng.randomLong()));
-        threads.add(new SeedSearcherThread(this, rng.randomLong()));
-
-        System.out.println("Seed searcher starting threads");
-        threads.forEach(SeedSearcherThread::start);
-        System.out.println("Seed searcher done making threads");
-    }
-
-    protected void notifyComplete() {
-        isCompleted = true;
-
-        System.out.println("SeedSearcher: attempting to join threads " + threads.size());
-        for (SeedSearcherThread t : threads) {
-            System.out.println("SeedSearcher: attempting to join in " + t);
-            try {
-                t.tid.join();
-                System.out.println("successful join " + t);
-            } catch (InterruptedException e) {
-                System.out.println("failed join " + t);
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("Threads all joined in finally");
-        //applyValidSeed();
-    }
-
-    public boolean isCompleted() { return isCompleted; }
-
-    public int getNumChecked() { return threads.stream().mapToInt(SeedSearcherThread::getNum).sum(); }
-
-    public void applyValidSeed() {
-        for (SeedSearcherThread t : threads) {
-            if (t.foundWinningSeed) {
-                System.out.println("Setting seed to " + t.seed);
-
-                Settings.seedSourceTimestamp = t.seedSourceTimestamp;
-                Settings.seed = t.seed;
-                SeedHelper.cachedSeed = null;
-
-                RestartHelper.makeReal();
-                return;
-            }
-        }
-    }
-
-}
-
- */
