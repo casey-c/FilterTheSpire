@@ -2,7 +2,6 @@ package FilterTheSpire;
 
 import FilterTheSpire.rng.MonsterRngHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.random.Random;
@@ -12,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.BiFunction;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 @SpireInitializer
 public class FilterManager {
@@ -23,7 +20,6 @@ public class FilterManager {
     private static FilterManager getInstance() { return FilterManagerHolder.INSTANCE; }
     public static void initialize() { getInstance(); }
 
-    //private static ArrayList<Function<Long, Boolean>> validators = new ArrayList<>();
     private static HashMap<String, Function<Long, Boolean>> validators = new HashMap<>();
 
     // Returns true iff all validation functions are true

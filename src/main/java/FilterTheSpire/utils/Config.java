@@ -15,67 +15,56 @@ public class Config {
     private SpireConfig spireConfig;
 
     public Config() {
-        defaults.put("bossSwapFilter", "{}");
+        defaults.put("bossSwapFilter", "[]");
 
         try {
             spireConfig = new SpireConfig("FilterTheSpire", "config", defaults);
             spireConfig.save();
-
-            String s = spireConfig.getString("bossSwapFilter");
-            System.out.println("Successfully loaded config: " + s);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setBossSwapFilter(ArrayList<String> enabledList) {
-        if (spireConfig != null) {
-            JsonArray arr = new JsonArray();
+    private void setStringList(String key, ArrayList<String> values) {
+        JsonArray arr = new JsonArray();
+        for (String s : values)
+            arr.add(s);
 
-            for (String s : enabledList)
-                arr.add(s);
+        spireConfig.setString(key, arr.toString());
 
-            spireConfig.setString("bossSwapFilter", arr.toString());
-            System.out.println("Set bossSwapFilter to " + arr.toString());
-            try {
-                spireConfig.save();
-                System.out.println("Successfully saved config");
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not save config");
-            }
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public ArrayList<String> getBossSwapFilter() {
-        if (spireConfig != null) {
-            if (spireConfig.has("bossSwapFilter")) {
-                String s = spireConfig.getString("bossSwapFilter");
-                System.out.println("Spire config bossSwapFilter is: '" + s + "'");
+    private ArrayList<String> getStringList(String key) {
+        ArrayList<String> res = new ArrayList<>();
 
-                JsonParser parser = new JsonParser();
-                JsonArray json = (JsonArray) parser.parse(s);
+        if (spireConfig != null && spireConfig.has(key)) {
+            String s = spireConfig.getString(key);
 
-                ArrayList<String> res = new ArrayList<>();
-                for (JsonElement relic : json) {
-                    res.add(relic.getAsString());
-                }
+            JsonParser parser = new JsonParser();
+            JsonArray json = (JsonArray) parser.parse(s);
 
-                System.out.println("Resulting array: " + res.toString());
-                return res;
-
-            }
-            else {
-                System.out.println("spire config does not have boss swap filter");
+            for (JsonElement e : json) {
+                if (e.isJsonPrimitive())
+                    res.add(e.getAsString());
             }
         }
-        else {
-            System.out.println("spire config is null");
-        }
 
-        return new ArrayList<>();
+        return res;
     }
 
+    // --------------------------------------------------------------------------------
+
+    public void setBossSwapFilter(ArrayList<String> enabledList) { setStringList("bossSwapFilter", enabledList); }
+    public ArrayList<String> getBossSwapFilter() { return getStringList("bossSwapFilter"); }
+
+    // --------------------------------------------------------------------------------
+
+    // (Main Menu -> Mods) menu setup
     public static void setupConfigMenu() {
         BaseMod.registerModBadge(new Texture("FilterTheSpire/images/fts_icon.png"),
                 "Filter the Spire",

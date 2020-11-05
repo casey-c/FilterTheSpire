@@ -44,18 +44,15 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
-        Config.setupConfigMenu();
         config = new Config();
-
-        ArrayList<String> list = config.getBossSwapFilter();
-        System.out.println("returned config list: " + list.toString());
+        Config.setupConfigMenu();
 
         // TODO: DEBUG / TEMPORARY - remove
 //        ArrayList<String> bosses = new ArrayList<>(Arrays.asList("Slime Boss"));
 //        FilterManager.setFirstBossesAre(bosses);
-        FilterManager.setFirstBossIs("Slime Boss");
-        FilterManager.setFirstEliteIs("Gremlin Nob");
-        FilterManager.setBossSwapIs("Pandora's Box");
+//        FilterManager.setFirstBossIs("Slime Boss");
+//        FilterManager.setFirstEliteIs("Gremlin Nob");
+//        FilterManager.setBossSwapIs("Pandora's Box");
     }
 
     // --------------------------------------------------------------------------------

@@ -7,6 +7,7 @@ import com.megacrit.cardcrawl.random.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// TODO: this will help with filters that use monsterRng (e.g. first boss is / first elite is / etc.)
 public class MonsterRngHelper {
     public ArrayList<String> monsterList = new ArrayList<>();
     public ArrayList<String> eliteMonsterList = new ArrayList<>();

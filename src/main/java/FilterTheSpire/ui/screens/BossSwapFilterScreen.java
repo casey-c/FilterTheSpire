@@ -118,7 +118,6 @@ public class BossSwapFilterScreen {
             hb.update();
 
             if (hb.justHovered) {
-                //CardCrawlGame.sound.playA("UI_HOVER", -0.4f);
                 CardCrawlGame.sound.playAV("UI_HOVER", -0.4f, 0.5f);
             }
 
@@ -148,7 +147,11 @@ public class BossSwapFilterScreen {
 
     private TreeSet<String> bossRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
-    private boolean alreadySetup = false;
+    //private boolean alreadySetup = false;
+
+    public BossSwapFilterScreen() {
+        setup();
+    }
 
     private void populateRelics() {
         ArrayList<String> relics = new ArrayList<>();
@@ -178,7 +181,6 @@ public class BossSwapFilterScreen {
     private void makeUIObjects() {
         // Note: relic textures are 128x128 originally, with some internal spacing
         float left = 410.0f;
-        //float bottom = 319.0f - 60.0f;
         float top = 587.0f;
 
         float spacing = 84.0f;
@@ -201,32 +203,19 @@ public class BossSwapFilterScreen {
         }
     }
     private void loadFromConfig() {
-        System.out.println("Loading from config");
-
-        System.out.println("Relics currently tracked: ");
-        for (String relic : relicUIObjects.keySet()) {
-            System.out.println("\t" + relic);
-        }
-        System.out.println("---");
-
         ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
         for (String relic : loaded) {
-            System.out.println("Trying " + relic);
-            if (relicUIObjects.containsKey(relic)) {
-                System.out.println("relic objects does have " + relic + ", enabling now");
+            if (relicUIObjects.containsKey(relic))
                 relicUIObjects.get(relic).isEnabled = true;
-            }
-            else {
-                System.out.println("relic objects doesnae have " + relic);
-            }
         }
+
+        refreshFilters();
     }
 
     private void setup() {
         populateRelics();
         makeUIObjects();
         loadFromConfig();
-        alreadySetup = true;
     }
 
     public void renderForeground(SpriteBatch sb) {
@@ -261,17 +250,6 @@ public class BossSwapFilterScreen {
                 371.0f * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
-
-//        float leftTextX = 426.0f;
-//        float topTextY = 863.0f + 18.0f - 60.0f;
-//
-//        FontHelper.renderFontLeftDownAligned(sb, FontHelper.topPanelAmountFont, "Boss Swap Filter", leftTextX * Settings.scale, topTextY * Settings.scale, Settings.CREAM_COLOR);
-//        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Click to toggle enabled relics", leftTextX * Settings.scale, (topTextY - 50.0f) * Settings.scale, Color.GRAY);
-//        FontHelper.renderFontLeftDownAligned(sb, FontHelper.tipBodyFont, "Shift+Click to force just one relic", leftTextX * Settings.scale, (topTextY - 87.0f) * Settings.scale, Color.GRAY);
-//
-//        float rightTextLeft = 1040.0f;
-//        float rightTextTop = 724.0f - 60.0f;
-//        FontHelper.renderSmartText(sb, FontHelper.tipBodyFont, "This filter will let you choose which relics will be available from Neow's Boss Swap option. NL NL When starting a new run, only seeds that can swap into any of the selected relics will be available. If no relics are selected, the game will choose from the entire set. NL NL NOTE: This data is NOT currently saved between launches of the game, so you'll have to reset it manually each time you boot up Slay the Spire. I haven't had time to implement the config saving / loading functionality yet. Sorry!", rightTextLeft * Settings.scale, rightTextTop * Settings.scale, 444.0f * Settings.scale, 30.0f * Settings.scale, Color.GRAY);
     }
 
     public void enableHitboxes(boolean enabled) {
@@ -284,9 +262,6 @@ public class BossSwapFilterScreen {
     }
 
     public void render(SpriteBatch sb) {
-        if (!alreadySetup)
-            setup();
-
         renderForeground(sb);
     }
 

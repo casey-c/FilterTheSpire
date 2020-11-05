@@ -1,5 +1,6 @@
-package FilterTheSpire;
+package FilterTheSpire.utils;
 
+import FilterTheSpire.FilterTheSpire;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
