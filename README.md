@@ -20,18 +20,22 @@ Head down to the [Installation](#installation) section below to learn how to get
 
 ## How to Use
 
-Install the mod and prerequesites as described below. Launch Slay the Spire (use the "Play with Mods" option on Steam to get the ModTheSpire loader on launch). Make sure to check the box next to "Filter the Spire" to enable it. 
+1. Install the mod and prerequesites as described below. Launch Slay the Spire (use the "Play with Mods" option on Steam to get the ModTheSpire loader on launch). Make sure to check the box next to "Filter the Spire" to enable it. 
 
-To set up your desired filters, go to Main Menu -> Mods -> Filter the Spire, and click the small "Config" button. This should bring up a menu to choose which relics you wish to find if you boss swap at Neow. This is the only filter currently working, but more should be coming within the next few weeks.
+2. To set up your desired filters, go to Main Menu -> Mods -> Filter the Spire, and click the small "Config" button. This should bring up a menu to choose which relics you wish to find if you boss swap at Neow. This is the only filter currently working, but more should be coming within the next few weeks.
 
-**NOTE: currently the settings aren't saved between launches of the game, so you'll have to put them in each time - sorry!**
-
-After setting up your desired options, you can return to the Main Menu and start a new game. You may see a brief popup screen showing how many seeds the program examined while looking for your parameters and may encounter a small wait as it searches through randomly generated seeds. After it finds one, you will be presented with an entirely vanilla game of StS that you can play as normal! If you click the boss swap option, you'll be guaranteed a boss relic that fits the filters you set up originally.
+3. After setting up your desired options, you can return to the Main Menu and start a new game. You may see a brief popup screen showing how many seeds the program examined while looking for your parameters and may encounter a small wait as it searches through randomly generated seeds. After it finds one, you will be presented with an entirely vanilla game of StS that you can play as normal! If you click the boss swap option, you'll be guaranteed a boss relic that fits the filters you set up originally.
 
 
 ## Installation
 
 This mod requires ModTheSpire and BaseMod, which can both be found on the Steam Workshop. To install this mod, head over to the [Releases page](https://github.com/casey-c/FilterTheSpire/releases), download the latest .jar file, and drag it into the SlayTheSpire/mods folder in your game's install directory. Eventually I'll get around to uploading it to the Steam workshop but for now you will need to check back manually for updates - sorry! (The mod upload utility is broken for my particular Linux distribution so it's been easier to just push it here to Github)
+
+## "Automatic"-Updates
+
+As of Alpha 0.1.3, I've now included a way for this mod to be updated through the Mod the Spire launcher screen that first shows up when you launch the game. There is a refresh button you can click that will try and determine if there is a more recent version available to download. If it finds one, you'll see a small little warning triangle next to Filter the Spire, which you can click and be prompted to download the update.
+
+It's something you can click each time you boot up the game and then don't have to open a browser. You won't get any patch notes with this method however :(
 
 ## FAQ
 
@@ -39,13 +43,9 @@ This mod requires ModTheSpire and BaseMod, which can both be found on the Steam 
 
 This is a valid question! Currently, the mod is designed to have an entirely vanilla experience - any seeds you find will be unaltered from the vanilla game and can be sent to friends to play as is (without needing this mod installed at all!). Mods that forceably swap your starter relic need to do so carefully to ensure that the swapped relic doesn't occur again as a future boss relic reward - and need to take some subtle care to avoid affecting any of the run's hidden RNG mechanics. In the future, this mod will hopefully support both possible interactions for impatient players that want to skip the wait, but for now the seeds it searches for are entirely base game friendly.
 
-* Why didn't I get any of the relics I selected?
+* Why hasn't it found a valid seed yet? - It's a huge number of explored seeds!
 
-Double check to make sure the selected relics are unlocked on the profile you're using. One popular swap is Pandora's Box, which isn't unlocked at the beginning of the game (it's Silent's fourth unlock) - if you only choose relics you don't have access to, the seed finding algorithm won't be able to find you a seed you can play. In the future, I'd like it to be a bit more transparent about whether or not the parameters will be be valid. There's also an upper limit of 300 seeds it searches as a safety mechanism so you don't get infinitely stuck waiting. With the current filters and vanilla boss relic pool, reaching this limit is statistically impossible so there is likely to be another issue at play. **EDIT: I've been informed I've accidentally allowed the upgraded starter relics into the pool - these actually can't be swapped into, so if you just select these you will hit the limit and get a normal run**
-
-* Why aren't my settings saved between launches of Slay the Spire?
-
-Working on it! I haven't implemented this yet but it's very high priority.
+Double check to make sure the selected relics are unlocked on the profile you're using. One popular swap is Pandora's Box, which isn't unlocked at the beginning of the game (it's Silent's fourth unlock) - if you only choose relics you don't have access to, the seed finding algorithm won't be able to find you a seed you can play. In the future, I'd like it to be a bit more transparent about whether or not the parameters will be be valid. In preparation for having many more complicated filters, I've removed the upper safety limit on the number of seeds to check. It will probably just keeping going until the heat death of the universe or your pc - whichever comes first - if your parameters are incompatible or impossible (e.g. trying to get an Ironclad-only relic on a Silent run).
 
 ## Issues / Bugs / Feedback
 
