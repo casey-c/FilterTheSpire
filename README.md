@@ -1,4 +1,5 @@
 # Filter the Spire
+![](https://img.shields.io/github/v/release/casey-c/FilterTheSpire?color=242634&logo=github&style=flat-square)
 
 Customize your Slay The Spire seeds! Upon starting a run, this mod will repeatedly refresh at the Neow screen until you generate a seed with your desired parameters. The parameters of your run can be adjusted in the Main Menu -> Mods -> Filter the Spire -> Config menu. Currently there's only one filter implemented so far: customizable boss swaps!
 
