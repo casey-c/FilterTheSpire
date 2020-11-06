@@ -29,13 +29,11 @@ Head down to the [Installation](#installation) section below to learn how to get
 
 ## Installation
 
-This mod requires ModTheSpire and BaseMod, which can both be found on the Steam Workshop. To install this mod, head over to the [Releases page](https://github.com/casey-c/FilterTheSpire/releases), download the latest .jar file, and drag it into the SlayTheSpire/mods folder in your game's install directory. Eventually I'll get around to uploading it to the Steam workshop but for now you will need to check back manually for updates - sorry! (The mod upload utility is broken for my particular Linux distribution so it's been easier to just push it here to Github)
+We're now on the Steam Workshop! https://steamcommunity.com/sharedfiles/filedetails/?id=2279130265
 
-## "Automatic"-Updates
+You need both ModTheSpire and BaseMod for this mod to work. If you want, you can avoid the workshop and get the releases directly from this Github over at the [Releases page](https://github.com/casey-c/FilterTheSpire/releases). To do that, you'll need to download the latest .jar file and drag it into the SlayTheSpire/mods folder in your game's install directory.
 
-As of Alpha 0.1.3, I've now included a way for this mod to be updated through the Mod the Spire launcher screen that first shows up when you launch the game. There is a refresh button you can click that will try and determine if there is a more recent version available to download. If it finds one, you'll see a small little warning triangle next to Filter the Spire, which you can click and be prompted to download the update.
-
-It's something you can click each time you boot up the game and then don't have to open a browser. You won't get any patch notes with this method however :(
+If you use the manual installation option (non-workshop), you can actually use a feature (FilterTheSpire 0.1.3 and later) built into Mod the Spire's startup screen to automatically update this mod. You can click the "refresh" button which will try and find the latest Github release. If it finds one, you'll see a small warning label next to "Filter the Spire" on the mod list which you can click to download and update. It should work entirely inside Mod the Spire without issues - but you'll have to come back here for patch notes if you want any.
 
 ## FAQ
 
@@ -53,7 +51,7 @@ Please drop me a line here on the [issues page](https://github.com/casey-c/Filte
 
 ## Other Mods
 
-Feel free to check out some of my other (Github exclusive) mods!
+Feel free to check out some of my other (currently Github exclusive) mods!
 
 * [InfoMod](https://github.com/casey-c/spiretool-infomod) - display A20 monster AI patterns, potion chances, and other hidden aspects of the game in a user friendly set of overlays
 * [BetterPaths](https://github.com/casey-c/sts_betterpaths) - highlight your map and plan your route in an all new style of path planning. Easily track which nodes you wish to travel to in the future, and which ones to avoid.
