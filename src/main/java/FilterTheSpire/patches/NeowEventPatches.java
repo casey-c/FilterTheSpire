@@ -20,7 +20,6 @@ public class NeowEventPatches {
             System.out.println("bossCount is: " + x);
 
             if (x == 0) ReflectionHacks.setPrivate(__instance, NeowEvent.class, "bossCount", 1);
-
         }
     }
 
@@ -33,6 +32,5 @@ public class NeowEventPatches {
         public static SpireReturn Prefix(NeowEvent __instance) {
             return (FilterTheSpire.SEARCHING_FOR_SEEDS) ? SpireReturn.Return(null) : SpireReturn.Continue();
         }
-
     }
 }
