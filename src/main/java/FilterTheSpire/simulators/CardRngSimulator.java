@@ -12,10 +12,13 @@ public class CardRngSimulator {
     }
 
     // Warning: This code might not be thread-safe.
-    public String firstColorlessRareCardIs() {
+    public String nthColorlessRareCard(int n) {
         AbstractDungeon.cardRng = new Random(seed);
         Random cardRng = AbstractDungeon.cardRng.copy();
         AbstractCard card = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
+        for(int i = 0; i < n; ++i) {
+            card = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
+        }
         AbstractDungeon.cardRng = cardRng;
 
         return card.cardID;

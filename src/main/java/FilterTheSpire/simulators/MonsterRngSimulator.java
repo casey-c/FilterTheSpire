@@ -37,16 +37,16 @@ public class MonsterRngSimulator {
         System.out.println("Bosses: " + bossList.toString());
     }
 
-    public boolean isFirstBoss(String bossName) {
-        return bossList.size() > 0 && bossList.get(0).equals(bossName);
+    public String firstBoss() {
+        return bossList.get(0);
     }
 
-    public boolean isFirstElite(String eliteName) {
-        return eliteMonsterList.size() > 0 && eliteMonsterList.get(0).equals(eliteName);
+    public String nthElite(int n) {
+        return eliteMonsterList.get(n);
     }
 
-    public String nthCombatIs(int i) {
-        return monsterList.get(i);
+    public String nthCombat(int n) {
+        return monsterList.get(n);
     }
 
     protected void initializeBoss() {

@@ -18,8 +18,12 @@ public class RelicRngSimulator {
         setSeed(seed);
     }
 
-    public void setSeed(long seed) {
-        seed = seed;
+    public String nthBossSwap(int n) {
+        return bossRelicPool.get(n);
+    }
+
+    private void setSeed(long seed) {
+        this.seed = seed;
         relicRng = new Random(seed);
         bossRelicPool = new ArrayList<>();
 
@@ -40,12 +44,5 @@ public class RelicRngSimulator {
                 AbstractDungeon.player.chosenClass
         );
         Collections.shuffle(this.bossRelicPool, new java.util.Random(relicRng.randomLong()));
-    }
-
-    public static boolean isBossSwap(long seed, String targetRelic) {
-        RelicRngSimulator relicRngSimulator = new RelicRngSimulator(seed);
-        ArrayList<String> bossRelicPool = relicRngSimulator.bossRelicPool;
-
-        return !bossRelicPool.isEmpty() && bossRelicPool.get(0).equals(targetRelic);
     }
 }

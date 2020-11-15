@@ -1,12 +1,10 @@
 package FilterTheSpire;
 
 import FilterTheSpire.filters.*;
-import FilterTheSpire.simulators.RelicRngSimulator;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @SpireInitializer
 public class FilterManager {
@@ -40,29 +38,27 @@ public class FilterManager {
     // --------------------------------------------------------------------------------
 
     public static void setFirstCombatIs(String enemyName) {
-        ArrayList<String> combatOrder = new ArrayList<>();
-        combatOrder.add(enemyName);
-        CombatOrderFilter filter = new CombatOrderFilter(combatOrder);
+        NthCombatFilter filter = new NthCombatFilter(enemyName);
         setValidatorFromString("firstCombatIs", filter);
     }
 
-    public static void setFirstCombatsAre(ArrayList<String> enemyNames) {
-        ArrayList<String> combatOrder = enemyNames;
-        CombatOrderFilter filter = new CombatOrderFilter(combatOrder);
-        setValidatorFromString("firstCombatsAre", filter);
-    }
+//    public static void setFirstCombatsAre(ArrayList<String> enemyNames) {
+//        ArrayList<String> combatOrder = enemyNames;
+//        NthCombatFilter filter = new NthCombatFilter(combatOrder);
+//        setValidatorFromString("firstCombatsAre", filter);
+//    }
 
     // --------------------------------------------------------------------------------
 
     public static void setBossSwapIs(String relic) {
-        FirstBossRelicFilter filter = new FirstBossRelicFilter(relic);
+        NthBossRelicFilter filter = new NthBossRelicFilter(relic);
         setValidatorFromString("bossSwapIs", filter);
     }
 
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
         ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
         for (String relicID : relicIDs) {
-            FirstBossRelicFilter filter = new FirstBossRelicFilter(relicID);
+            NthBossRelicFilter filter = new NthBossRelicFilter(relicID);
             filtersToCheck.add(filter);
         }
         setORValidator("firstBossIsOneOf", filtersToCheck);
@@ -71,14 +67,14 @@ public class FilterManager {
     // --------------------------------------------------------------------------------
 
     public static void setFirstBossIs(String bossName) {
-        FirstBossFilter filter = new FirstBossFilter(bossName);
+        BossFilter filter = new BossFilter(bossName);
         filters.put("firstBoss", filter);
     }
 
     public static void setFirstBossIsOneOf(ArrayList<String> bossNames) {
         ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
         for (String bossName : bossNames) {
-            FirstBossFilter filter = new FirstBossFilter(bossName);
+            BossFilter filter = new BossFilter(bossName);
             filtersToCheck.add(filter);
         }
         setORValidator("firstBossIsOneOf", filtersToCheck);
@@ -87,14 +83,14 @@ public class FilterManager {
     // --------------------------------------------------------------------------------
 
     public static void setFirstEliteIs(String eliteName) {
-        FirstEliteFilter filter = new FirstEliteFilter(eliteName);
+        NthEliteFilter filter = new NthEliteFilter(eliteName);
         filters.put("firstElite", filter);
     }
 
     public static void setFirstEliteIsOneOf(ArrayList<String> eliteNames) {
         ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
         for (String eliteName : eliteNames) {
-            FirstEliteFilter filter = new FirstEliteFilter(eliteName);
+            NthEliteFilter filter = new NthEliteFilter(eliteName);
             filtersToCheck.add(filter);
         }
         setORValidator("firstEliteIsOneOf", filtersToCheck);
