@@ -1,4 +1,4 @@
-package FilterTheSpire.rng;
+package FilterTheSpire.simulators;
 
 import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
@@ -7,8 +7,8 @@ import com.megacrit.cardcrawl.random.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// TODO: this will help with filters that use monsterRng (e.g. first boss is / first elite is / etc.)
-public class MonsterRngHelper {
+// Give the MonsterRngSimulator a seed, and it will output the monsters for the given act.
+public class MonsterRngSimulator {
     public ArrayList<String> monsterList = new ArrayList<>();
     public ArrayList<String> eliteMonsterList = new ArrayList<>();
     public ArrayList<String> bossList = new ArrayList<>();
@@ -16,7 +16,7 @@ public class MonsterRngHelper {
     private Random monsterRng;
     private long seed;
 
-    public MonsterRngHelper(long seed) {
+    public MonsterRngSimulator(long seed) {
         setSeed(seed);
     }
 
@@ -30,8 +30,52 @@ public class MonsterRngHelper {
         initializeBoss();
     }
 
-    // --------------------------------------------------------------------------------
+    public void print() {
+        System.out.println("The seed is: " + SeedHelper.getString(seed));
+        System.out.println("Monster List: " + monsterList.toString());
+        System.out.println("Elite List: " + eliteMonsterList.toString());
+        System.out.println("Bosses: " + bossList.toString());
+    }
 
+    public String firstBoss() {
+        return bossList.get(0);
+    }
+
+    public String nthElite(int n) {
+        return eliteMonsterList.get(n);
+    }
+
+    public String nthCombat(int n) {
+        return monsterList.get(n);
+    }
+
+    protected void initializeBoss() {
+        bossList.add("The Guardian");
+        bossList.add("Hexaghost");
+        bossList.add("Slime Boss");
+        Collections.shuffle(bossList, new java.util.Random(monsterRng.randomLong()));
+    }
+
+    protected void populateMonsterList(ArrayList<MonsterInfo> monsters, int numMonsters) {
+        for (int i = 0; i < numMonsters; ++i) {
+            if (monsterList.isEmpty()) {
+                monsterList.add(MonsterInfo.roll(monsters, monsterRng.random()));
+                continue;
+            }
+            String randomMonster = MonsterInfo.roll(monsters, monsterRng.random());
+            if (!randomMonster.equals(monsterList.get(monsterList.size() - 1))) {
+                if (monsterList.size() > 1 && randomMonster.equals(monsterList.get(monsterList.size() - 2))) {
+                    --i;
+                    continue;
+                }
+                monsterList.add(randomMonster);
+                continue;
+            }
+            --i;
+        }
+    }
+
+    // Weak enemies are the first enemies in the act.
     private void generateWeakEnemiesAct1() {
         ArrayList<MonsterInfo> monsters = new ArrayList<MonsterInfo>();
         monsters.add(new MonsterInfo("Cultist", 2.0f));
@@ -43,6 +87,7 @@ public class MonsterRngHelper {
         populateMonsterList(monsters, 3);
     }
 
+    // Strong enemies are the next monsters in the act.
     private void generateStrongEnemiesAct1() {
         ArrayList<MonsterInfo> monsters = new ArrayList<MonsterInfo>();
         monsters.add(new MonsterInfo("Blue Slaver", 2.0f));
@@ -70,16 +115,6 @@ public class MonsterRngHelper {
 
         populateEliteMonsterList(monsters, 10);
     }
-
-    protected void initializeBoss() {
-        bossList.add("The Guardian");
-        bossList.add("Hexaghost");
-        bossList.add("Slime Boss");
-        Collections.shuffle(bossList, new java.util.Random(monsterRng.randomLong()));
-
-    }
-
-    // --------------------------------------------------------------------------------
 
     private ArrayList<String> generateExclusions() {
         ArrayList<String> retVal = new ArrayList<String>();
@@ -111,61 +146,26 @@ public class MonsterRngHelper {
     }
 
     private void populateFirstStrongEnemy(ArrayList<MonsterInfo> monsters, ArrayList<String> exclusions) {
-        String m;
-        while (exclusions.contains(m = MonsterInfo.roll(monsters, monsterRng.random()))) {
+        String m = MonsterInfo.roll(monsters, monsterRng.random());
+        while (exclusions.contains(m)) {
+            m = MonsterInfo.roll(monsters, monsterRng.random());
         }
         monsterList.add(m);
     }
 
-    private void populateEliteMonsterList(ArrayList<MonsterInfo> monsters, int numMonsters) {
+    private void populateEliteMonsterList(ArrayList<MonsterInfo> eliteMonsters, int numMonsters) {
         for (int i = 0; i < numMonsters; ++i) {
             if (eliteMonsterList.isEmpty()) {
-                eliteMonsterList.add(MonsterInfo.roll(monsters, monsterRng.random()));
+                String monsterInfo = MonsterInfo.roll(eliteMonsters, monsterRng.random());
+                eliteMonsterList.add(monsterInfo);
                 continue;
             }
-            String toAdd = MonsterInfo.roll(monsters, monsterRng.random());
-            if (!toAdd.equals(eliteMonsterList.get(eliteMonsterList.size() - 1))) {
-                eliteMonsterList.add(toAdd);
-                continue;
-            }
-            --i;
-        }
-    }
-
-    protected void populateMonsterList(ArrayList<MonsterInfo> monsters, int numMonsters) {
-        for (int i = 0; i < numMonsters; ++i) {
-            if (monsterList.isEmpty()) {
-                monsterList.add(MonsterInfo.roll(monsters, monsterRng.random()));
-                continue;
-            }
-            String toAdd = MonsterInfo.roll(monsters, monsterRng.random());
-            if (!toAdd.equals(monsterList.get(monsterList.size() - 1))) {
-                if (monsterList.size() > 1 && toAdd.equals(monsterList.get(monsterList.size() - 2))) {
-                    --i;
-                    continue;
-                }
-                monsterList.add(toAdd);
+            String eliteMonster = MonsterInfo.roll(eliteMonsters, monsterRng.random());
+            if (!eliteMonster.equals(eliteMonsterList.get(eliteMonsterList.size() - 1))) {
+                eliteMonsterList.add(eliteMonster);
                 continue;
             }
             --i;
         }
     }
-
-    // --------------------------------------------------------------------------------
-
-    public void print() {
-        System.out.println("The seed is: " + SeedHelper.getString(seed));
-        System.out.println("Monster List: " + monsterList.toString());
-        System.out.println("Elite List: " + eliteMonsterList.toString());
-        System.out.println("Bosses: " + bossList.toString());
-    }
-
-    public boolean firstBossIs(String bossName) {
-        return bossList.size() > 0 && bossList.get(0).equals(bossName);
-    }
-
-    public boolean firstEliteIs(String eliteName) {
-        return eliteMonsterList.size() > 0 && eliteMonsterList.get(0).equals(eliteName);
-    }
-
 }

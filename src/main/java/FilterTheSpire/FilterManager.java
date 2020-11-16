@@ -1,17 +1,10 @@
 package FilterTheSpire;
 
-import FilterTheSpire.rng.MonsterRngHelper;
+import FilterTheSpire.filters.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.helpers.RelicLibrary;
-import com.megacrit.cardcrawl.random.Random;
-import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 @SpireInitializer
 public class FilterManager {
@@ -20,98 +13,92 @@ public class FilterManager {
     private static FilterManager getInstance() { return FilterManagerHolder.INSTANCE; }
     public static void initialize() { getInstance(); }
 
-    private static HashMap<String, Function<Long, Boolean>> validators = new HashMap<>();
+    private static HashMap<String, AbstractFilter> filters = new HashMap<>();
 
-    // Returns true iff all validation functions are true
+    // Returns true if all filters pass for the given seed
     public static boolean validateFilters(long seed) {
-        return validators.values().stream().allMatch(v -> v.apply(seed));
+        return filters.values().stream().allMatch(v -> v.isSeedValid(seed));
     }
 
     public static boolean hasFilters() {
-        return validators.size() > 0;
+        return filters.size() > 0;
     }
 
     // --------------------------------------------------------------------------------
 
-    // What it does:
-    //   Assume we have a list of Strings [s1, s2, s3] and a seed
-    //
-    //   We want a way to use our specific functions (passed in as validatorFn) on each string and return true if any of
-    //   them work with the given seed. This is done by creating a "group" of functions that apply the valid seed tests
-    //   to a single string - the group will have a function call to test s1 against the seed, s2 against the seed, etc.
-    //
-    //   We use this group to produce one final validator function (i.e. one that takes in a seed and reports if it is
-    //   valid or not) - that essentially is the combo of all these individual members of the group - "anyMatch" here
-    //   is if any element in our given list of strings fits the filter. Hence, the OR.
-    //
-    //  I'm writing this as 4 A.M. with the full knowledge that I will have no clue what this witchcraft I came up
-    //  with will do at any point in the future. Look at this syntax and cry, future me!
-    public static void setORValidatorFromList(String validatorName, BiFunction<Long, String, Boolean> validatorFn, ArrayList<String> list) {
-        ArrayList<Function<Long, Boolean>> group = new ArrayList<>();
-        for (String s : list)
-            group.add((seed) -> validatorFn.apply(seed, s));
-
-        validators.put(validatorName, (seed) -> group.stream().anyMatch(v -> v.apply(seed)));
+    public static void setORValidator(String validatorName, ArrayList<AbstractFilter> filtersToMatch) {
+        OrFilter filter = new OrFilter(filtersToMatch);
+        filters.put(validatorName, filter);
     }
 
-    public static void setValidatorFromString(String validatorName, BiFunction<Long, String, Boolean> validatorFn, String target) {
-        validators.put(validatorName, (seed) -> validatorFn.apply(seed, target));
+    public static void setValidatorFromString(String validatorName, AbstractFilter filter) {
+        filters.put(validatorName, filter);
     }
 
     // --------------------------------------------------------------------------------
 
-    public static void setBossSwapIs(String relic) { setValidatorFromString("bossSwap", FilterManager::bossSwapIs, relic); }
-    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) { setORValidatorFromList("bossSwap", FilterManager::bossSwapIs, relicIDs); }
+    public static void setFirstCombatIs(String enemyName) {
+        NthCombatFilter filter = new NthCombatFilter(enemyName);
+        setValidatorFromString("firstCombatIs", filter);
+    }
 
-    private static boolean bossSwapIs(long seed, String targetRelic) {
-        Random relicRng = new Random(seed);
+//    public static void setFirstCombatsAre(ArrayList<String> enemyNames) {
+//        ArrayList<String> combatOrder = enemyNames;
+//        NthCombatFilter filter = new NthCombatFilter(combatOrder);
+//        setValidatorFromString("firstCombatsAre", filter);
+//    }
 
-        // Skip past all these
-        relicRng.randomLong(); // common
-        relicRng.randomLong(); // uncommon
-        relicRng.randomLong(); // rare
-        relicRng.randomLong(); // shop
-        //relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
+    // --------------------------------------------------------------------------------
 
-        ArrayList<String> bossRelicPool = new ArrayList<>();
-        RelicLibrary.populateRelicPool(bossRelicPool, AbstractRelic.RelicTier.BOSS, AbstractDungeon.player.chosenClass);
-        Collections.shuffle(bossRelicPool, new java.util.Random(relicRng.randomLong()));
+    public static void setBossSwapIs(String relic) {
+        NthBossRelicFilter filter = new NthBossRelicFilter(relic);
+        setValidatorFromString("bossSwapIs", filter);
+    }
 
-        return !bossRelicPool.isEmpty() && bossRelicPool.get(0).equals(targetRelic);
+    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
+        ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
+        for (String relicID : relicIDs) {
+            NthBossRelicFilter filter = new NthBossRelicFilter(relicID);
+            filtersToCheck.add(filter);
+        }
+        setORValidator("firstBossIsOneOf", filtersToCheck);
     }
 
     // --------------------------------------------------------------------------------
 
-    public static void setEarlyRelicsAre(ArrayList<String> relicIDs) {
-        setORValidatorFromList("earlyRelic", FilterManager::earlyRelicIs, relicIDs);
+    public static void setFirstBossIs(String bossName) {
+        BossFilter filter = new BossFilter(bossName);
+        filters.put("firstBoss", filter);
     }
 
-    private static boolean earlyRelicIs(long seed, String targetRelic) {
-        // TODO
-        return false;
-    }
-
-    // --------------------------------------------------------------------------------
-
-    public static void setFirstBossIs(String boss) { setValidatorFromString("firstBoss", FilterManager::firstBossIs, boss); }
-    public static void setFirstBossesAre(ArrayList<String> bossNames) { setORValidatorFromList("firstBoss", FilterManager::firstBossIs, bossNames); }
-
-    public static boolean firstBossIs(long seed, String bossName) {
-        return new MonsterRngHelper(seed).firstBossIs(bossName);
+    public static void setFirstBossIsOneOf(ArrayList<String> bossNames) {
+        ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
+        for (String bossName : bossNames) {
+            BossFilter filter = new BossFilter(bossName);
+            filtersToCheck.add(filter);
+        }
+        setORValidator("firstBossIsOneOf", filtersToCheck);
     }
 
     // --------------------------------------------------------------------------------
 
-    public static void setFirstEliteIs(String elite) { setValidatorFromString("firstElite", FilterManager::firstEliteIs, elite); }
-    public static void setFirstElitesAre(ArrayList<String> elites) { setORValidatorFromList("firstElite", FilterManager::firstEliteIs, elites); }
+    public static void setFirstEliteIs(String eliteName) {
+        NthEliteFilter filter = new NthEliteFilter(eliteName);
+        filters.put("firstElite", filter);
+    }
 
-    public static boolean firstEliteIs(long seed, String elite) {
-        return new MonsterRngHelper(seed).firstEliteIs(elite);
+    public static void setFirstEliteIsOneOf(ArrayList<String> eliteNames) {
+        ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
+        for (String eliteName : eliteNames) {
+            NthEliteFilter filter = new NthEliteFilter(eliteName);
+            filtersToCheck.add(filter);
+        }
+        setORValidator("firstEliteIsOneOf", filtersToCheck);
     }
 
     // --------------------------------------------------------------------------------
 
     public static void print() {
-        System.out.println("FilterManager has " + validators.size() + " filters");
+        System.out.println("FilterManager has " + filters.size() + " filters");
     }
 }

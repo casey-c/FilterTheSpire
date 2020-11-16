@@ -1,5 +1,7 @@
 package FilterTheSpire;
 
+import FilterTheSpire.filters.NthColorlessRareCardFilter;
+import FilterTheSpire.filters.ThirdBlessingFilter;
 import FilterTheSpire.multithreading.SeedSearcher;
 import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
@@ -13,16 +15,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.function.Function;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
@@ -47,11 +43,13 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         config = new Config();
         Config.setupConfigMenu();
 
-        // TODO: DEBUG / TEMPORARY - remove
-//        ArrayList<String> bosses = new ArrayList<>(Arrays.asList("Slime Boss"));
-//        FilterManager.setFirstBossesAre(bosses);
-//        FilterManager.setFirstBossIs("Slime Boss");
-//        FilterManager.setFirstEliteIs("Gremlin Nob");
+        FilterManager.setFirstBossIs("Slime Boss");
+        FilterManager.setFirstEliteIs("3 Sentries");
+        FilterManager.setFirstCombatIs("2 Louse");
+        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter());
+        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
+
+
 //        FilterManager.setBossSwapIs("Pandora's Box");
     }
 
