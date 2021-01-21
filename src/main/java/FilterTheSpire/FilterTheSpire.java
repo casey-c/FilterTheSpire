@@ -22,7 +22,7 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
-    private static final String version = "0.1.3";
+    private static final String version = "0.1.4";
     public static void initialize() { new FilterTheSpire(); }
 
     // Used by the patches to not double up VFX and SFX
@@ -43,11 +43,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         config = new Config();
         Config.setupConfigMenu();
 
-        FilterManager.setFirstBossIs("Slime Boss");
-        FilterManager.setFirstEliteIs("3 Sentries");
-        FilterManager.setFirstCombatIs("2 Louse");
-        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter());
-        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
+//        FilterManager.setFirstBossIs("Slime Boss");
+//        FilterManager.setFirstEliteIs("3 Sentries");
+//        FilterManager.setFirstCombatIs("2 Louse");
+//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter());
+//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
 
 
 //        FilterManager.setBossSwapIs("Pandora's Box");
@@ -64,7 +64,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             // Nothing to do (no need for refreshing)
 
             // TODO: debug remove
-            SeedTesting.bossTest();
+//            SeedTesting.bossTest();
 
             return;
         }

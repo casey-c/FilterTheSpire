@@ -24,9 +24,19 @@ public class FilterManager {
         return filters.size() > 0;
     }
 
+    public static int numFilters() {
+        return filters.size();
+    }
+
     // --------------------------------------------------------------------------------
 
     public static void setORValidator(String validatorName, ArrayList<AbstractFilter> filtersToMatch) {
+        if (filtersToMatch.isEmpty()) {
+            // Need to 'forget' the existing validator if it exists - and then there's no need to put an empty OR
+            filters.remove(validatorName);
+            return;
+        }
+
         OrFilter filter = new OrFilter(filtersToMatch);
         filters.put(validatorName, filter);
     }
@@ -61,6 +71,7 @@ public class FilterManager {
             NthBossRelicFilter filter = new NthBossRelicFilter(relicID);
             filtersToCheck.add(filter);
         }
+
         setORValidator("firstBossIsOneOf", filtersToCheck);
     }
 

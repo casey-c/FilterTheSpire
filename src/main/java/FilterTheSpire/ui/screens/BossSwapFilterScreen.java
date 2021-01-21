@@ -321,9 +321,6 @@ public class BossSwapFilterScreen {
                 list.add(obj.relicID);
         }
 
-        if (list.isEmpty())
-            list.addAll(relicUIObjects.keySet());
-
         return list;
     }
 
