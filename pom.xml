@@ -54,7 +54,7 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
-                                <copy file="target/FilterTheSpire.jar" tofile="C:/Program Files (x86)/Steam/steamapps/common/SlayTheSpire/mods/FilterTheSpire.jar"/>
+                                <copy file="target/FilterTheSpire.jar" tofile="/home/casey/.steam/steam/steamapps/common/SlayTheSpire/mods/FilterTheSpire.jar"/>
                             </target>
                         </configuration>
                         <goals>
