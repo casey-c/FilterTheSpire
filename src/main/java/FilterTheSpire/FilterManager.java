@@ -109,6 +109,23 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
+    public static void setFirstShopRelicIs(String relic) {
+        NthShopRelicFilter filter = new NthShopRelicFilter(relic);
+        setValidatorFromString("shopRelicIs", filter);
+    }
+
+    public static void setShopFiltersFromValidList(ArrayList<String> relicIDs) {
+        ArrayList<AbstractFilter> filtersToCheck = new ArrayList<>();
+        for (String relicID : relicIDs) {
+            NthShopRelicFilter filter = new NthShopRelicFilter(relicID);
+            filtersToCheck.add(filter);
+        }
+
+        setORValidator("shopRelicIsOneOf", filtersToCheck);
+    }
+
+    // --------------------------------------------------------------------------------
+
     public static void print() {
         System.out.println("FilterManager has " + filters.size() + " filters");
     }

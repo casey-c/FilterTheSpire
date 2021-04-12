@@ -16,6 +16,7 @@ public class Config {
 
     public Config() {
         defaults.put("bossSwapFilter", "[]");
+        defaults.put("shopRelicFilter", "[]");
 
         try {
             spireConfig = new SpireConfig("FilterTheSpire", "config", defaults);
@@ -61,6 +62,11 @@ public class Config {
 
     public void setBossSwapFilter(ArrayList<String> enabledList) { setStringList("bossSwapFilter", enabledList); }
     public ArrayList<String> getBossSwapFilter() { return getStringList("bossSwapFilter"); }
+
+    // --------------------------------------------------------------------------------
+
+    public void setShopRelicFilter(ArrayList<String> enabledList) { setStringList("shopRelicFilter", enabledList); }
+    public ArrayList<String> getShopRelicFilter() { return getStringList("shopRelicFilter"); }
 
     // --------------------------------------------------------------------------------
 
