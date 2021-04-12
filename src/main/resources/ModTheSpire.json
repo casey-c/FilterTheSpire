@@ -1,7 +1,7 @@
 {
   "modid": "ojb_FilterTheSpire",
   "name": "Filter the Spire",
-  "author_list": ["ojb", "DoctorSheananigan"],
+  "author_list": ["ojb", "DoctorSheananigan", "beeyee"],
   "description": "You can go to the Main Menu -> Mods -> Filter the Spire -> Config menu to configure this mod. Currently we have only completed one filter setting but future updates plan on adding more beyond just customizable Boss Swaps. \n\nNotes: \n* This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run.\n* This mod includes a patch to guarantee Neow rewards during custom runs (allowing you to do things like Diverse/Pandoras starts). Unfortunately, this patch unintentionally breaks daily runs, given the amount of crossover in the base game code between those two modes. For this release, you'll have to disable FilterTheSpire to run dailies - Sorry!\n* Future releases will hopefully handle this better and will give config options to enable/disable these patches (it's been requested, but we haven't quite gotten to improving the config menu UI to support these options yet).\n* Should you desire the old version (which didn't break dailies, but has a few other bugs instead), you can head to our github page for the project and download a release before v0.1.5.",
   "version": "0.1.5",
   "sts_version": "12-22-2020",
