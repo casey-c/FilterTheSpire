@@ -39,11 +39,11 @@ public class SeedSearcherThread extends Thread {
             // split second
 
             // TODO: put this behind a config option. (I'm leaving it now because I can and you can't stop me)
-            try {
-                sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                sleep(20);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

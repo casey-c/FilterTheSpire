@@ -20,6 +20,8 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 
+import java.util.logging.Filter;
+
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
     private static final String version = "0.1.5";
@@ -50,7 +52,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
 
 
-//        FilterManager.setBossSwapIs("Pandora's Box");
+        FilterManager.setBossSwapIs("Pandora's Box");
+        FilterManager.testPandoras();
     }
 
     // --------------------------------------------------------------------------------

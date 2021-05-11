@@ -107,6 +107,10 @@ public class FilterManager {
         setORValidator("firstEliteIsOneOf", filtersToCheck);
     }
 
+    public static void testPandoras() {
+        filters.put("pandorasTmp", new PandorasCardFilter());
+    }
+
     // --------------------------------------------------------------------------------
 
     public static void print() {
