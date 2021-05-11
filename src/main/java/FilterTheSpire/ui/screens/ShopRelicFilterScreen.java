@@ -14,42 +14,28 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.function.Consumer;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
-public class BossSwapFilterScreen implements IRelicFilterScreen {
-    private TreeSet<String> bossRelics = new TreeSet<>();
+public class ShopRelicFilterScreen implements IRelicFilterScreen {
+
+    private TreeSet<String> shopRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
-    public BossSwapFilterScreen() {
+    public ShopRelicFilterScreen() {
         setup();
     }
 
     private void populateRelics() {
         ArrayList<String> relics = new ArrayList<>();
 
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.IRONCLAD);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.THE_SILENT);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.DEFECT);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.WATCHER);
+        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.SHOP, AbstractPlayer.PlayerClass.IRONCLAD);
+        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.SHOP, AbstractPlayer.PlayerClass.THE_SILENT);
+        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.SHOP, AbstractPlayer.PlayerClass.DEFECT);
+        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.SHOP, AbstractPlayer.PlayerClass.WATCHER);
 
-        bossRelics.addAll(relics);
-        removeClassUpgradedRelics();
-    }
-
-    // Don't allow unswappable relics to enter the pool
-    private void removeClassUpgradedRelics() {
-        Consumer<String> remove = (relicName) -> {
-            if (bossRelics.contains(relicName))
-                bossRelics.remove(relicName);
-        };
-
-        remove.accept("Black Blood");
-        remove.accept("Ring of the Serpent");
-        remove.accept("FrozenCore");
-        remove.accept("HolyWater");
+        shopRelics.addAll(relics);
     }
 
     private void makeUIObjects() {
@@ -63,7 +49,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         int iy = 0;
         final int perRow = 5;
 
-        for (String id : bossRelics) {
+        for (String id : shopRelics) {
             float tx = left + ix * spacing;
             float ty = top - iy * spacing;
 
@@ -77,7 +63,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         }
     }
     private void loadFromConfig() {
-        ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
+        ArrayList<String> loaded = FilterTheSpire.config.getShopRelicFilter();
         for (String relic : loaded) {
             if (relicUIObjects.containsKey(relic))
                 relicUIObjects.get(relic).isEnabled = true;
@@ -101,7 +87,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "First Shop Relic", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
         float infoLeft = 1120.0f;
         float infoTopMain = 667.0f;
@@ -109,7 +95,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
-                "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
+                "This filter allows you to choose which Shop Relics will appear in the first Shop. If no relics are selected, it will choose from the entire pool.",
                 infoLeft * Settings.scale,
                 infoTopMain * Settings.scale,
                 371.0f * Settings.scale,
@@ -200,7 +186,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
 
     public void refreshFilters() {
         ArrayList<String> enabledRelics = getEnabledRelics();
-        FilterTheSpire.config.setBossSwapFilter(enabledRelics);
-        FilterManager.setBossSwapFiltersFromValidList(enabledRelics);
+        FilterTheSpire.config.setShopRelicFilter(enabledRelics);
+        FilterManager.setShopFiltersFromValidList(enabledRelics);
     }
 }
