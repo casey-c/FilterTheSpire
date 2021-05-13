@@ -2,21 +2,28 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.RelicRngSimulator;
 
-public class NthBossRelicFilter extends AbstractFilter{
-    private String bossRelicName;
-    private int encounterIndex;
+import java.util.List;
 
-    public NthBossRelicFilter(String bossRelicName) {
-        this.bossRelicName = bossRelicName;
+public class NthBossRelicFilter extends AbstractFilter{
+    private List<String> bossRelicNames;
+    private int encounterIndex;
+    private RelicRngSimulator relicRngSimulator;
+
+    public NthBossRelicFilter(List<String> bossRelicNames) {
+        this.bossRelicNames = bossRelicNames;
         this.encounterIndex = 0; // Get the first elite encounter if no index is specified.
+        this.relicRngSimulator = new RelicRngSimulator();
     }
 
-    public NthBossRelicFilter(String bossRelicName, int encounterIndex) {
-        this.bossRelicName = bossRelicName;
+    public NthBossRelicFilter(List<String> bossRelicNames, int encounterIndex) {
+        this.bossRelicNames = bossRelicNames;
         this.encounterIndex = encounterIndex;
+        this.relicRngSimulator = new RelicRngSimulator();
     }
 
     public boolean isSeedValid(long seed) {
-        return new RelicRngSimulator(seed).nthBossSwap(encounterIndex).equals(bossRelicName);
+        relicRngSimulator.setSeed(seed);
+        String seedBossRelic = relicRngSimulator.nthBossSwap(encounterIndex);
+        return bossRelicNames.contains(seedBossRelic);
     }
 }

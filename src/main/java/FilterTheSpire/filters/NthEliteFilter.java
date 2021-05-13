@@ -2,21 +2,24 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.MonsterRngSimulator;
 
+import java.util.List;
+
 public class NthEliteFilter extends AbstractFilter {
-    private String eliteName;
+    private List<String> eliteNames;
     private int encounterIndex;
 
-    public NthEliteFilter(String eliteName) {
-        this.eliteName = eliteName;
+    public NthEliteFilter(List<String> eliteNames) {
+        this.eliteNames = eliteNames;
         this.encounterIndex = 0; // Get the first elite if no index is specified.
     }
 
-    public NthEliteFilter(String eliteName, int encounterIndex) {
-        this.eliteName = eliteName;
+    public NthEliteFilter(List<String> eliteNames, int encounterIndex) {
+        this.eliteNames = eliteNames;
         this.encounterIndex = encounterIndex;
     }
 
     public boolean isSeedValid(long seed) {
-        return new MonsterRngSimulator(seed).nthElite(encounterIndex).equals(eliteName);
+        String eliteId = new MonsterRngSimulator(seed).nthElite(encounterIndex);
+        return eliteNames.contains(eliteId);
     }
 }
