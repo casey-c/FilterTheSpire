@@ -18,7 +18,7 @@ public class RelicRngSimulator {
         put(AbstractRelic.RelicTier.BOSS, 4);
     }};
 
-    public static String getRelic(long seed, AbstractRelic.RelicTier relicTier, int encounterIndex) {
+    public static ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier) {
         Random relicRng = new Random(seed);
         ArrayList<String> relicPool = new ArrayList<>();
 
@@ -38,7 +38,6 @@ public class RelicRngSimulator {
             AbstractDungeon.player.chosenClass
         );
         Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
-
-        return relicPool.get(encounterIndex);
+        return relicPool;
     }
 }

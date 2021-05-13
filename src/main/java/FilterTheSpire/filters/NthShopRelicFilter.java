@@ -3,6 +3,8 @@ package FilterTheSpire.filters;
 import FilterTheSpire.simulators.RelicRngSimulator;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NthShopRelicFilter extends AbstractFilter {
@@ -15,7 +17,8 @@ public class NthShopRelicFilter extends AbstractFilter {
     }
 
     public boolean isSeedValid(long seed) {
-        String shopRelicId = RelicRngSimulator.getRelic(seed, AbstractRelic.RelicTier.SHOP, encounterIndex);
-        return shopRelicNames.contains(shopRelicId);
+        ArrayList<String> shopRelicPool = RelicRngSimulator.getRelicPool(seed, AbstractRelic.RelicTier.SHOP);
+        Collections.reverse(shopRelicPool); // Shop relics are done in reverse order
+        return shopRelicNames.contains(shopRelicPool.get(this.encounterIndex));
     }
 }
