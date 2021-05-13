@@ -10,7 +10,7 @@ public class NthBossRelicFilter extends AbstractFilter{
 
     public NthBossRelicFilter(List<String> bossRelicNames) {
         this.bossRelicNames = bossRelicNames;
-        this.encounterIndex = 0; // Get the first elite encounter if no index is specified.
+        this.encounterIndex = 0; // Get the first Boss Relic if no index is specified.
     }
 
     public NthBossRelicFilter(List<String> bossRelicNames, int encounterIndex) {
