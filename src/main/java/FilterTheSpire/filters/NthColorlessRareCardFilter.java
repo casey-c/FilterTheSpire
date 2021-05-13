@@ -2,21 +2,24 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardRngSimulator;
 
+import java.util.List;
+
 public class NthColorlessRareCardFilter extends AbstractFilter{
-    private String cardName;
+    private List<String> cardNames;
     private int encounterNumber;
 
-    public NthColorlessRareCardFilter(String cardName) {
-        this.cardName = cardName;
+    public NthColorlessRareCardFilter(List<String> cardNames) {
+        this.cardNames = cardNames;
         this.encounterNumber = 1; // Get the first card if no index is specified.
     }
 
-    public NthColorlessRareCardFilter(String cardName, int encounterNumber) {
-        this.cardName = cardName;
+    public NthColorlessRareCardFilter(List<String> cardNames, int encounterNumber) {
+        this.cardNames = cardNames;
         this.encounterNumber = encounterNumber;
     }
 
     public boolean isSeedValid(long seed) {
-        return new CardRngSimulator(seed).nthColorlessRareCard(encounterNumber).equals(cardName);
+        String cardId = new CardRngSimulator(seed).nthColorlessRareCard(encounterNumber);
+        return cardNames.contains(cardId);
     }
 }

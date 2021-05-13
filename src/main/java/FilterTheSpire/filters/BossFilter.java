@@ -2,14 +2,18 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.MonsterRngSimulator;
 
-public class BossFilter extends AbstractFilter {
-    private String bossName;
+import java.util.List;
 
-    public BossFilter(String bossName) {
-        this.bossName = bossName;
+public class BossFilter extends AbstractFilter {
+    private List<String> bossNames;
+    private int actNumber;
+
+    public BossFilter(List<String> bossNames) {
+        this.bossNames = bossNames;
     }
 
     public boolean isSeedValid(long seed) {
-        return new MonsterRngSimulator(seed).firstBoss().equals(bossName);
+        String boss = new MonsterRngSimulator(seed).firstBoss();
+        return bossNames.contains(boss);
     }
 }
