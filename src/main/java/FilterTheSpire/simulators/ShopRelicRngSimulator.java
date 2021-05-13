@@ -13,11 +13,15 @@ public class ShopRelicRngSimulator {
 
     private Random relicRng;
 
+    public ShopRelicRngSimulator(long seed){
+        setSeed(seed);
+    }
+
     public String nthShopRelic(int n) {
         return shopRelicPool.get(n);
     }
 
-    public void rerollRelics(long seed) {
+    private void setSeed(long seed) {
         relicRng = new Random(seed);
         this.shopRelicPool = new ArrayList<>();
 

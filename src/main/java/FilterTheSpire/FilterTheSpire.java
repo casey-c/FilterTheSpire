@@ -52,8 +52,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
 
 
-        FilterManager.setBossSwapIs("Pandora's Box");
-        FilterManager.testPandoras();
+//        FilterManager.setBossSwapIs("Pandora's Box");
+//        FilterManager.testPandoras();
     }
 
     // --------------------------------------------------------------------------------

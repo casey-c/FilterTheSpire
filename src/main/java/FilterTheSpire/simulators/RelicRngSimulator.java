@@ -14,11 +14,15 @@ public class RelicRngSimulator {
     private Random relicRng;
     private long seed;
 
+    public RelicRngSimulator(long seed){
+        setSeed(seed);
+    }
+
     public String nthBossSwap(int n) {
         return bossRelicPool.get(n);
     }
 
-    public void setSeed(long seed) {
+    private void setSeed(long seed) {
         this.seed = seed;
         relicRng = new Random(seed);
         bossRelicPool = new ArrayList<>();
