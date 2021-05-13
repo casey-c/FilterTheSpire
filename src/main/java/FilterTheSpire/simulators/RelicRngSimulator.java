@@ -7,42 +7,38 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class RelicRngSimulator {
-    public ArrayList<String> bossRelicPool = new ArrayList<>();
+    private static final HashMap<AbstractRelic.RelicTier, Integer> BossRelicRngMapping = new HashMap<AbstractRelic.RelicTier, Integer>(){{
+        put(AbstractRelic.RelicTier.UNCOMMON, 0);
+        put(AbstractRelic.RelicTier.RARE, 1);
+        put(AbstractRelic.RelicTier.COMMON, 2);
+        put(AbstractRelic.RelicTier.SHOP, 3);
+        put(AbstractRelic.RelicTier.BOSS, 4);
+    }};
 
-    private Random relicRng;
-    private long seed;
+    public static String getRelic(long seed, AbstractRelic.RelicTier relicTier, int encounterIndex) {
+        Random relicRng = new Random(seed);
+        ArrayList<String> relicPool = new ArrayList<>();
 
-    public RelicRngSimulator(long seed){
-        setSeed(seed);
-    }
+        // Skip past what we don't want
+        // uncommon
+        // rare
+        // common
+        // shop
+        // boss
+        for (int i = 0; i < BossRelicRngMapping.get(relicTier); i++) {
+            relicRng.randomLong();
+        }
 
-    public String nthBossSwap(int n) {
-        return bossRelicPool.get(n);
-    }
-
-    private void setSeed(long seed) {
-        this.seed = seed;
-        relicRng = new Random(seed);
-        bossRelicPool = new ArrayList<>();
-
-        // Skip past all these
-        relicRng.randomLong(); // uncommon
-        relicRng.randomLong(); // rare
-        relicRng.randomLong(); // common
-        relicRng.randomLong(); // shop
-        // this.relicRng.randomLong(); // boss <- this is the one needed (we perform it below)
-
-        generateBossRelics();
-    }
-
-    private void generateBossRelics() {
         RelicLibrary.populateRelicPool(
-                this.bossRelicPool,
-                AbstractRelic.RelicTier.BOSS,
-                AbstractDungeon.player.chosenClass
+            relicPool,
+            relicTier,
+            AbstractDungeon.player.chosenClass
         );
-        Collections.shuffle(this.bossRelicPool, new java.util.Random(relicRng.randomLong()));
+        Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
+
+        return relicPool.get(encounterIndex);
     }
 }

@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.RelicRngSimulator;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class NthBossRelicFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        String seedBossRelic = new RelicRngSimulator(seed).nthBossSwap(encounterIndex);
+        String seedBossRelic = RelicRngSimulator.getRelic(seed, AbstractRelic.RelicTier.BOSS, encounterIndex);
         return bossRelicNames.contains(seedBossRelic);
     }
 }

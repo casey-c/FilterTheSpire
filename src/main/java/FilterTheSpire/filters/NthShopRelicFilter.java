@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
-import FilterTheSpire.simulators.ShopRelicRngSimulator;
+import FilterTheSpire.simulators.RelicRngSimulator;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class NthShopRelicFilter extends AbstractFilter {
     }
 
     public boolean isSeedValid(long seed) {
-        String shopRelicId = new ShopRelicRngSimulator(seed).nthShopRelic(encounterIndex);
+        String shopRelicId = RelicRngSimulator.getRelic(seed, AbstractRelic.RelicTier.SHOP, encounterIndex);
         return shopRelicNames.contains(shopRelicId);
     }
 }
