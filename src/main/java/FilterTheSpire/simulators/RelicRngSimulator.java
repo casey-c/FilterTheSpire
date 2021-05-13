@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class RelicRngSimulator {
-    private static final HashMap<AbstractRelic.RelicTier, Integer> BossRelicRngMapping = new HashMap<AbstractRelic.RelicTier, Integer>(){{
+    private static final HashMap<AbstractRelic.RelicTier, Integer> RelicRngMapping = new HashMap<AbstractRelic.RelicTier, Integer>(){{
         put(AbstractRelic.RelicTier.UNCOMMON, 0);
         put(AbstractRelic.RelicTier.RARE, 1);
         put(AbstractRelic.RelicTier.COMMON, 2);
@@ -28,7 +28,7 @@ public class RelicRngSimulator {
         // common
         // shop
         // boss
-        for (int i = 0; i < BossRelicRngMapping.get(relicTier); i++) {
+        for (int i = 0; i < RelicRngMapping.get(relicTier); i++) {
             relicRng.randomLong();
         }
 
