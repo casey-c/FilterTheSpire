@@ -10,25 +10,17 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class RelicRngSimulator {
-    private static final HashMap<AbstractRelic.RelicTier, Integer> RelicRngMapping = new HashMap<AbstractRelic.RelicTier, Integer>(){{
-        put(AbstractRelic.RelicTier.UNCOMMON, 0);
-        put(AbstractRelic.RelicTier.RARE, 1);
-        put(AbstractRelic.RelicTier.COMMON, 2);
-        put(AbstractRelic.RelicTier.SHOP, 3);
-        put(AbstractRelic.RelicTier.BOSS, 4);
-    }};
+    public static final int UncommonRelicRng = 0;
+    public static final int RareRelicRng = 1;
+    public static final int CommonRelicRng = 2;
+    public static final int ShopRelicRng = 3;
+    public static final int BossRelicRng = 4;
 
-    public static ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier) {
+    public static ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
         Random relicRng = new Random(seed);
         ArrayList<String> relicPool = new ArrayList<>();
 
-        // Skip past what we don't want
-        // uncommon
-        // rare
-        // common
-        // shop
-        // boss
-        for (int i = 0; i < RelicRngMapping.get(relicTier); i++) {
+        for (int i = 0; i < rngGeneratorLoops; i++) {
             relicRng.randomLong();
         }
 
