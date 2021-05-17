@@ -7,7 +7,6 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class RelicRngSimulator {
     public static final int UncommonRelicRng = 0;
