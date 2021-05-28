@@ -1,13 +1,17 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.BlessingSimulator;
+import com.megacrit.cardcrawl.neow.NeowReward;
 
 // Ideally, the blessing filter would be more generic, not just for the third blessing.
 public class ThirdBlessingFilter extends AbstractFilter{
-    public ThirdBlessingFilter() { }
+    private NeowReward.NeowRewardType rewardType;
+
+    public ThirdBlessingFilter(NeowReward.NeowRewardType rewardType) {
+        this.rewardType = rewardType;
+    }
 
     public boolean isSeedValid(long seed) {
-        // For now, only check if the third blessing is a colorless card.
-        return new BlessingSimulator(seed).isThirdBlessingColorlessCard();
+        return BlessingSimulator.isThirdBlessingValid(seed, this.rewardType);
     }
 }

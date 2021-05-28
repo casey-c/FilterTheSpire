@@ -21,7 +21,7 @@ public class NthBossRelicFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        ArrayList<String> seedBossRelics = RelicRngSimulator.getRelicPool(seed, AbstractRelic.RelicTier.BOSS, RelicRngSimulator.BossRelicRng);
+        ArrayList<String> seedBossRelics = RelicRngSimulator.getInstance().getRelicPool(seed, AbstractRelic.RelicTier.BOSS, RelicRngSimulator.BossRelicRng);
         return bossRelicNames.contains(seedBossRelics.get(this.encounterIndex));
     }
 }

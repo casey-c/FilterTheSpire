@@ -95,9 +95,16 @@ public class FilterManager {
         setValidatorFromString("shopRelicIs", filter);
     }
 
-    public static void setShopFiltersFromValidList(ArrayList<String> relicIDs) {
-        NthShopRelicFilter filter = new NthShopRelicFilter(relicIDs);
+    public static void setShopFiltersFromValidList(ArrayList<String> relicIds) {
+        NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
         filters.put("shopRelicIsOneOf", filter);
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public static void setNthRelicFromValidList(ArrayList<String> relicIds) {
+        NthRelicFilter filter = new NthRelicFilter(relicIds);
+        filters.put("nthRelicIsOneOf", filter);
     }
 
     // --------------------------------------------------------------------------------

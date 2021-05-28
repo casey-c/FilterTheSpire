@@ -7,28 +7,84 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class RelicRngSimulator {
+    private static RelicRngSimulator singleton = null;
+
+    public static RelicRngSimulator getInstance(){
+        if (singleton == null){
+            singleton = new RelicRngSimulator();
+        }
+        return singleton;
+    }
+
     public static final int UncommonRelicRng = 0;
     public static final int RareRelicRng = 1;
     public static final int CommonRelicRng = 2;
     public static final int ShopRelicRng = 3;
     public static final int BossRelicRng = 4;
 
-    public static ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
+    public ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
         Random relicRng = new Random(seed);
-        ArrayList<String> relicPool = new ArrayList<>();
+        return getRelicPool(relicRng, relicTier, rngGeneratorLoops);
+    }
 
+    private ArrayList<String> getRelicPool(Random relicRng, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops){
+        ArrayList<String> relicPool = new ArrayList<>();
         for (int i = 0; i < rngGeneratorLoops; i++) {
             relicRng.randomLong();
         }
 
         RelicLibrary.populateRelicPool(
-            relicPool,
-            relicTier,
-            AbstractDungeon.player.chosenClass
+                relicPool,
+                relicTier,
+                AbstractDungeon.player.chosenClass
         );
         Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
         return relicPool;
+    }
+
+    /**
+     * Tries to find the Nth relic drop by simulating the rarities and generates the relic pool for that rarity
+     * @param searchRelics: Relic Ids to search for
+     * @param seed: Seed to search
+     * @param encounterIndex: Which relic we want to find
+     * @return if Nth relic is in the search relic Ids
+     */
+    public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
+        Random relicRng = new Random(seed);
+        ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
+        for (int i = 0; i < encounterIndex; i++){
+            relicRngRarities.add(returnRandomRelicTier(relicRng));
+        }
+        AbstractRelic.RelicTier encounterRelicTier = returnRandomRelicTier(relicRng);
+        int rarityOccurrences = Collections.frequency(relicRngRarities, encounterRelicTier);
+        int relicPoolRngLoops;
+        switch (encounterRelicTier){
+            case RARE:
+                relicPoolRngLoops = RareRelicRng;
+                break;
+            case UNCOMMON:
+                relicPoolRngLoops = UncommonRelicRng;
+                break;
+            case COMMON:
+                relicPoolRngLoops = CommonRelicRng;
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        ArrayList<String> relicList = getRelicPool(relicRng, encounterRelicTier, relicPoolRngLoops);
+        return searchRelics.contains(relicList.get(rarityOccurrences));
+    }
+
+    private AbstractRelic.RelicTier returnRandomRelicTier(Random relicRng) {
+        int roll = relicRng.random(0, 99);
+
+        if (roll < 50) {
+            return AbstractRelic.RelicTier.COMMON;
+        } else {
+            return roll > 82 ? AbstractRelic.RelicTier.RARE : AbstractRelic.RelicTier.UNCOMMON;
+        }
     }
 }
