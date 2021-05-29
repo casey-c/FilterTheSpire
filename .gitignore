@@ -6,3 +6,4 @@ target/
 /gradlew.bat
 /.gradle/
 /build/
+/sendToDevs/
