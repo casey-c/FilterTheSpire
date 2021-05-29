@@ -1,4 +1,8 @@
 target/
 .idea/
-pom.xml
 *.iml
+/gradle/
+/gradlew
+/gradlew.bat
+/.gradle/
+/build/
