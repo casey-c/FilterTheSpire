@@ -17,7 +17,7 @@ public class NthShopRelicFilter extends AbstractFilter {
     }
 
     public boolean isSeedValid(long seed) {
-        ArrayList<String> shopRelicPool = RelicRngSimulator.getRelicPool(seed, AbstractRelic.RelicTier.SHOP, RelicRngSimulator.ShopRelicRng);
+        ArrayList<String> shopRelicPool = RelicRngSimulator.getInstance().getRelicPool(seed, AbstractRelic.RelicTier.SHOP, RelicRngSimulator.ShopRelicRng);
         Collections.reverse(shopRelicPool); // Shop relics are done in reverse order
         return shopRelicNames.contains(shopRelicPool.get(this.encounterIndex));
     }

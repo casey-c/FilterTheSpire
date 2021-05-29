@@ -19,7 +19,10 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.neow.NeowReward;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Filter;
 
 @SpireInitializer
@@ -48,12 +51,19 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setFirstBossIs("Slime Boss");
 //        FilterManager.setFirstEliteIs("3 Sentries");
 //        FilterManager.setFirstCombatIs("2 Louse");
-//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter());
-//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter("The Bomb", 0));
+//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter(NeowReward.NeowRewardType.TWENTY_PERCENT_HP_BONUS));
+//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("The Bomb"), 0));
 
 
 //        FilterManager.setBossSwapIs("Pandora's Box");
 //        FilterManager.testPandoras();
+
+        // for testing, try different rarities
+//        ArrayList<String> relicsToSearch = new ArrayList<>();
+//        relicsToSearch.add("Dead Branch");
+//        relicsToSearch.add("Toy Ornithopter");
+//        relicsToSearch.add("Shuriken");
+//        FilterManager.setNthRelicFromValidList(relicsToSearch);
     }
 
     // --------------------------------------------------------------------------------
@@ -72,7 +82,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        if (firstTimeThrough && Settings.isStandardRun()) {
+        if (firstTimeThrough) {
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 
