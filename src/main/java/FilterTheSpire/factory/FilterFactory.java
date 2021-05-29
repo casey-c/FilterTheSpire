@@ -1,7 +1,7 @@
 package FilterTheSpire.factory;
 
 import FilterTheSpire.filters.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 public class FilterFactory {
     public static AbstractFilter getAbstractFilterFromFilterObject(FilterObject filterObject) {
@@ -20,9 +20,9 @@ public class FilterFactory {
                 return new NthShopRelicFilter(filterObject.anyOf);
             case PandorasCard:
                 // Since this is hardcoded to look for 6 blade dances, lets not even risk creating this yet
-                throw new NotImplementedException();
+                throw new NotImplementedException("PandorasCard");
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException("Unknown filter type");
         }
     }
 
