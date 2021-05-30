@@ -37,8 +37,8 @@ public class MonsterRngSimulator {
         Random monsterRng = new Random(seed);
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
-        generateStrongEnemiesAct1(monsterList, monsterRng, monsterListHelper);
-        generateElitesAct1(new ArrayList<>(), monsterRng, monsterListHelper);
+        generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
+        generateElites(new ArrayList<>(), monsterRng, monsterListHelper);
         List<String> bossList = initializeBoss(monsterRng, monsterListHelper);
 
         return bossList.get(0);
@@ -50,8 +50,8 @@ public class MonsterRngSimulator {
         Random monsterRng = new Random(seed);
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
-        generateStrongEnemiesAct1(monsterList, monsterRng, monsterListHelper);
-        generateElitesAct1(eliteMonsterList, monsterRng, monsterListHelper);
+        generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
+        generateElites(eliteMonsterList, monsterRng, monsterListHelper);
 
         return eliteMonsterList.get(encounterIndex);
     }
@@ -61,7 +61,7 @@ public class MonsterRngSimulator {
         Random monsterRng = new Random(seed);
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
-        generateStrongEnemiesAct1(monsterList, monsterRng, monsterListHelper);
+        generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
 
         return monsterList.get(encounterIndex);
     }
@@ -93,17 +93,17 @@ public class MonsterRngSimulator {
 
     // Weak enemies are the first enemies in the act.
     private void generateWeakEnemies(ArrayList<String> monsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
-        populateMonsterList(monsterList, monsterListHelper.getWeakMonsterPool(), 3, monsterRng);
+        populateMonsterList(monsterList, monsterListHelper.getWeakMonsterPool(), monsterListHelper.getWeakMonsterCombats(), monsterRng);
     }
 
     // Strong enemies are the next monsters in the act.
-    private void generateStrongEnemiesAct1(ArrayList<String> monsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
+    private void generateStrongEnemies(ArrayList<String> monsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
         populateFirstStrongEnemy(monsterList, monsterListHelper.getStrongMonsterPool(), monsterListHelper.generateExclusions(monsterList), monsterRng);
-        populateMonsterList(monsterList, monsterListHelper.getStrongMonsterPool(), 12, monsterRng);
+        populateMonsterList(monsterList, monsterListHelper.getStrongMonsterPool(), monsterListHelper.getStrongMonsterCombats(), monsterRng);
     }
 
-    private void generateElitesAct1(ArrayList<String> eliteMonsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
-        populateEliteMonsterList(eliteMonsterList, monsterListHelper.getEliteMonsterPool(), monsterRng);
+    private void generateElites(ArrayList<String> eliteMonsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
+        populateEliteMonsterList(eliteMonsterList, monsterRng, monsterListHelper);
     }
 
     private void populateFirstStrongEnemy(ArrayList<String> monsterList, ArrayList<MonsterInfo> monsterPool, ArrayList<String> exclusions, Random monsterRng) {
@@ -114,8 +114,9 @@ public class MonsterRngSimulator {
         monsterList.add(m);
     }
 
-    private void populateEliteMonsterList(ArrayList<String> eliteMonsterList, ArrayList<MonsterInfo> eliteMonsterPool, Random monsterRng) {
-        for (int i = 0; i < 10; ++i) {
+    private void populateEliteMonsterList(ArrayList<String> eliteMonsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
+        ArrayList<MonsterInfo> eliteMonsterPool = monsterListHelper.getEliteMonsterPool();
+        for (int i = 0; i < monsterListHelper.getEliteMonsterCombats(); ++i) {
             if (eliteMonsterList.isEmpty()) {
                 String monsterInfo = MonsterInfo.roll(eliteMonsterPool, monsterRng.random());
                 eliteMonsterList.add(monsterInfo);

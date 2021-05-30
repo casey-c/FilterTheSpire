@@ -47,27 +47,28 @@ public class Act2MonsterListHelper extends MonsterListHelper {
         bossPool.add("Champ");
     }
 
-    @Override
+    public int getWeakMonsterCombats() { return 2; }
+
+    public int getStrongMonsterCombats() { return 12; }
+
+    public int getEliteMonsterCombats() { return 10; }
+
     public ArrayList<MonsterInfo> getWeakMonsterPool() {
         return weakMonsterPool;
     }
 
-    @Override
     public ArrayList<MonsterInfo> getStrongMonsterPool() {
         return strongMonsterPool;
     }
 
-    @Override
     public ArrayList<MonsterInfo> getEliteMonsterPool() {
         return eliteMonsterPool;
     }
 
-    @Override
     public ArrayList<String> getBossPool() {
         return bossPool;
     }
 
-    @Override
     public ArrayList<String> generateExclusions(ArrayList<String> monsterList) {
         ArrayList<String> retVal = new ArrayList<>();
         switch (monsterList.get(monsterList.size() - 1)) {
