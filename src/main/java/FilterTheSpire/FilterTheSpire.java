@@ -51,8 +51,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setFirstBossIs("Slime Boss");
 //        FilterManager.setFirstEliteIs("3 Sentries");
 //        FilterManager.setFirstCombatIs("2 Louse");
-//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter(NeowReward.NeowRewardType.TWENTY_PERCENT_HP_BONUS));
-//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("The Bomb"), 0));
+//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter(NeowReward.NeowRewardType.RANDOM_COLORLESS_2));
+//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("Apotheosis"), 1));
 
 
 //        FilterManager.setBossSwapIs("Pandora's Box");
@@ -82,7 +82,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        if (firstTimeThrough) {
+        if (firstTimeThrough && Settings.isStandardRun()) {
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 

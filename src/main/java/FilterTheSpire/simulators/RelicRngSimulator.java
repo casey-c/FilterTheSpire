@@ -19,6 +19,10 @@ public class RelicRngSimulator {
         return singleton;
     }
 
+    private RelicRngSimulator(){
+
+    }
+
     public static final int UncommonRelicRng = 0;
     public static final int RareRelicRng = 1;
     public static final int CommonRelicRng = 2;

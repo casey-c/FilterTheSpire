@@ -12,6 +12,6 @@ public class ThirdBlessingFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        return BlessingSimulator.isThirdBlessingValid(seed, this.rewardType);
+        return BlessingSimulator.getInstance().isThirdBlessingValid(seed, this.rewardType);
     }
 }

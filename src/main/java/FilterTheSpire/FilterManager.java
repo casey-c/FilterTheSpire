@@ -103,7 +103,7 @@ public class FilterManager {
     // --------------------------------------------------------------------------------
 
     public static void setNthRelicFromValidList(ArrayList<String> relicIds) {
-        NthRelicFilter filter = new NthRelicFilter(relicIds);
+        NeowRelicFilter filter = new NeowRelicFilter(relicIds);
         filters.put("nthRelicIsOneOf", filter);
     }
 
