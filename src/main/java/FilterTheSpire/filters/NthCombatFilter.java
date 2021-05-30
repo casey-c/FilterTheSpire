@@ -1,5 +1,6 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.factory.MonsterListHelperFactory;
 import FilterTheSpire.simulators.MonsterRngSimulator;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public class NthCombatFilter extends AbstractFilter {
     private List<String> enemyNames;
     private int encounterNumber;
+    private int actNumber = 1;
 
     public NthCombatFilter(List<String> enemyNames) {
         this.enemyNames = enemyNames;
@@ -19,7 +21,7 @@ public class NthCombatFilter extends AbstractFilter {
     }
 
     public boolean isSeedValid(long seed) {
-        String enemyId = new MonsterRngSimulator(seed).nthCombat(encounterNumber);
+        String enemyId = MonsterRngSimulator.getInstance().nthCombat(seed, encounterNumber, MonsterListHelperFactory.getMonsterListHelperFromActNumber(this.actNumber));
         return enemyNames.contains(enemyId);
     }
 }

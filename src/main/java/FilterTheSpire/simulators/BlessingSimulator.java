@@ -4,13 +4,26 @@ import com.megacrit.cardcrawl.neow.NeowReward;
 import com.megacrit.cardcrawl.random.Random;
 
 public class BlessingSimulator {
+    private static BlessingSimulator singleton = null;
+
+    public static BlessingSimulator getInstance(){
+        if (singleton == null){
+            singleton = new BlessingSimulator();
+        }
+        return singleton;
+    }
+
+    private BlessingSimulator(){
+
+    }
+
     /**
      * This logic can be found in NeowReward.class
      * @param seed - used for the RNG
      * @param rewardType - the Neow Bonus we want
      * @return if the seed's Neow Bonus is the same as the one passed in
      */
-    public static boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType) {
+    public boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType) {
         Random blessingRng = new Random(seed);
         blessingRng.random(); // Random First Blessing
         blessingRng.random(); // Random Second Blessing

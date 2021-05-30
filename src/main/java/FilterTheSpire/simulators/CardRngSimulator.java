@@ -5,22 +5,25 @@ import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 
 public class CardRngSimulator {
-    private long seed;
+    private static CardRngSimulator singleton = null;
 
-    public CardRngSimulator(long seed) {
-        this.seed = seed;
+    public static CardRngSimulator getInstance(){
+        if (singleton == null){
+            singleton = new CardRngSimulator();
+        }
+        return singleton;
     }
 
-    // Warning: This code might not be thread-safe.
-    public String nthColorlessRareCard(int n) {
-        AbstractDungeon.cardRng = new Random(seed);
-        Random cardRng = AbstractDungeon.cardRng.copy();
-        AbstractCard card = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
-        for(int i = 0; i < n; ++i) {
-            card = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
-        }
-        AbstractDungeon.cardRng = cardRng;
+    private CardRngSimulator(){
 
+    }
+
+    public String nthColorlessRareCard(long seed, int encounterIndex) {
+        Random cardRng = new Random(seed);
+        AbstractCard card = AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE);
+        for(int i = 0; i < encounterIndex; ++i) {
+            card = AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE);
+        }
         return card.cardID;
     }
 }
