@@ -67,7 +67,7 @@ public class MonsterRngSimulator {
     }
 
     protected List<String> initializeBoss(Random monsterRng, MonsterListHelper monsterListHelper) {
-        List<String> bossList = new ArrayList<>(monsterListHelper.getBossPool());
+        List<String> bossList = new ArrayList<>(monsterListHelper.bossPool);
         Collections.shuffle(bossList, new java.util.Random(monsterRng.randomLong()));
         return bossList;
     }
@@ -93,13 +93,13 @@ public class MonsterRngSimulator {
 
     // Weak enemies are the first enemies in the act.
     private void generateWeakEnemies(ArrayList<String> monsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
-        populateMonsterList(monsterList, monsterListHelper.getWeakMonsterPool(), monsterListHelper.getWeakMonsterCombats(), monsterRng);
+        populateMonsterList(monsterList, monsterListHelper.weakMonsterPool, monsterListHelper.weakMonsterCombats, monsterRng);
     }
 
     // Strong enemies are the next monsters in the act.
     private void generateStrongEnemies(ArrayList<String> monsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
-        populateFirstStrongEnemy(monsterList, monsterListHelper.getStrongMonsterPool(), monsterListHelper.generateExclusions(monsterList), monsterRng);
-        populateMonsterList(monsterList, monsterListHelper.getStrongMonsterPool(), monsterListHelper.getStrongMonsterCombats(), monsterRng);
+        populateFirstStrongEnemy(monsterList, monsterListHelper.strongMonsterPool, monsterListHelper.generateExclusions(monsterList), monsterRng);
+        populateMonsterList(monsterList, monsterListHelper.strongMonsterPool, monsterListHelper.strongMonsterCombats, monsterRng);
     }
 
     private void generateElites(ArrayList<String> eliteMonsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
@@ -115,8 +115,8 @@ public class MonsterRngSimulator {
     }
 
     private void populateEliteMonsterList(ArrayList<String> eliteMonsterList, Random monsterRng, MonsterListHelper monsterListHelper) {
-        ArrayList<MonsterInfo> eliteMonsterPool = monsterListHelper.getEliteMonsterPool();
-        for (int i = 0; i < monsterListHelper.getEliteMonsterCombats(); ++i) {
+        ArrayList<MonsterInfo> eliteMonsterPool = monsterListHelper.eliteMonsterPool;
+        for (int i = 0; i < monsterListHelper.eliteMonsterCombats; ++i) {
             if (eliteMonsterList.isEmpty()) {
                 String monsterInfo = MonsterInfo.roll(eliteMonsterPool, monsterRng.random());
                 eliteMonsterList.add(monsterInfo);

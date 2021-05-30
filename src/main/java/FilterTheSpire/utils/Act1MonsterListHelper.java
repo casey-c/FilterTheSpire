@@ -5,11 +5,6 @@ import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import java.util.ArrayList;
 
 public class Act1MonsterListHelper extends MonsterListHelper {
-    public ArrayList<MonsterInfo> weakMonsterPool = new ArrayList<>();
-    public ArrayList<MonsterInfo> strongMonsterPool = new ArrayList<>();
-    public ArrayList<MonsterInfo> eliteMonsterPool = new ArrayList<>();
-    public ArrayList<String> bossPool = new ArrayList<>();
-
     private static Act1MonsterListHelper singleton = null;
 
     public static Act1MonsterListHelper getInstance(){
@@ -20,6 +15,10 @@ public class Act1MonsterListHelper extends MonsterListHelper {
     }
 
     private Act1MonsterListHelper(){
+        weakMonsterCombats = 3;
+        strongMonsterCombats = 12;
+        eliteMonsterCombats = 10;
+
         weakMonsterPool.add(new MonsterInfo("Cultist", 2.0F));
         weakMonsterPool.add(new MonsterInfo("Jaw Worm", 2.0F));
         weakMonsterPool.add(new MonsterInfo("2 Louse", 2.0F));
@@ -47,20 +46,6 @@ public class Act1MonsterListHelper extends MonsterListHelper {
         bossPool.add("Hexaghost");
         bossPool.add("Slime Boss");
     }
-
-    public int getWeakMonsterCombats() { return 3; }
-
-    public int getStrongMonsterCombats() { return 12; }
-
-    public int getEliteMonsterCombats() { return 10; }
-
-    public ArrayList<MonsterInfo> getWeakMonsterPool() { return weakMonsterPool; }
-
-    public ArrayList<MonsterInfo> getStrongMonsterPool() { return strongMonsterPool; }
-
-    public ArrayList<MonsterInfo> getEliteMonsterPool() { return eliteMonsterPool; }
-
-    public ArrayList<String> getBossPool() { return bossPool; }
 
     public ArrayList<String> generateExclusions(ArrayList<String> monsterList) {
         ArrayList<String> retVal = new ArrayList<>();
