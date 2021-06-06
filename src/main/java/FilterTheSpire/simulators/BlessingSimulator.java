@@ -63,13 +63,15 @@ public class BlessingSimulator {
         neowRewardTypes.add(NeowReward.NeowRewardType.RANDOM_COLORLESS);
 
         boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
-        blessingRng.random();
-        blessingRng.random();
-        blessingRng.random(0, 3);
-        if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
-            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1);
-        } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
-            isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+        if (!searchCards.isEmpty()){
+            blessingRng.random();
+            blessingRng.random();
+            blessingRng.random(0, 3);
+            if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
+                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1);
+            } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
+                isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+            }
         }
         return isValid;
     }
@@ -110,7 +112,7 @@ public class BlessingSimulator {
         }
 
         boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
-        if (rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
+        if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
             isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2);
         }
         return isValid;
