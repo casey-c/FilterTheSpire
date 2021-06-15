@@ -113,6 +113,7 @@ public class BlessingSimulator {
 
         boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
         if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
+            blessingRng.random();
             isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2);
         }
         return isValid;
