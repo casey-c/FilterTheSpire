@@ -47,6 +47,7 @@ public class CardTransformSimulator {
         for (String cardId : cardList) {
             if (searchCards.get(cardId) > transformCounts.get(cardId)) {
                 isValid = false;
+                break;
             }
         }
 
