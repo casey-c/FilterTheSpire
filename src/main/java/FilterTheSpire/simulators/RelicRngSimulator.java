@@ -1,7 +1,7 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.factory.CharacterPoolFactory;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
@@ -29,22 +29,17 @@ public class RelicRngSimulator {
     public static final int ShopRelicRng = 3;
     public static final int BossRelicRng = 4;
 
-    public ArrayList<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
+    public List<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
         Random relicRng = new Random(seed);
         return getRelicPool(relicRng, relicTier, rngGeneratorLoops);
     }
 
-    private ArrayList<String> getRelicPool(Random relicRng, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops){
-        ArrayList<String> relicPool = new ArrayList<>();
+    private List<String> getRelicPool(Random relicRng, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops){
         for (int i = 0; i < rngGeneratorLoops; i++) {
             relicRng.randomLong();
         }
 
-        RelicLibrary.populateRelicPool(
-                relicPool,
-                relicTier,
-                AbstractDungeon.player.chosenClass
-        );
+        List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, relicTier));
         Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
         return relicPool;
     }
@@ -78,7 +73,7 @@ public class RelicRngSimulator {
             default:
                 throw new IllegalArgumentException();
         }
-        ArrayList<String> relicList = getRelicPool(relicRng, encounterRelicTier, relicPoolRngLoops);
+        List<String> relicList = getRelicPool(relicRng, encounterRelicTier, relicPoolRngLoops);
         return searchRelics.contains(relicList.get(rarityOccurrences));
     }
 

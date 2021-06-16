@@ -1,8 +1,10 @@
 package FilterTheSpire;
 
+import FilterTheSpire.filters.BlessingFilter;
 import FilterTheSpire.filters.NthColorlessRareCardFilter;
-import FilterTheSpire.filters.ThirdBlessingFilter;
+import FilterTheSpire.filters.PandorasCardFilter;
 import FilterTheSpire.multithreading.SeedSearcher;
+import FilterTheSpire.simulators.CardTransformSimulator;
 import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
@@ -23,6 +25,7 @@ import com.megacrit.cardcrawl.neow.NeowReward;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.logging.Filter;
 
 @SpireInitializer
@@ -51,12 +54,9 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setFirstBossIs("Slime Boss");
 //        FilterManager.setFirstEliteIs("3 Sentries");
 //        FilterManager.setFirstCombatIs("2 Louse");
-//        FilterManager.setValidatorFromString("thirdBlessingIs", new ThirdBlessingFilter(NeowReward.NeowRewardType.RANDOM_COLORLESS_2));
 //        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("Apotheosis"), 1));
 
-
 //        FilterManager.setBossSwapIs("Pandora's Box");
-//        FilterManager.testPandoras();
 
         // for testing, try different rarities
 //        ArrayList<String> relicsToSearch = new ArrayList<>();
@@ -73,6 +73,14 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
+//        HashMap<String, Integer> cards = new HashMap<>();
+//        cards.put("Blade Dance", 4);
+//        cards.put("Accuracy", 1);
+//        FilterManager.setPandorasCardFilter(cards);
+//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards));
+//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, "Prepared"));
+//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD, "Glass Knife"));
+
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
 

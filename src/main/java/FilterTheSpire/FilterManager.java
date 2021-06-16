@@ -84,8 +84,8 @@ public class FilterManager {
         filters.put("firstEliteIsOneOf", filter);
     }
 
-    public static void testPandoras() {
-        filters.put("pandorasTmp", new PandorasCardFilter());
+    public static void setPandorasCardFilter(HashMap<String, Integer> searchCards) {
+        filters.put("pandorasTmp", new PandorasCardFilter(searchCards));
     }
 
     // --------------------------------------------------------------------------------
