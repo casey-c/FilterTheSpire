@@ -1,6 +1,7 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.utils.MonsterListHelper;
+import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import com.megacrit.cardcrawl.random.Random;
 
@@ -34,7 +35,7 @@ public class MonsterRngSimulator {
 
     public String firstBoss(long seed, MonsterListHelper monsterListHelper) {
         ArrayList<String> monsterList = new ArrayList<>();
-        Random monsterRng = new Random(seed);
+        Random monsterRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MONSTER);;
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
         generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
@@ -47,7 +48,7 @@ public class MonsterRngSimulator {
     public String nthElite(long seed, int encounterIndex, MonsterListHelper monsterListHelper) {
         ArrayList<String> monsterList = new ArrayList<>();
         ArrayList<String> eliteMonsterList = new ArrayList<>();
-        Random monsterRng = new Random(seed);
+        Random monsterRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MONSTER);
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
         generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
@@ -58,7 +59,7 @@ public class MonsterRngSimulator {
 
     public String nthCombat(long seed, int encounterIndex, MonsterListHelper monsterListHelper) {
         ArrayList<String> monsterList = new ArrayList<>();
-        Random monsterRng = new Random(seed);
+        Random monsterRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MONSTER);
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
         generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
