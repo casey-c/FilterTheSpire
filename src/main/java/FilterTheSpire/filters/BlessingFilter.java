@@ -9,10 +9,17 @@ import java.util.HashMap;
 public class BlessingFilter extends AbstractFilter{
     private NeowReward.NeowRewardType rewardType;
     private HashMap<String, Integer> searchCards;
+    private NeowReward.NeowRewardDrawback drawback = null;
 
     public BlessingFilter(NeowReward.NeowRewardType rewardType) {
         this.rewardType = rewardType;
         this.searchCards = new HashMap<>();
+    }
+
+    public BlessingFilter(NeowReward.NeowRewardType rewardType, NeowReward.NeowRewardDrawback drawback) {
+        this.rewardType = rewardType;
+        this.searchCards = new HashMap<>();
+        this.drawback = drawback;
     }
 
     public BlessingFilter(NeowReward.NeowRewardType rewardType, String searchCard) {
@@ -27,6 +34,6 @@ public class BlessingFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        return BlessingSimulator.getInstance().isBlessingValid(seed, this.rewardType, searchCards);
+        return BlessingSimulator.getInstance().isBlessingValid(seed, this.rewardType, searchCards, this.drawback);
     }
 }
