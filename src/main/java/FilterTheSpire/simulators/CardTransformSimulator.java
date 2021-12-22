@@ -1,6 +1,7 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 
@@ -21,7 +22,7 @@ public class CardTransformSimulator {
     }
 
     public boolean isValid(long seed, HashMap<String, Integer> searchCards, int transformCount) {
-        Random cardRng = new Random(seed);
+        Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARDRANDOM);
         return isValid(cardRng, searchCards, transformCount);
     }
 

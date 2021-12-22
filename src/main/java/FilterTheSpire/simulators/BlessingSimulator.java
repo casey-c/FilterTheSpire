@@ -1,5 +1,6 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.neow.NeowReward;
@@ -52,7 +53,7 @@ public class BlessingSimulator {
     }
 
     private boolean isFirstBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
-        Random blessingRng = new Random(seed);
+        Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
 
         ArrayList<NeowReward.NeowRewardType> neowRewardTypes = new ArrayList<>();
         neowRewardTypes.add(NeowReward.NeowRewardType.THREE_CARDS);
@@ -77,7 +78,7 @@ public class BlessingSimulator {
     }
 
     private boolean isSecondBlessingValid(long seed, NeowReward.NeowRewardType rewardType) {
-        Random blessingRng = new Random(seed);
+        Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
 
         ArrayList<NeowReward.NeowRewardType> neowRewardTypes = new ArrayList<>();
@@ -91,7 +92,7 @@ public class BlessingSimulator {
     }
 
     private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
-        Random blessingRng = new Random(seed);
+        Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
         blessingRng.random(); // Random Second Blessing
         int drawbackNum = blessingRng.random(0, 3); // The drawback for the third blessing

@@ -10,6 +10,11 @@ public class BlessingFilter extends AbstractFilter{
     private NeowReward.NeowRewardType rewardType;
     private HashMap<String, Integer> searchCards;
 
+    public BlessingFilter(NeowReward.NeowRewardType rewardType) {
+        this.rewardType = rewardType;
+        this.searchCards = new HashMap<>();
+    }
+
     public BlessingFilter(NeowReward.NeowRewardType rewardType, String searchCard) {
         this.rewardType = rewardType;
         this.searchCards = new HashMap<>();

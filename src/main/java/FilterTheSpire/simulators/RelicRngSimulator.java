@@ -1,6 +1,7 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -30,7 +31,7 @@ public class RelicRngSimulator {
     public static final int BossRelicRng = 4;
 
     public List<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
-        Random relicRng = new Random(seed);
+        Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
         return getRelicPool(relicRng, relicTier, rngGeneratorLoops);
     }
 
@@ -52,7 +53,7 @@ public class RelicRngSimulator {
      * @return if Nth relic is in the search relic Ids
      */
     public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
-        Random relicRng = new Random(seed);
+        Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         for (int i = 0; i < encounterIndex; i++){
             relicRngRarities.add(returnRandomRelicTier(relicRng));

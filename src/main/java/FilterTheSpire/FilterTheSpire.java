@@ -77,7 +77,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        cards.put("Blade Dance", 4);
 //        cards.put("Accuracy", 1);
 //        FilterManager.setPandorasCardFilter(cards);
-//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards));
+//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RARE_RELIC));
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, "Prepared"));
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD, "Glass Knife"));
 
