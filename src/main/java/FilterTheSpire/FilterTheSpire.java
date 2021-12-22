@@ -90,7 +90,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        if (firstTimeThrough && Settings.isStandardRun()) {
+        if (firstTimeThrough && !Settings.seedSet) {
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 
