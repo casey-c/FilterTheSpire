@@ -14,7 +14,7 @@ public class WatcherPool extends CharacterPool {
     }
 
     private WatcherPool(){
-        cardPool = new ArrayList<>(Arrays.asList(
+        commonCardPool = new ArrayList<>(Arrays.asList(
             "EmptyFist",
             "Prostrate",
             "Evaluate",
@@ -33,7 +33,10 @@ public class WatcherPool extends CharacterPool {
             "Halt",
             "FlyingSleeves",
             "BowlingBash",
-            "Consecrate",
+            "Consecrate"
+        ));
+
+        uncommonCardPool = new ArrayList<>(Arrays.asList(
             "Pray",
             "SignatureMove",
             "Weave",
@@ -68,7 +71,10 @@ public class WatcherPool extends CharacterPool {
             "Sanctity",
             "Wireheading",
             "Vengeance",
-            "WheelKick",
+            "WheelKick"
+        ));
+
+        rareCardPool = new ArrayList<>(Arrays.asList(
             "Judgement",
             "ConjureBlade",
             "MasterReality",

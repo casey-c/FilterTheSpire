@@ -59,11 +59,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setBossSwapIs("Pandora's Box");
 
         // for testing, try different rarities
-//        ArrayList<String> relicsToSearch = new ArrayList<>();
-//        relicsToSearch.add("Dead Branch");
+        ArrayList<String> relicsToSearch = new ArrayList<>();
+        relicsToSearch.add("Dead Branch");
 //        relicsToSearch.add("Toy Ornithopter");
 //        relicsToSearch.add("Shuriken");
-//        FilterManager.setNthRelicFromValidList(relicsToSearch);
+        FilterManager.setNthRelicFromValidList(relicsToSearch);
     }
 
     // --------------------------------------------------------------------------------
@@ -73,10 +73,12 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-//        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("Blade Dance", 4);
+        HashMap<String, Integer> cards = new HashMap<>();
+        cards.put("Corruption", 1);
+        cards.put("Feel No Pain", 1);
+        cards.put("MasterReality", 1);
 //        cards.put("Accuracy", 1);
-//        FilterManager.setPandorasCardFilter(cards);
+        FilterManager.setPandorasCardFilter(cards);
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RARE_RELIC));
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, "Prepared"));
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD, "Glass Knife"));

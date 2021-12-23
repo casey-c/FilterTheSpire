@@ -14,7 +14,7 @@ public class SilentPool extends CharacterPool {
     }
 
     private SilentPool(){
-        cardPool = new ArrayList<>(Arrays.asList(
+        commonCardPool = new ArrayList<>(Arrays.asList(
             "Flying Knee",
             "Dodge and Roll",
             "Sucker Punch",
@@ -33,7 +33,10 @@ public class SilentPool extends CharacterPool {
             "Dagger Spray",
             "Deadly Poison",
             "Underhanded Strike",
-            "Cloak And Dagger",
+            "Cloak And Dagger"
+        ));
+
+        uncommonCardPool = new ArrayList<>(Arrays.asList(
             "Predator",
             "All Out Attack",
             "Distraction",
@@ -66,7 +69,10 @@ public class SilentPool extends CharacterPool {
             "Tactician",
             "Catalyst",
             "Leg Sweep",
-            "Crippling Poison",
+            "Crippling Poison"
+        ));
+
+        rareCardPool = new ArrayList<>(Arrays.asList(
             "Venomology",
             "Corpse Explosion",
             "Malaise",

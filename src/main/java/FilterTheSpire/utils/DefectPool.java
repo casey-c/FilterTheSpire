@@ -14,7 +14,7 @@ public class DefectPool extends CharacterPool {
     }
 
     private DefectPool(){
-        cardPool = new ArrayList<>(Arrays.asList(
+        commonCardPool = new ArrayList<>(Arrays.asList(
             "Steam",
             "Cold Snap",
             "Leap",
@@ -32,7 +32,10 @@ public class DefectPool extends CharacterPool {
             "Redo",
             "Streamline",
             "Ball Lightning",
-            "Go for the Eyes",
+            "Go for the Eyes"
+        ));
+
+        uncommonCardPool = new ArrayList<>(Arrays.asList(
             "Doom and Gloom",
             "Defragment",
             "Capacitor",
@@ -68,7 +71,10 @@ public class DefectPool extends CharacterPool {
             "Hello World",
             "Steam Power",
             "Genetic Algorithm",
-            "Storm",
+            "Storm"
+        ));
+
+        rareCardPool = new ArrayList<>(Arrays.asList(
             "Multi-Cast",
             "Hyperbeam",
             "Thunder Strike",
