@@ -56,9 +56,11 @@ public class FilterManager {
     }
 
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
-        NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
         if (relicIDs.size() > 0){
+            NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
             filters.put("bossSwapIsOneOf", filter);
+        } else {
+            filters.remove("bossSwapIsOneOf");
         }
     }
 
@@ -98,9 +100,11 @@ public class FilterManager {
     }
 
     public static void setShopFiltersFromValidList(ArrayList<String> relicIds) {
-        NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
         if (relicIds.size() > 0){
+            NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
             filters.put("shopRelicIsOneOf", filter);
+        } else {
+            filters.remove("shopRelicIsOneOf");
         }
     }
 
