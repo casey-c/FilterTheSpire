@@ -90,6 +90,14 @@ public class Config {
         }
     }
 
+    public void setBooleanKey(String key, boolean enabled){
+        spireConfig.setBool(key, enabled);
+    }
+
+    public boolean getBooleanKey(String key){
+        return spireConfig.getBool(key);
+    }
+
     // --------------------------------------------------------------------------------
 
     public void setBossSwapFilter(ArrayList<String> enabledList) {
@@ -116,5 +124,9 @@ public class Config {
                 "ojb",
                 "Customize your Slay the Spire experience",
                 new AlternateConfigMenu());
+    }
+
+    public void setEnableAllNeowBonuses(boolean enabled) {
+
     }
 }

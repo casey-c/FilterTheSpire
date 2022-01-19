@@ -19,7 +19,7 @@ public class NeowEventPatches {
             int x = (int)ReflectionHacks.getPrivate(__instance, NeowEvent.class, "bossCount");
             System.out.println("bossCount is: " + x);
 
-            if (x == 0) ReflectionHacks.setPrivate(__instance, NeowEvent.class, "bossCount", 1);
+            if (x == 0 && FilterTheSpire.config.getBooleanKey("allNeowBonuses")) ReflectionHacks.setPrivate(__instance, NeowEvent.class, "bossCount", 1);
         }
     }
 

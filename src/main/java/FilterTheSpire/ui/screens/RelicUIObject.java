@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.ui.screens.IRelicFilterScreen;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.KeyHelper;
 import com.badlogic.gdx.graphics.Color;

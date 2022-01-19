@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import basemod.ModLabeledToggleButton;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -22,6 +23,7 @@ import java.util.function.Consumer;
 public class BossSwapFilterScreen implements IRelicFilterScreen {
     private TreeSet<String> bossRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
+    ModLabeledToggleButton neowBonusToggle;
 
     public BossSwapFilterScreen() {
         setup();
@@ -75,6 +77,12 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 iy++;
             }
         }
+
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 1120.0F * Settings.scale,
+                700.0F * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
+                FilterTheSpire.config.getBooleanKey("allNeowBonuses"), null, (modLabel) -> {}, (button) -> {
+                    FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
+                });
     }
     private void loadFromConfig() {
         ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
@@ -124,6 +132,8 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 371.0f * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
+
+        neowBonusToggle.render(sb);
     }
 
     public void enableHitboxes(boolean enabled) {
@@ -140,8 +150,10 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
     }
 
     public void update() {
-        for (RelicUIObject x : relicUIObjects.values())
+        for (RelicUIObject x : relicUIObjects.values()){
             x.update();
+        }
+        neowBonusToggle.update();
     }
 
     // --------------------------------------------------------------------------------
