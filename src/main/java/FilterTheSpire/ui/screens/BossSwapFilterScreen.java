@@ -78,8 +78,8 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
             }
         }
 
-        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 1120.0F * Settings.scale,
-                700.0F * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 840.0f * Settings.scale,
+                500.0f * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 FilterTheSpire.config.getBooleanKey("allNeowBonuses"), null, (modLabel) -> {}, (button) -> {
                     FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
                 });
@@ -106,13 +106,15 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         for (RelicUIObject x : relicUIObjects.values())
             x.render(sb);
 
+        neowBonusToggle.render(sb);
+
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
         float infoLeft = 1120.0f;
-        float infoTopMain = 667.0f;
+        float infoTopMain = 610.0f;
         float infoTopControls = 472.0f;
 
         FontHelper.renderSmartText(sb,
@@ -132,8 +134,6 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 371.0f * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
-
-        neowBonusToggle.render(sb);
     }
 
     public void enableHitboxes(boolean enabled) {

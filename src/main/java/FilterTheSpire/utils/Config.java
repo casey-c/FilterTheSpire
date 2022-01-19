@@ -92,6 +92,12 @@ public class Config {
 
     public void setBooleanKey(String key, boolean enabled){
         spireConfig.setBool(key, enabled);
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getBooleanKey(String key){
