@@ -80,7 +80,7 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 840.0f * Settings.scale,
                 500.0f * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
-                FilterTheSpire.config.getBooleanKey("allNeowBonuses"), null, (modLabel) -> {}, (button) -> {
+                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true), null, (modLabel) -> {}, (button) -> {
                     FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
                 });
     }

@@ -100,6 +100,13 @@ public class Config {
         }
     }
 
+    public boolean getBooleanKeyOrSetDefault(String key, boolean defaultValue){
+        if (!spireConfig.has(key)){
+            setBooleanKey(key, defaultValue);
+        }
+        return getBooleanKey(key);
+    }
+
     public boolean getBooleanKey(String key){
         return spireConfig.getBool(key);
     }
