@@ -138,8 +138,4 @@ public class Config {
                 "Customize your Slay the Spire experience",
                 new AlternateConfigMenu());
     }
-
-    public void setEnableAllNeowBonuses(boolean enabled) {
-
-    }
 }
