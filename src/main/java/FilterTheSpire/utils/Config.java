@@ -90,6 +90,27 @@ public class Config {
         }
     }
 
+    public void setBooleanKey(String key, boolean enabled){
+        spireConfig.setBool(key, enabled);
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean getBooleanKeyOrSetDefault(String key, boolean defaultValue){
+        if (!spireConfig.has(key)){
+            setBooleanKey(key, defaultValue);
+        }
+        return getBooleanKey(key);
+    }
+
+    public boolean getBooleanKey(String key){
+        return spireConfig.getBool(key);
+    }
+
     // --------------------------------------------------------------------------------
 
     public void setBossSwapFilter(ArrayList<String> enabledList) {
