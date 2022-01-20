@@ -49,17 +49,28 @@ public class RelicUIObject {
         // Grow a bit larger when hovered
         float s = (hb.hovered) ? size * 1.10f : size;
 
+        float roundedScaledX = Math.round(x * Settings.scale);
+        float roundedScaledY = Math.round(y * Settings.scale);
+        float roundedScaledS = Math.round(s * Settings.scale);
+
         if (isEnabled) {
             sb.setColor(ExtraColors.SEL_RELIC_BG);
-            sb.draw(TEX_SELECTED_BG, x * Settings.scale, y * Settings.scale, s * Settings.scale, s * Settings.scale);
+            sb.draw(TEX_SELECTED_BG,
+                    roundedScaledX,
+                    roundedScaledY,
+                    roundedScaledS,
+                    roundedScaledS);
 
             sb.setColor(Color.WHITE);
         } else {
             sb.setColor(ExtraColors.DIM_RELIC);
         }
 
-
-        sb.draw(tex, x * Settings.scale, y * Settings.scale, s * Settings.scale, s * Settings.scale);
+        sb.draw(tex,
+                roundedScaledX,
+                roundedScaledY,
+                roundedScaledS,
+                roundedScaledS);
 
         // DEBUG
         hb.render(sb);
