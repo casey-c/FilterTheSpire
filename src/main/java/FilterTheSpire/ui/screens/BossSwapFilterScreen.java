@@ -25,6 +25,14 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
     ModLabeledToggleButton neowBonusToggle;
 
+    private static final float INFO_LEFT = 1120.0f;
+    private static final float INFO_BOTTOM_CHECK = 670.0f;
+    //private static final float INFO_TOP_MAIN = 610.0f;
+    private static final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
+    private static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
+
+    private static final float INFO_WIDTH = 371.0f;
+
     public BossSwapFilterScreen() {
         setup();
     }
@@ -78,9 +86,17 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
             }
         }
 
-        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 840.0f * Settings.scale,
-                500.0f * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
-                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true), null, (modLabel) -> {}, (button) -> {
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
+//                840.0f * Settings.scale,
+//                500.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_BOTTOM_CHECK * Settings.scale,
+                Settings.CREAM_COLOR,
+                FontHelper.charDescFont,
+                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true),
+                null,
+                (modLabel) -> {},
+                (button) -> {
                     FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
                 });
     }
@@ -113,25 +129,22 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
-        float infoLeft = 1120.0f;
-        float infoTopMain = 610.0f;
-        float infoTopControls = 472.0f;
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
-                infoLeft * Settings.scale,
-                infoTopMain * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_TOP_MAIN * Settings.scale,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                infoLeft * Settings.scale,
-                infoTopControls * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_TOP_CONTROLS * Settings.scale,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
     }
