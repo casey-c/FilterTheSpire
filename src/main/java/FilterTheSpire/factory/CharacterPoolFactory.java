@@ -1,16 +1,12 @@
 package FilterTheSpire.factory;
 
 import FilterTheSpire.utils.*;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
-import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CharacterPoolFactory {
     public static CharacterPool getCharacterPool(AbstractPlayer.PlayerClass chosenClass){
@@ -48,37 +44,18 @@ public class CharacterPoolFactory {
 
     public static List<String> getCardPool(AbstractPlayer.PlayerClass chosenClass){
         CharacterPool pool;
+        ArrayList<String> cardPool = new ArrayList<>();
         if (ModHelper.isModEnabled("Diverse")){
-//            ArrayList<AbstractPlayer.PlayerClass> classes = new ArrayList<>();
-//            classes.add(AbstractPlayer.PlayerClass.WATCHER);
-//            classes.add(AbstractPlayer.PlayerClass.DEFECT);
-//            classes.add(AbstractPlayer.PlayerClass.THE_SILENT);
-//            classes.add(AbstractPlayer.PlayerClass.IRONCLAD);
-//
-//            for (AbstractPlayer.PlayerClass character: classes) {
-//                cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.IRONCLAD).cardPool);
-//                cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.THE_SILENT).cardPool);
-//                cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.DEFECT).cardPool);
-//                cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.WATCHER).cardPool);
-//            }
-
-            ArrayList<String> cards = new ArrayList<>();
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.WATCHER).commonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.DEFECT).commonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.THE_SILENT).commonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.IRONCLAD).commonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.WATCHER).uncommonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.DEFECT).uncommonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.THE_SILENT).uncommonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.IRONCLAD).uncommonCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.WATCHER).rareCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.DEFECT).rareCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.THE_SILENT).rareCardPool);
-            cards.addAll(getCharacterPool(AbstractPlayer.PlayerClass.IRONCLAD).rareCardPool);
-            return cards;
+            ArrayList<CharacterPool> colors = new ArrayList<>();
+            colors.add(WatcherPool.getInstance());
+            colors.add(DefectPool.getInstance());
+            colors.add(SilentPool.getInstance());
+            colors.add(IroncladPool.getInstance());
+            cardPool.addAll(CardPoolHelper.getOrderedCardPoolForColors(colors));
         } else {
             pool = getCharacterPool(chosenClass);
-            return pool.getCardPool();
+            cardPool.addAll(pool.getCardPool());
         }
+        return cardPool;
     }
 }

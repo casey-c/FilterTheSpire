@@ -1,7 +1,10 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.helpers.ModHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class WatcherPool extends CharacterPool {
     private static WatcherPool singleton = null;
@@ -111,5 +114,27 @@ public class WatcherPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Melange");
+    }
+
+    public List<String> getCardPool() {
+        ArrayList<CharacterPool> colors = new ArrayList<>();
+        // for some reason she adds her own color twice
+        if (ModHelper.isModEnabled("Purple Cards")) {
+            colors.add(WatcherPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Blue Cards")) {
+            colors.add(DefectPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Green Cards")) {
+            colors.add(SilentPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Red Cards")) {
+            colors.add(IroncladPool.getInstance());
+        }
+        colors.add(WatcherPool.getInstance());
+        return CardPoolHelper.getOrderedCardPoolForColors(colors);
     }
 }

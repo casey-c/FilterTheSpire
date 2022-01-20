@@ -1,7 +1,10 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.helpers.ModHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SilentPool extends CharacterPool {
     private static SilentPool singleton = null;
@@ -113,5 +116,22 @@ public class SilentPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("TwistedFunnel");
+    }
+
+    public List<String> getCardPool() {
+        ArrayList<CharacterPool> colors = new ArrayList<>();
+        if (ModHelper.isModEnabled("Purple Cards")) {
+            colors.add(WatcherPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Blue Cards")) {
+            colors.add(DefectPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Red Cards")) {
+            colors.add(IroncladPool.getInstance());
+        }
+        colors.add(SilentPool.getInstance());
+        return CardPoolHelper.getOrderedCardPoolForColors(colors);
     }
 }

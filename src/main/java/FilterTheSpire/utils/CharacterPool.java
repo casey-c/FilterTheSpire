@@ -159,11 +159,5 @@ public abstract class CharacterPool {
         ));
     }
 
-    public List<String> getCardPool() {
-        ArrayList<String> cardPool = new ArrayList<>();
-        cardPool.addAll(commonCardPool);
-        cardPool.addAll(uncommonCardPool);
-        cardPool.addAll(rareCardPool);
-        return cardPool;
-    }
+    public abstract List<String> getCardPool();
 }
