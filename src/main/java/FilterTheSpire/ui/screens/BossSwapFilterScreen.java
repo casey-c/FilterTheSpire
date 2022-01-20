@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import basemod.ModLabeledToggleButton;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -22,6 +23,7 @@ import java.util.function.Consumer;
 public class BossSwapFilterScreen implements IRelicFilterScreen {
     private TreeSet<String> bossRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
+    ModLabeledToggleButton neowBonusToggle;
 
     public BossSwapFilterScreen() {
         setup();
@@ -75,6 +77,12 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 iy++;
             }
         }
+
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses", 840.0f * Settings.scale,
+                500.0f * Settings.scale, Settings.CREAM_COLOR, FontHelper.charDescFont,
+                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true), null, (modLabel) -> {}, (button) -> {
+                    FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
+                });
     }
     private void loadFromConfig() {
         ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
@@ -98,13 +106,15 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         for (RelicUIObject x : relicUIObjects.values())
             x.render(sb);
 
+        neowBonusToggle.render(sb);
+
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
         float infoLeft = 1120.0f;
-        float infoTopMain = 667.0f;
+        float infoTopMain = 610.0f;
         float infoTopControls = 472.0f;
 
         FontHelper.renderSmartText(sb,
@@ -140,8 +150,10 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
     }
 
     public void update() {
-        for (RelicUIObject x : relicUIObjects.values())
+        for (RelicUIObject x : relicUIObjects.values()){
             x.update();
+        }
+        neowBonusToggle.update();
     }
 
     // --------------------------------------------------------------------------------
