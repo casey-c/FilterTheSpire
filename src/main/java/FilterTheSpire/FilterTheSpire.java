@@ -59,11 +59,11 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 //        FilterManager.setBossSwapIs("Pandora's Box");
 
         // for testing, try different rarities
-        ArrayList<String> relicsToSearch = new ArrayList<>();
-        relicsToSearch.add("Dead Branch");
+//        ArrayList<String> relicsToSearch = new ArrayList<>();
+//        relicsToSearch.add("Dead Branch");
 //        relicsToSearch.add("Toy Ornithopter");
 //        relicsToSearch.add("Shuriken");
-        FilterManager.setNthRelicFromValidList(relicsToSearch);
+//        FilterManager.setNthRelicFromValidList(relicsToSearch);
     }
 
     // --------------------------------------------------------------------------------
