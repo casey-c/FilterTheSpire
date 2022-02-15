@@ -74,9 +74,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     @Override
     public void receivePostDungeonInitialize() {
 //        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("LessonLearned", 1);
-//        cards.put("Master of Strategy", 1);
-//        cards.put("MasterReality", 1);
+//        cards.put("Blade Dance", 4);
 //        cards.put("Accuracy", 1);
 //        FilterManager.setPandorasCardFilter(cards);
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RARE_RELIC));
