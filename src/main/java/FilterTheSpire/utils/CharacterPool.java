@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class CharacterPool {
-    public List<String> cardPool;
+    public List<String> commonCardPool;
+    public List<String> uncommonCardPool;
+    public List<String> rareCardPool;
     public ArrayList<String> commonRelicPool;;
     public ArrayList<String> uncommonRelicPool;
     public ArrayList<String> rareRelicPool;
@@ -156,4 +158,6 @@ public abstract class CharacterPool {
             "Membership Card"
         ));
     }
+
+    public abstract List<String> getCardPool();
 }
