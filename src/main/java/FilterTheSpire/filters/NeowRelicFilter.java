@@ -8,9 +8,9 @@ public class NeowRelicFilter extends AbstractFilter {
     private List<String> relicNames;
     private int encounterIndex;
 
-    public NeowRelicFilter(List<String> relicNames) {
+    public NeowRelicFilter(List<String> relicNames, int encounterIndex) {
         this.relicNames = relicNames;
-        this.encounterIndex = 0; // Get the first Relic
+        this.encounterIndex = encounterIndex;
     }
 
     public boolean isSeedValid(long seed) {
