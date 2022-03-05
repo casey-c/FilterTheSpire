@@ -10,18 +10,27 @@ import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.SeedTesting;
 import basemod.BaseMod;
+import basemod.ModLabeledButton;
+import basemod.ModPanel;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import basemod.interfaces.PostUpdateSubscriber;
 import basemod.interfaces.RenderSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.helpers.SaveHelper;
 import com.megacrit.cardcrawl.neow.NeowReward;
+import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
+import com.megacrit.cardcrawl.screens.mainMenu.SaveSlotScreen;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +38,7 @@ import java.util.HashMap;
 import java.util.logging.Filter;
 
 @SpireInitializer
-public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
+public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
     private static final String version = "0.1.6";
     public static void initialize() { new FilterTheSpire(); }
 
@@ -39,6 +48,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     private static Texture BG;
 
+    private ModLabeledButton stopButton;
+
     public FilterTheSpire() {
         BaseMod.subscribe(this);
     }
@@ -47,6 +58,30 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public void receivePostInitialize() {
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
+
+        stopButton = new ModLabeledButton("Stop Searching",
+                Settings.WIDTH / 10.0f,
+                150 * Settings.scale,//Settings.HEIGHT / 4.0f,
+                grayTextColor,
+                creamTextColor,
+                FontHelper.menuBannerFont,
+                null,
+                (button) -> {
+                    if (AbstractDungeon.player != null){
+                        CardCrawlGame.startOver();
+                        Settings.isTrial = false;
+                        Settings.isDailyRun = false;
+                        Settings.isEndless = false;
+                        CardCrawlGame.trial = null;
+                        SaveAndContinue.deleteSave(AbstractDungeon.player);
+                    }
+
+                    if (SEARCHING_FOR_SEEDS){
+                        SEARCHING_FOR_SEEDS = false;
+                        firstTimeThrough = true;
+                        searcherActive = false;
+                    }
+        });
 
         config = new Config();
         Config.setupConfigMenu();
@@ -74,7 +109,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     @Override
     public void receivePostDungeonInitialize() {
 //        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("Blade Dance", 4);
+//        cards.put("Blade Dance", 2);
 //        cards.put("Accuracy", 1);
 //        FilterManager.setPandorasCardFilter(cards);
 //        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RARE_RELIC));
@@ -207,6 +242,15 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     grayTextColor
             );
 
+            // buttons
+            if (!currentlyFading){
+                stopButton.render(sb);
+            }
         }
+    }
+
+    @Override
+    public void receivePostUpdate() {
+        stopButton.update();
     }
 }
