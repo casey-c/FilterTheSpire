@@ -91,6 +91,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
 
         if (firstTimeThrough && !Settings.seedSet) {
+            FilterManager.sortFilters();
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 
