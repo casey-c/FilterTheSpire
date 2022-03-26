@@ -22,15 +22,15 @@ public class BlessingFilter extends AbstractFilter{
         this.drawback = drawback;
     }
 
-    public BlessingFilter(NeowReward.NeowRewardType rewardType, String searchCard) {
-        this.rewardType = rewardType;
-        this.searchCards = new HashMap<>();
-        this.searchCards.put(searchCard, 1);
-    }
-
     public BlessingFilter(NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
         this.rewardType = rewardType;
         this.searchCards = searchCards;
+    }
+
+    public BlessingFilter(NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback) {
+        this.rewardType = rewardType;
+        this.searchCards = searchCards;
+        this.drawback = drawback;
     }
 
     public boolean isSeedValid(long seed) {
