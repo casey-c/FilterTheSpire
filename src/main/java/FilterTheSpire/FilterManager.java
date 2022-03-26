@@ -55,9 +55,13 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setBossSwapIs(String relic) {
-        NthBossRelicFilter filter = new NthBossRelicFilter(Collections.singletonList(relic));
-        setValidatorFromString("bossSwapIs", filter);
+    public static void setBossSwapIs(String relic, int encounterIndex) {
+        if (!relic.isEmpty()){
+            NthBossRelicFilter filter = new NthBossRelicFilter(Collections.singletonList(relic), encounterIndex);
+            filters.put("bossSwapIsOneOf" + encounterIndex, filter);
+        } else {
+            filters.remove("bossSwapIsOneOf" + encounterIndex);
+        }
     }
 
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
