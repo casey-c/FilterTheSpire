@@ -24,7 +24,7 @@ public class BlessingSimulator {
 
     }
 
-    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards){
+    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback){
         switch (rewardType){
             case THREE_CARDS:
             case ONE_RANDOM_RARE_CARD:
@@ -46,7 +46,7 @@ public class BlessingSimulator {
             case TWO_FIFTY_GOLD:
             case TRANSFORM_TWO_CARDS:
             case TWENTY_PERCENT_HP_BONUS:
-                return isThirdBlessingValid(seed, rewardType, searchCards);
+                return isThirdBlessingValid(seed, rewardType, searchCards, drawback);
             default:
                 throw new IllegalArgumentException("Neow Bonus not found");
         }
@@ -91,7 +91,7 @@ public class BlessingSimulator {
         return blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
     }
 
-    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
+    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback) {
         Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
         blessingRng.random(); // Random Second Blessing
@@ -113,6 +113,9 @@ public class BlessingSimulator {
         }
 
         boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
+        if (drawback != null) {
+            isValid = isValid && drawbackNum == (drawback.ordinal() - 1);
+        }
         if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
             blessingRng.random();
             isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2);
