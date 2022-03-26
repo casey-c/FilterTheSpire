@@ -1,7 +1,10 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.helpers.ModHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SilentPool extends CharacterPool {
     private static SilentPool singleton = null;
@@ -14,7 +17,7 @@ public class SilentPool extends CharacterPool {
     }
 
     private SilentPool(){
-        cardPool = new ArrayList<>(Arrays.asList(
+        commonCardPool = new ArrayList<>(Arrays.asList(
             "Flying Knee",
             "Dodge and Roll",
             "Sucker Punch",
@@ -33,7 +36,10 @@ public class SilentPool extends CharacterPool {
             "Dagger Spray",
             "Deadly Poison",
             "Underhanded Strike",
-            "Cloak And Dagger",
+            "Cloak And Dagger"
+        ));
+
+        uncommonCardPool = new ArrayList<>(Arrays.asList(
             "Predator",
             "All Out Attack",
             "Distraction",
@@ -66,7 +72,10 @@ public class SilentPool extends CharacterPool {
             "Tactician",
             "Catalyst",
             "Leg Sweep",
-            "Crippling Poison",
+            "Crippling Poison"
+        ));
+
+        rareCardPool = new ArrayList<>(Arrays.asList(
             "Venomology",
             "Corpse Explosion",
             "Malaise",
@@ -107,5 +116,22 @@ public class SilentPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("TwistedFunnel");
+    }
+
+    public List<String> getCardPool() {
+        ArrayList<CharacterPool> colors = new ArrayList<>();
+        if (ModHelper.isModEnabled("Purple Cards")) {
+            colors.add(WatcherPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Blue Cards")) {
+            colors.add(DefectPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Red Cards")) {
+            colors.add(IroncladPool.getInstance());
+        }
+        colors.add(SilentPool.getInstance());
+        return CardPoolHelper.getOrderedCardPoolForColors(colors);
     }
 }

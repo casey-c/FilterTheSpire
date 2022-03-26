@@ -3,18 +3,26 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import basemod.ModLabeledToggleButton;
+import basemod.ModToggleButton;
+import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
@@ -22,6 +30,14 @@ import java.util.function.Consumer;
 public class BossSwapFilterScreen implements IRelicFilterScreen {
     private TreeSet<String> bossRelics = new TreeSet<>();
     private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
+    ModLabeledToggleButton neowBonusToggle;
+
+    private static final float INFO_LEFT = 1120.0f;
+    private static final float INFO_BOTTOM_CHECK = 670.0f;
+    private static final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
+    private static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
+
+    private static final float INFO_WIDTH = 371.0f;
 
     public BossSwapFilterScreen() {
         setup();
@@ -41,15 +57,8 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
 
     // Don't allow unswappable relics to enter the pool
     private void removeClassUpgradedRelics() {
-        Consumer<String> remove = (relicName) -> {
-            if (bossRelics.contains(relicName))
-                bossRelics.remove(relicName);
-        };
-
-        remove.accept("Black Blood");
-        remove.accept("Ring of the Serpent");
-        remove.accept("FrozenCore");
-        remove.accept("HolyWater");
+        Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
+                .forEach(bossRelics::remove);
     }
 
     private void makeUIObjects() {
@@ -75,6 +84,31 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 iy++;
             }
         }
+
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
+                INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
+                INFO_BOTTOM_CHECK, // same as above
+                Settings.CREAM_COLOR,
+                FontHelper.charDescFont,
+                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true),
+                null,
+                (modLabel) -> {},
+                (button) -> {
+                    FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
+                }) {
+            // Override the update of the toggle button to add an informational tool tip when hovered
+            @Override
+            public void update() {
+                super.update();
+
+                // Unfortunately, the hb is private so we have to use reflection here
+                Hitbox hb = ReflectionHacks.getPrivate(toggle, ModToggleButton.class, "hb");
+
+                if (hb != null && hb.hovered) {
+                    TipHelper.renderGenericTip(INFO_LEFT * Settings.scale, (INFO_BOTTOM_CHECK - 40.0f) * Settings.scale, "Info", "If checked, you will be guaranteed to see all four Neow options regardless of whether or not the previous run made it to the act one boss. NL NL Disabling this patch makes the experience more like the base game, but you may not have access to the boss swap option.");
+                }
+            }
+        };
     }
     private void loadFromConfig() {
         ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
@@ -98,30 +132,29 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         for (RelicUIObject x : relicUIObjects.values())
             x.render(sb);
 
+        neowBonusToggle.render(sb);
+
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
-        float infoLeft = 1120.0f;
-        float infoTopMain = 667.0f;
-        float infoTopControls = 472.0f;
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
-                infoLeft * Settings.scale,
-                infoTopMain * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_TOP_MAIN * Settings.scale,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                infoLeft * Settings.scale,
-                infoTopControls * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_TOP_CONTROLS * Settings.scale,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
     }
@@ -140,8 +173,10 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
     }
 
     public void update() {
-        for (RelicUIObject x : relicUIObjects.values())
+        for (RelicUIObject x : relicUIObjects.values()){
             x.update();
+        }
+        neowBonusToggle.update();
     }
 
     // --------------------------------------------------------------------------------

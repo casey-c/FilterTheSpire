@@ -1,7 +1,10 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.helpers.ModHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class IroncladPool extends CharacterPool {
     private static IroncladPool singleton = null;
@@ -14,7 +17,7 @@ public class IroncladPool extends CharacterPool {
     }
 
     private IroncladPool() {
-        cardPool = new ArrayList<>(Arrays.asList(
+        commonCardPool = new ArrayList<>(Arrays.asList(
             "Sword Boomerang",
             "Perfected Strike",
             "Heavy Blade",
@@ -34,7 +37,10 @@ public class IroncladPool extends CharacterPool {
             "Flex",
             "Warcry",
             "Cleave",
-            "Anger",
+            "Anger"
+        ));
+
+        uncommonCardPool = new ArrayList<>(Arrays.asList(
             "Evolve",
             "Uppercut",
             "Ghostly Armor",
@@ -70,7 +76,10 @@ public class IroncladPool extends CharacterPool {
             "Dual Wield",
             "Power Through",
             "Inflame",
-            "Spot Weakness",
+            "Spot Weakness"
+        ));
+
+        rareCardPool = new ArrayList<>(Arrays.asList(
             "Double Tap",
             "Demon Form",
             "Bludgeon",
@@ -108,5 +117,22 @@ public class IroncladPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Brimstone");
+    }
+
+    public List<String> getCardPool() {
+        ArrayList<CharacterPool> colors = new ArrayList<>();
+        if (ModHelper.isModEnabled("Purple Cards")) {
+            colors.add(WatcherPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Blue Cards")) {
+            colors.add(DefectPool.getInstance());
+        }
+
+        if (ModHelper.isModEnabled("Green Cards")) {
+            colors.add(SilentPool.getInstance());
+        }
+        colors.add(IroncladPool.getInstance());
+        return CardPoolHelper.getOrderedCardPoolForColors(colors);
     }
 }

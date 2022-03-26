@@ -2,6 +2,7 @@ package FilterTheSpire.factory;
 
 import FilterTheSpire.utils.*;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
@@ -42,7 +43,19 @@ public class CharacterPoolFactory {
     }
 
     public static List<String> getCardPool(AbstractPlayer.PlayerClass chosenClass){
-        CharacterPool pool = getCharacterPool(chosenClass);
-        return pool.cardPool;
+        CharacterPool pool;
+        ArrayList<String> cardPool = new ArrayList<>();
+        if (ModHelper.isModEnabled("Diverse")){
+            ArrayList<CharacterPool> colors = new ArrayList<>();
+            colors.add(WatcherPool.getInstance());
+            colors.add(DefectPool.getInstance());
+            colors.add(SilentPool.getInstance());
+            colors.add(IroncladPool.getInstance());
+            cardPool.addAll(CardPoolHelper.getOrderedCardPoolForColors(colors));
+        } else {
+            pool = getCharacterPool(chosenClass);
+            cardPool.addAll(pool.getCardPool());
+        }
+        return cardPool;
     }
 }

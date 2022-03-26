@@ -30,7 +30,7 @@ import java.util.logging.Filter;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
-    private static final String version = "0.1.5";
+    private static final String version = "0.1.6";
     public static void initialize() { new FilterTheSpire(); }
 
     // Used by the patches to not double up VFX and SFX
@@ -90,7 +90,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             return;
         }
 
-        if (firstTimeThrough && Settings.isStandardRun()) {
+        if (firstTimeThrough && !Settings.seedSet) {
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
 

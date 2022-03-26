@@ -3,9 +3,7 @@ package FilterTheSpire;
 import FilterTheSpire.filters.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 @SpireInitializer
 public class FilterManager {
@@ -15,10 +13,17 @@ public class FilterManager {
     public static void initialize() { getInstance(); }
 
     private static HashMap<String, AbstractFilter> filters = new HashMap<>();
+    private static List<AbstractFilter> sortedList = null;
 
     // Returns true if all filters pass for the given seed
     public static boolean validateFilters(long seed) {
-        return filters.values().stream().allMatch(v -> v.isSeedValid(seed));
+        return sortedList.stream().allMatch(v -> v.isSeedValid(seed));
+    }
+
+    // Sort the filters so we short circuit on the least intensive filters first
+    public static void sortFilters(){
+        sortedList = new ArrayList<>(filters.values());
+        sortedList.sort(Comparator.comparingInt(AbstractFilter::getSortOrder));
     }
 
     public static boolean hasFilters() {
@@ -56,8 +61,12 @@ public class FilterManager {
     }
 
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
-        NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
-        filters.put("bossSwapIsOneOf", filter);
+        if (relicIDs.size() > 0){
+            NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
+            filters.put("bossSwapIsOneOf", filter);
+        } else {
+            filters.remove("bossSwapIsOneOf");
+        }
     }
 
     // --------------------------------------------------------------------------------
@@ -96,15 +105,27 @@ public class FilterManager {
     }
 
     public static void setShopFiltersFromValidList(ArrayList<String> relicIds) {
-        NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
-        filters.put("shopRelicIsOneOf", filter);
+        if (relicIds.size() > 0){
+            NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
+            filters.put("shopRelicIsOneOf", filter);
+        } else {
+            filters.remove("shopRelicIsOneOf");
+        }
     }
 
     // --------------------------------------------------------------------------------
 
     public static void setNthRelicFromValidList(ArrayList<String> relicIds) {
-        NeowRelicFilter filter = new NeowRelicFilter(relicIds);
-        filters.put("nthRelicIsOneOf", filter);
+        setNthRelicFromValidList(relicIds, 0);
+    }
+
+    public static void setNthRelicFromValidList(ArrayList<String> relicIds, int encounterIndex) {
+        if (relicIds.size() > 0) {
+            NeowRelicFilter filter = new NeowRelicFilter(relicIds, encounterIndex);
+            filters.put("nthRelicIsOneOf" + encounterIndex, filter);
+        } else {
+            filters.remove("nthRelicIsOneOf" + encounterIndex);
+        }
     }
 
     // --------------------------------------------------------------------------------

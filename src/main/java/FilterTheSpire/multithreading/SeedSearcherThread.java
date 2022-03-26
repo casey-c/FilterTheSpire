@@ -26,6 +26,8 @@ public class SeedSearcherThread extends Thread {
 
     @Override
     public void run() {
+        FilterManager.sortFilters();
+
         while(parent.isRunning()) {
             ++seedsExamined;
 

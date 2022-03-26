@@ -6,9 +6,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class RelicRngSimulator {
     private static RelicRngSimulator singleton = null;
@@ -24,58 +22,43 @@ public class RelicRngSimulator {
 
     }
 
-    public static final int UncommonRelicRng = 0;
-    public static final int RareRelicRng = 1;
-    public static final int CommonRelicRng = 2;
-    public static final int ShopRelicRng = 3;
-    public static final int BossRelicRng = 4;
-
-    public List<String> getRelicPool(long seed, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops) {
+    public List<String> getRelicPools(long seed, AbstractRelic.RelicTier relicTier) {
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        return getRelicPool(relicRng, relicTier, rngGeneratorLoops);
+        return getRelicPools(relicRng).get(relicTier);
     }
 
-    private List<String> getRelicPool(Random relicRng, AbstractRelic.RelicTier relicTier, int rngGeneratorLoops){
-        for (int i = 0; i < rngGeneratorLoops; i++) {
-            relicRng.randomLong();
+    private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(Random relicRng) {
+        HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
+        List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);
+        for (AbstractRelic.RelicTier rarity: rarities) {
+            List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, rarity));
+            Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
+            map.put(rarity, relicPool);
         }
 
-        List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, relicTier));
-        Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
-        return relicPool;
+        return map;
     }
 
     /**
      * Tries to find the Nth relic drop by simulating the rarities and generates the relic pool for that rarity
      * @param searchRelics: Relic Ids to search for
      * @param seed: Seed to search
-     * @param encounterIndex: Which relic we want to find
+     * @param encounterIndex: Which number relic we want to find
      * @return if Nth relic is in the search relic Ids
      */
     public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
+        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(relicRng);
+
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         for (int i = 0; i < encounterIndex; i++){
             relicRngRarities.add(returnRandomRelicTier(relicRng));
         }
+
         AbstractRelic.RelicTier encounterRelicTier = returnRandomRelicTier(relicRng);
         int rarityOccurrences = Collections.frequency(relicRngRarities, encounterRelicTier);
-        int relicPoolRngLoops;
-        switch (encounterRelicTier){
-            case RARE:
-                relicPoolRngLoops = RareRelicRng;
-                break;
-            case UNCOMMON:
-                relicPoolRngLoops = UncommonRelicRng;
-                break;
-            case COMMON:
-                relicPoolRngLoops = CommonRelicRng;
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-        List<String> relicList = getRelicPool(relicRng, encounterRelicTier, relicPoolRngLoops);
-        return searchRelics.contains(relicList.get(rarityOccurrences));
+
+        return searchRelics.contains(relicList.get(encounterRelicTier).get(rarityOccurrences));
     }
 
     private AbstractRelic.RelicTier returnRandomRelicTier(Random relicRng) {
