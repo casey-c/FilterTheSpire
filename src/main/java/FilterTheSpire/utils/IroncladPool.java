@@ -119,7 +119,7 @@ public class IroncladPool extends CharacterPool {
         shopRelicPool.add("Brimstone");
     }
 
-    public List<String> getCardPool() {
+    public List<String> getCardPool(boolean shouldReverseCardOrder) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -133,6 +133,6 @@ public class IroncladPool extends CharacterPool {
             colors.add(SilentPool.getInstance());
         }
         colors.add(IroncladPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCardOrder);
     }
 }

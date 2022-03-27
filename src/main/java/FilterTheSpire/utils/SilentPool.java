@@ -118,7 +118,7 @@ public class SilentPool extends CharacterPool {
         shopRelicPool.add("TwistedFunnel");
     }
 
-    public List<String> getCardPool() {
+    public List<String> getCardPool(boolean shouldReverseCardOrder) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -132,6 +132,6 @@ public class SilentPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(SilentPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCardOrder);
     }
 }

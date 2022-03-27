@@ -42,7 +42,13 @@ public class CharacterPoolFactory {
         }
     }
 
-    public static List<String> getCardPool(AbstractPlayer.PlayerClass chosenClass){
+    /**
+     * Returns the card pool for the character.
+     * @param chosenClass: class of the character pool
+     * @param shouldReverseCardOrder: should be TRUE if the card pool is reversed, seems very rare
+     * @return all cards in the chosen Character's pool in a deterministic order
+     */
+    public static List<String> getCardPool(AbstractPlayer.PlayerClass chosenClass, boolean shouldReverseCardOrder){
         CharacterPool pool;
         ArrayList<String> cardPool = new ArrayList<>();
         if (ModHelper.isModEnabled("Diverse")){
@@ -51,10 +57,10 @@ public class CharacterPoolFactory {
             colors.add(DefectPool.getInstance());
             colors.add(SilentPool.getInstance());
             colors.add(IroncladPool.getInstance());
-            cardPool.addAll(CardPoolHelper.getOrderedCardPoolForColors(colors));
+            cardPool.addAll(CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCardOrder));
         } else {
             pool = getCharacterPool(chosenClass);
-            cardPool.addAll(pool.getCardPool());
+            cardPool.addAll(pool.getCardPool(shouldReverseCardOrder));
         }
         return cardPool;
     }

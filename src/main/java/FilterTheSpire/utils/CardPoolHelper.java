@@ -5,9 +5,11 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class CardPoolHelper {
-    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors){
+    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCardOrder){
         ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
         cardRarities.add(AbstractCard.CardRarity.COMMON);
         cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
@@ -20,19 +22,21 @@ public class CardPoolHelper {
                 CharacterPool color = colors.get(i);
                 switch (rarity){
                     case COMMON:
-                        cardPool.addAll(color.commonCardPool);
+                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.commonCardPool, shouldReverseCardOrder));
                         break;
                     case UNCOMMON:
-                        cardPool.addAll(color.uncommonCardPool);
+                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.uncommonCardPool, shouldReverseCardOrder));
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
-                            cardPool.addAll(getUncommonColorlessCards());
+                            cardPool.addAll(getCardsInReversedOrderIfNeeded(getUncommonColorlessCards(), shouldReverseCardOrder));
                         }
                         break;
                     case RARE:
-                        cardPool.addAll(color.rareCardPool);
+                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.rareCardPool, shouldReverseCardOrder));
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
+                            cardPool.addAll(getCardsInReversedOrderIfNeeded(getRareColorlessCards(), shouldReverseCardOrder));
+
                             cardPool.addAll(getRareColorlessCards());
                         }
                         break;
@@ -40,6 +44,14 @@ public class CardPoolHelper {
             }
         }
         return cardPool;
+    }
+
+    private static List<String> getCardsInReversedOrderIfNeeded(List<String> cards, boolean shouldReverseCardOrder){
+        ArrayList<String> resultingCardList = new ArrayList<>(cards);
+        if (shouldReverseCardOrder) {
+            Collections.reverse(resultingCardList);
+        }
+        return resultingCardList;
     }
 
     private static ArrayList<String> getUncommonColorlessCards(){

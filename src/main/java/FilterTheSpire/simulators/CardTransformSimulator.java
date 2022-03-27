@@ -27,7 +27,11 @@ public class CardTransformSimulator {
     }
 
     public boolean isValid(Random cardRng, HashMap<String, Integer> searchCards, int transformCount) {
-        List<String> cardPool = CharacterPoolFactory.getCardPool(AbstractDungeon.player.chosenClass);
+        return isValid(cardRng, searchCards, transformCount, false);
+    }
+
+    public boolean isValid(Random cardRng, HashMap<String, Integer> searchCards, int transformCount, boolean shouldReverseCardOrder) {
+        List<String> cardPool = CharacterPoolFactory.getCardPool(AbstractDungeon.player.chosenClass, shouldReverseCardOrder);
         ArrayList<String> results = new ArrayList<>();
 
         Set<String> cardList = searchCards.keySet();

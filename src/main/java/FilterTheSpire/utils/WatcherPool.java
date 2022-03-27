@@ -116,7 +116,7 @@ public class WatcherPool extends CharacterPool {
         shopRelicPool.add("Melange");
     }
 
-    public List<String> getCardPool() {
+    public List<String> getCardPool(boolean shouldReverseCardOrder) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         // for some reason she adds her own color twice
         if (ModHelper.isModEnabled("Purple Cards")) {
@@ -135,6 +135,6 @@ public class WatcherPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(WatcherPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCardOrder);
     }
 }
