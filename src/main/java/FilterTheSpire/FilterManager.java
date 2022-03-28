@@ -101,6 +101,10 @@ public class FilterManager {
         filters.put("pandorasTmp", new PandorasCardFilter(searchCards));
     }
 
+    public static void setAstrolabeCardFilter(HashMap<String, Integer> searchCards) {
+        filters.put("astrolabeFilter", new AstrolabeCardFilter(searchCards));
+    }
+
     // --------------------------------------------------------------------------------
 
     public static void setFirstShopRelicIs(String relic) {
