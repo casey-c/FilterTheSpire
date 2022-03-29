@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CardPoolHelper {
-    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCardOrder){
+    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
         ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
         cardRarities.add(AbstractCard.CardRarity.COMMON);
         cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
@@ -22,21 +22,19 @@ public class CardPoolHelper {
                 CharacterPool color = colors.get(i);
                 switch (rarity){
                     case COMMON:
-                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.commonCardPool, shouldReverseCardOrder));
+                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.commonCardPool, shouldReverseCommonCardPool));
                         break;
                     case UNCOMMON:
-                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.uncommonCardPool, shouldReverseCardOrder));
+                        cardPool.addAll(color.uncommonCardPool);
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
-                            cardPool.addAll(getCardsInReversedOrderIfNeeded(getUncommonColorlessCards(), shouldReverseCardOrder));
+                            cardPool.addAll(getUncommonColorlessCards());
                         }
                         break;
                     case RARE:
-                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.rareCardPool, shouldReverseCardOrder));
+                        cardPool.addAll(color.rareCardPool);
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
-                            cardPool.addAll(getCardsInReversedOrderIfNeeded(getRareColorlessCards(), shouldReverseCardOrder));
-
                             cardPool.addAll(getRareColorlessCards());
                         }
                         break;

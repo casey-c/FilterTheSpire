@@ -159,5 +159,5 @@ public abstract class CharacterPool {
         ));
     }
 
-    public abstract List<String> getCardPool(boolean shouldReverseCardOrder);
+    public abstract List<String> getCardPool(boolean shouldReverseCommonCardPool);
 }

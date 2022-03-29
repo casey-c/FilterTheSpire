@@ -71,7 +71,7 @@ public class BlessingSimulator {
             blessingRng.random(0, 3);
             if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
                 blessingRng.random();
-                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, shouldReverseCardPoolOrder());
+                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
             } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
                 isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
             }
@@ -120,13 +120,8 @@ public class BlessingSimulator {
         }
         if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
             blessingRng.random();
-            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, shouldReverseCardPoolOrder());
+            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
         }
         return isValid;
-    }
-
-    // Don't ask why this is needed. Silent's card pool is reversed on the Neow Transforms, everyone else's is fine
-    private boolean shouldReverseCardPoolOrder(){
-        return AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.THE_SILENT;
     }
 }

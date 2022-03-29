@@ -19,6 +19,6 @@ public class AstrolabeCardFilter extends AbstractFilter {
     public boolean isSeedValid(long seed) {
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MISC);
         cardRng.random();
-        return CardTransformSimulator.getInstance().isValid(cardRng, searchCards, totalTransformCount, false);
+        return CardTransformSimulator.getInstance().isValid(cardRng, searchCards, totalTransformCount, true);
     }
 }

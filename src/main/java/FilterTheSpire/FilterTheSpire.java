@@ -74,9 +74,10 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     @Override
     public void receivePostDungeonInitialize() {
 //        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("Tantrum", 1);
+//        cards.put("Apotheosis", 1);
 //        cards.put("Accuracy", 1);
 //        FilterManager.setPandorasCardFilter(cards);
+//        FilterManager.setAstrolabeCardFilter(cards);
 //        FilterManager.setValidatorFromString(
 //                "blessingFilter2",
 //                new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards, NeowReward.NeowRewardDrawback.TEN_PERCENT_HP_LOSS)
