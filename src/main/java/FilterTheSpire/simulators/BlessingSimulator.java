@@ -2,6 +2,7 @@ package FilterTheSpire.simulators;
 
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import com.megacrit.cardcrawl.random.Random;
@@ -69,7 +70,8 @@ public class BlessingSimulator {
             blessingRng.random();
             blessingRng.random(0, 3);
             if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
-                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1);
+                blessingRng.random();
+                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
             } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
                 isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
             }
@@ -118,7 +120,7 @@ public class BlessingSimulator {
         }
         if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
             blessingRng.random();
-            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2);
+            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
         }
         return isValid;
     }
