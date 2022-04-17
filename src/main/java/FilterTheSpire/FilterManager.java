@@ -2,6 +2,8 @@ package FilterTheSpire;
 
 import FilterTheSpire.filters.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.helpers.EventHelper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -143,6 +145,15 @@ public class FilterManager {
             filters.put("nthRelicIsOneOf" + encounterIndex, filter);
         } else {
             filters.remove("nthRelicIsOneOf" + encounterIndex);
+        }
+    }
+
+    public static void addEventFilter(String event){
+        if (event != null && event.length() > 0) {
+            Act1EventFilter filter = new Act1EventFilter(event);
+            filters.put("eventFilter", filter);
+        } else {
+            filters.remove("eventFilter");
         }
     }
 
