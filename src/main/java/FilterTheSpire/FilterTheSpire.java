@@ -154,6 +154,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
             // Ending criteria
             if (fadeTime < 0.0f) {
                 currentlyFading = false;
+                System.out.println("Total seeds searched: " + totalSearched);
                 totalSearched = "";
                 setColorOpacities(1.0f);
             }

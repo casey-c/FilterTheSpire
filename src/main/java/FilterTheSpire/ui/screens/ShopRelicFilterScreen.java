@@ -187,6 +187,6 @@ public class ShopRelicFilterScreen implements IRelicFilterScreen {
     public void refreshFilters() {
         ArrayList<String> enabledRelics = getEnabledRelics();
         FilterTheSpire.config.setShopRelicFilter(enabledRelics);
-        FilterManager.setShopFiltersFromValidList(enabledRelics);
+        FilterManager.setShopFiltersFromValidList(enabledRelics, 0);
     }
 }
