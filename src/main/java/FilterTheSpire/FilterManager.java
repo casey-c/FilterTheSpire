@@ -4,6 +4,7 @@ import FilterTheSpire.filters.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SpireInitializer
 public class FilterManager {
@@ -64,6 +65,16 @@ public class FilterManager {
         }
     }
 
+    public static void setBossSwapIs(String relic, List<Integer> possibleEncounterIndices) {
+        String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+        if (!relic.isEmpty()){
+            NthBossRelicFilter filter = new NthBossRelicFilter(Collections.singletonList(relic), possibleEncounterIndices);
+            filters.put("bossSwapIsOneOf" + indices, filter);
+        } else {
+            filters.remove("bossSwapIsOneOf" + indices);
+        }
+    }
+
     public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
         if (relicIDs.size() > 0){
             NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
@@ -107,17 +118,16 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setFirstShopRelicIs(String relic) {
-        NthShopRelicFilter filter = new NthShopRelicFilter(Collections.singletonList(relic));
-        setValidatorFromString("shopRelicIs", filter);
+    public static void setShopRelicFilter(String relic, int encounterIndex) {
+        setShopFiltersFromValidList(Collections.singletonList(relic), encounterIndex);
     }
 
-    public static void setShopFiltersFromValidList(ArrayList<String> relicIds) {
+    public static void setShopFiltersFromValidList(List<String> relicIds, int encounterIndex) {
         if (relicIds.size() > 0){
-            NthShopRelicFilter filter = new NthShopRelicFilter(relicIds);
-            filters.put("shopRelicIsOneOf", filter);
+            NthShopRelicFilter filter = new NthShopRelicFilter(relicIds, encounterIndex);
+            filters.put("shopRelicIsOneOf"+encounterIndex, filter);
         } else {
-            filters.remove("shopRelicIsOneOf");
+            filters.remove("shopRelicIsOneOf"+encounterIndex);
         }
     }
 
