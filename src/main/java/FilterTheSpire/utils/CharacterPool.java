@@ -1,5 +1,8 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.random.Random;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -160,4 +163,17 @@ public abstract class CharacterPool {
     }
 
     public abstract List<String> getCardPool(boolean shouldReverseCommonCardPool);
+
+    public String getCard(AbstractCard.CardRarity rarity, Random rng){
+        switch(rarity) {
+            case COMMON:
+                return commonCardPool.get(rng.random(commonCardPool.size() - 1));
+            case UNCOMMON:
+                return uncommonCardPool.get(rng.random(uncommonCardPool.size() - 1));
+            case RARE:
+                return rareCardPool.get(rng.random(rareCardPool.size() - 1));
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 }
