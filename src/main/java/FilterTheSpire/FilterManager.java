@@ -139,10 +139,20 @@ public class FilterManager {
 
     public static void setNthRelicFromValidList(ArrayList<String> relicIds, int encounterIndex) {
         if (relicIds.size() > 0) {
-            NeowRelicFilter filter = new NeowRelicFilter(relicIds, encounterIndex);
+            NthRelicFilter filter = new NthRelicFilter(relicIds, encounterIndex);
             filters.put("nthRelicIsOneOf" + encounterIndex, filter);
         } else {
             filters.remove("nthRelicIsOneOf" + encounterIndex);
+        }
+    }
+
+    public static void setRelicsInEncounters(ArrayList<String> relicIds, List<Integer> encounterIndices) {
+        String indices = encounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+        if (relicIds.size() > 0) {
+            RelicsInEncountersFilter filter = new RelicsInEncountersFilter(relicIds, encounterIndices);
+            filters.put("relicInEncounters" + indices, filter);
+        } else {
+            filters.remove("relicInEncounters" + indices);
         }
     }
 
