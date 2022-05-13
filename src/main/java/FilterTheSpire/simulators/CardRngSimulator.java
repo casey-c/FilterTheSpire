@@ -7,6 +7,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.rooms.MonsterRoom;
 
 import java.util.*;
 
@@ -47,8 +48,12 @@ public class CardRngSimulator {
             dropCounts.put(cardId, 0);
         }
 
+        MonsterRoom room = new MonsterRoom();
         for (int i = 0; i <= maxEncounter; i++){
             // I think this doesn't work because the rarity depends on the current room node
+            int random = cardRng.random(99);
+            random += AbstractDungeon.cardBlizzRandomizer;
+            room.getCardRarity(random);
             AbstractCard.CardRarity rarity = AbstractDungeon.rollRarity(cardRng);
 
             while(containsDupe) {
