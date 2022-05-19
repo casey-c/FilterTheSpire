@@ -5,8 +5,6 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class CardPoolHelper {
     public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
@@ -22,7 +20,11 @@ public class CardPoolHelper {
                 CharacterPool color = colors.get(i);
                 switch (rarity){
                     case COMMON:
-                        cardPool.addAll(getCardsInReversedOrderIfNeeded(color.commonCardPool, shouldReverseCommonCardPool));
+                        if (shouldReverseCommonCardPool){
+                            cardPool.addAll(color.reversedCommonCardPool);
+                        } else {
+                            cardPool.addAll(color.commonCardPool);
+                        }
                         break;
                     case UNCOMMON:
                         cardPool.addAll(color.uncommonCardPool);
@@ -42,14 +44,6 @@ public class CardPoolHelper {
             }
         }
         return cardPool;
-    }
-
-    private static List<String> getCardsInReversedOrderIfNeeded(List<String> cards, boolean shouldReverseCardOrder){
-        ArrayList<String> resultingCardList = new ArrayList<>(cards);
-        if (shouldReverseCardOrder) {
-            Collections.reverse(resultingCardList);
-        }
-        return resultingCardList;
     }
 
     private static ArrayList<String> getUncommonColorlessCards(){

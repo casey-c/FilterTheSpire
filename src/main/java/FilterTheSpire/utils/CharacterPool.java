@@ -5,12 +5,16 @@ import com.megacrit.cardcrawl.random.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class CharacterPool {
     public List<String> commonCardPool;
+    public List<String> reversedCommonCardPool;
     public List<String> uncommonCardPool;
+    public List<String> reversedUncommonCardPool;
     public List<String> rareCardPool;
+    public List<String> reversedRareCardPool;
     public ArrayList<String> commonRelicPool;;
     public ArrayList<String> uncommonRelicPool;
     public ArrayList<String> rareRelicPool;
@@ -167,13 +171,24 @@ public abstract class CharacterPool {
     public String getCard(AbstractCard.CardRarity rarity, Random rng){
         switch(rarity) {
             case COMMON:
-                return commonCardPool.get(rng.random(commonCardPool.size() - 1));
+                return reversedCommonCardPool.get(rng.random(commonCardPool.size() - 1));
             case UNCOMMON:
-                return uncommonCardPool.get(rng.random(uncommonCardPool.size() - 1));
+                return reversedUncommonCardPool.get(rng.random(uncommonCardPool.size() - 1));
             case RARE:
-                return rareCardPool.get(rng.random(rareCardPool.size() - 1));
+                return reversedRareCardPool.get(rng.random(rareCardPool.size() - 1));
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    protected void setReversedCardPools(){
+        reversedCommonCardPool = new ArrayList<>(commonCardPool);
+        Collections.reverse(reversedCommonCardPool);
+
+        reversedUncommonCardPool = new ArrayList<>(uncommonCardPool);
+        Collections.reverse(reversedUncommonCardPool);
+
+        reversedRareCardPool = new ArrayList<>(rareCardPool);
+        Collections.reverse(reversedRareCardPool);
     }
 }

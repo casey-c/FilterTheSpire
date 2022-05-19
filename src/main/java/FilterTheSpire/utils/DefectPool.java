@@ -114,6 +114,8 @@ public class DefectPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Runic Capacitor");
+
+        setReversedCardPools();
     }
 
     public List<String> getCardPool(boolean shouldReverseCommonCardPool) {

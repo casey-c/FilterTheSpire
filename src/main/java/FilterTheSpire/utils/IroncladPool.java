@@ -117,6 +117,8 @@ public class IroncladPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Brimstone");
+
+        setReversedCardPools();
     }
 
     public List<String> getCardPool(boolean shouldReverseCommonCardPool) {

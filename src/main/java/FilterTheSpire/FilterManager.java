@@ -148,13 +148,12 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setNthCardReward(HashMap<String, Integer> searchCards, List<Integer> encounterIndices){
-        String indices = encounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+    public static void setNthCardReward(HashMap<String, Integer> searchCards, int combatIndex){
         if (searchCards.size() > 0) {
-            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, encounterIndices);
-            filters.put("nthCardRewardFilter" + indices, filter);
+            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, combatIndex);
+            filters.put("nthCardRewardFilter" + combatIndex, filter);
         } else {
-            filters.remove("nthCardRewardFilter" + indices);
+            filters.remove("nthCardRewardFilter" + combatIndex);
         }
     }
 

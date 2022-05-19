@@ -114,6 +114,8 @@ public class WatcherPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Melange");
+
+        setReversedCardPools();
     }
 
     public List<String> getCardPool(boolean shouldReverseCommonCardPool) {

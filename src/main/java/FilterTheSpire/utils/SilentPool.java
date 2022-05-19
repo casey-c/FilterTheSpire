@@ -116,6 +116,8 @@ public class SilentPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("TwistedFunnel");
+
+        setReversedCardPools();
     }
 
     public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
