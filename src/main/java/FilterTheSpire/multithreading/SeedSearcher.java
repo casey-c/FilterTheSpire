@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 public class SeedSearcher {
     // TODO: make this depend on the user's OS
-    private static final int numThreads = 6; // Runtime.getRuntime().availableProcessors();
+    private static final int numThreads = 2; // Runtime.getRuntime().availableProcessors();
     private SeedSearcher() { }
 
     // --------------------------------------------------------------------------------
