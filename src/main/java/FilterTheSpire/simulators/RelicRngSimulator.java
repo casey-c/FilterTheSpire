@@ -66,6 +66,8 @@ public class RelicRngSimulator {
      * This should find ALL the search relics in the number of relic encounters specified
      * So find N relics in X relic encounters, not every encounter needs to encounter a search relic as long as all
      * relics are found in the number of relic encounters (ex: find 3 specific relics in 5 relic encounters)
+     * This mostly applies to random Relics from events or Elites, because Treasure Chest affects the rarity in a way
+     * we can't determine if they'll get the Chest room before/after some number of Relic encounters.
      * @param searchRelics: Relic Ids to search for
      * @param seed: Seed to search
      * @param encounterIndices: ordered list of encounters (so first 3 relic encounters would be [0, 1, 2]

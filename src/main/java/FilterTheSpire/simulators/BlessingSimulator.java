@@ -118,9 +118,16 @@ public class BlessingSimulator {
         if (drawback != null) {
             isValid = isValid && drawbackNum == (drawback.ordinal() - 1);
         }
-        if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
-            blessingRng.random();
-            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
+        if (!searchCards.isEmpty()){
+            switch (rewardType){
+                case TRANSFORM_TWO_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
+                    break;
+                case RANDOM_COLORLESS_2:
+                    isValid = isValid && searchCards.containsKey(CardRngSimulator.getInstance().nthColorlessRareCard(seed, 0));
+                    break;
+            }
         }
         return isValid;
     }
