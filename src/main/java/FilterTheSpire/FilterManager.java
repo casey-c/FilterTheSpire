@@ -148,6 +148,17 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
+    public static void setNthCardReward(HashMap<String, Integer> searchCards, int combatIndex){
+        if (searchCards.size() > 0) {
+            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, combatIndex);
+            filters.put("nthCardRewardFilter" + combatIndex, filter);
+        } else {
+            filters.remove("nthCardRewardFilter" + combatIndex);
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+
     public static void print() {
         System.out.println("FilterManager has " + filters.size() + " filters");
     }
