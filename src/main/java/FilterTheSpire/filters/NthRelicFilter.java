@@ -4,11 +4,11 @@ import FilterTheSpire.simulators.RelicRngSimulator;
 
 import java.util.List;
 
-public class NeowRelicFilter extends AbstractFilter {
+public class NthRelicFilter extends AbstractFilter {
     private List<String> relicNames;
     private int encounterIndex;
 
-    public NeowRelicFilter(List<String> relicNames, int encounterIndex) {
+    public NthRelicFilter(List<String> relicNames, int encounterIndex) {
         this.relicNames = relicNames;
         this.encounterIndex = encounterIndex;
     }
