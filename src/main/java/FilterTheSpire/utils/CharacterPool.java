@@ -171,11 +171,11 @@ public abstract class CharacterPool {
     public String getCard(AbstractCard.CardRarity rarity, Random rng){
         switch(rarity) {
             case COMMON:
-                return reversedCommonCardPool.get(rng.random(commonCardPool.size() - 1));
+                return reversedCommonCardPool.get(rng.random(reversedCommonCardPool.size() - 1));
             case UNCOMMON:
-                return reversedUncommonCardPool.get(rng.random(uncommonCardPool.size() - 1));
+                return reversedUncommonCardPool.get(rng.random(reversedUncommonCardPool.size() - 1));
             case RARE:
-                return reversedRareCardPool.get(rng.random(rareCardPool.size() - 1));
+                return reversedRareCardPool.get(rng.random(reversedRareCardPool.size() - 1));
             default:
                 throw new IllegalArgumentException();
         }
