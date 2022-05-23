@@ -158,9 +158,9 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setNthCardReward(HashMap<String, Integer> searchCards, int combatIndex){
-        if (searchCards.size() > 0) {
-            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, combatIndex);
+    public static void setNthCardReward(String searchCard, int combatIndex){
+        if (searchCard != null && !searchCard.isEmpty()) {
+            NthCardRewardFilter filter = new NthCardRewardFilter(searchCard, combatIndex);
             filters.put("nthCardRewardFilter" + combatIndex, filter);
         } else {
             filters.remove("nthCardRewardFilter" + combatIndex);
