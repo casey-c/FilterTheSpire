@@ -2,18 +2,16 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardRngSimulator;
 
-import java.util.HashMap;
-
 public class NthCardRewardFilter extends AbstractFilter {
-    private HashMap<String, Integer> searchCards;
+    private String searchCard;
     private int combatIndex;
 
-    public NthCardRewardFilter(HashMap<String, Integer> searchCards, int combatIndex){
-        this.searchCards = searchCards;
+    public NthCardRewardFilter(String searchCard, int combatIndex){
+        this.searchCard = searchCard;
         this.combatIndex = combatIndex;
     }
 
     public boolean isSeedValid(long seed) {
-        return  CardRngSimulator.getInstance().getNthCardReward(seed, this.combatIndex, this.searchCards);
+        return  CardRngSimulator.getInstance().getNthCardReward(seed, this.combatIndex, this.searchCard);
     }
 }

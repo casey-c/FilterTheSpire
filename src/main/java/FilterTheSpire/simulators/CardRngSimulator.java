@@ -38,22 +38,16 @@ public class CardRngSimulator {
      * basically assumes X combats in a row without card rewards in between, so should only be called with very low numbers
      * @param seed: seed as long
      * @param combatIndex: which combat card should appear in (0 = first combat)
-     * @param searchCards: which card(s) to search in the card reward
+     * @param searchCard: which card to search in the card reward
      * @return true if the search cards were found in the combat rewards
      */
-    public boolean getNthCardReward(long seed, int combatIndex, HashMap<String, Integer> searchCards) {
+    public boolean getNthCardReward(long seed, int combatIndex, String searchCard) {
         int numCardsInReward = 3;
         CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
 
         boolean containsDupe = true;
         CardRewardInfo cardReward = null;
-
-        Set<String> cardList = searchCards.keySet();
-        HashMap<String, Integer> dropCounts = new HashMap<>();
-        for (String cardId: cardList) {
-            dropCounts.put(cardId, 0);
-        }
 
         int cardBlizzRandomizer = AbstractDungeon.cardBlizzRandomizer;
         MonsterRoom room = new MonsterRoom();
@@ -88,13 +82,11 @@ public class CardRngSimulator {
                     }
                 }
 
-                if (cardReward != null) {
-                    rewards.add(cardReward);
-                    if (cardList.contains(cardReward.cardId) && i == combatIndex){
-                        dropCounts.computeIfPresent(cardReward.cardId, (k, v) -> v + 1);
-                    }
+                if (searchCard.equals(cardReward.cardId) && i == combatIndex){
+                    return true;
                 }
 
+                rewards.add(cardReward);
                 containsDupe = true;
             }
 
@@ -105,15 +97,7 @@ public class CardRngSimulator {
             }
         }
 
-        boolean isValid = true;
-        for (String cardId : cardList) {
-            if (searchCards.get(cardId) > dropCounts.get(cardId)) {
-                isValid = false;
-                break;
-            }
-        }
-
-        return isValid;
+        return false;
     }
 
     private static class CardRewardInfo {
