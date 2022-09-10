@@ -1,9 +1,9 @@
 package FilterTheSpire;
 
 import FilterTheSpire.filters.*;
+import FilterTheSpire.utils.SeedHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.events.AbstractEvent;
-import com.megacrit.cardcrawl.helpers.EventHelper;
+import com.megacrit.cardcrawl.neow.NeowReward;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +36,8 @@ public class FilterManager {
     public static int numFilters() {
         return filters.size();
     }
+
+    public static HashMap<SeedHelper.RNGType, Integer> preRngCounters = new HashMap<>();
 
     // --------------------------------------------------------------------------------
 
@@ -141,7 +143,7 @@ public class FilterManager {
 
     public static void setNthRelicFromValidList(ArrayList<String> relicIds, int encounterIndex) {
         if (relicIds.size() > 0) {
-            NeowRelicFilter filter = new NeowRelicFilter(relicIds, encounterIndex);
+            NthRelicFilter filter = new NthRelicFilter(relicIds, encounterIndex);
             filters.put("nthRelicIsOneOf" + encounterIndex, filter);
         } else {
             filters.remove("nthRelicIsOneOf" + encounterIndex);
@@ -157,7 +159,47 @@ public class FilterManager {
         }
     }
 
+    public static void setRelicsInEncounters(ArrayList<String> relicIds, List<Integer> encounterIndices) {
+        String indices = encounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+        if (relicIds.size() > 0) {
+            RelicsInEncountersFilter filter = new RelicsInEncountersFilter(relicIds, encounterIndices);
+            filters.put("relicInEncounters" + indices, filter);
+        } else {
+            filters.remove("relicInEncounters" + indices);
+        }
+    }
+
     // --------------------------------------------------------------------------------
+
+    public static void setNthCardReward(String searchCard, int combatIndex){
+        setNthCardReward(Collections.singletonList(searchCard), combatIndex);
+    }
+
+    public static void setNthCardReward(List<String> searchCards, int combatIndex){
+        if (searchCards != null && !searchCards.isEmpty()) {
+            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, combatIndex);
+            filters.put("nthCardRewardFilter" + combatIndex, filter);
+        } else {
+            filters.remove("nthCardRewardFilter" + combatIndex);
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public static void setBlessingFilter(NeowReward.NeowRewardType blessing, HashMap<String, Integer> cards, NeowReward.NeowRewardDrawback drawback){
+        if (blessing == NeowReward.NeowRewardType.RANDOM_COLORLESS_2) {
+            preRngCounters.put(SeedHelper.RNGType.CARD, 3);
+        }
+        BlessingFilter filter = new BlessingFilter(blessing, cards, drawback);
+        filters.put("blessingFilter", filter);
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public static void setCallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic){
+        CallingBellFilter filter = new CallingBellFilter(commonRelic, uncommonRelic, rareRelic);
+        filters.put("callingBellFilter", filter);
+    }
 
     public static void print() {
         System.out.println("FilterManager has " + filters.size() + " filters");
