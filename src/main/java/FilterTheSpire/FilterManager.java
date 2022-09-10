@@ -1,7 +1,9 @@
 package FilterTheSpire;
 
 import FilterTheSpire.filters.*;
+import FilterTheSpire.utils.SeedHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.neow.NeowReward;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +36,8 @@ public class FilterManager {
     public static int numFilters() {
         return filters.size();
     }
+
+    public static HashMap<SeedHelper.RNGType, Integer> preRngCounters = new HashMap<>();
 
     // --------------------------------------------------------------------------------
 
@@ -159,8 +163,12 @@ public class FilterManager {
     // --------------------------------------------------------------------------------
 
     public static void setNthCardReward(String searchCard, int combatIndex){
-        if (searchCard != null && !searchCard.isEmpty()) {
-            NthCardRewardFilter filter = new NthCardRewardFilter(searchCard, combatIndex);
+        setNthCardReward(Collections.singletonList(searchCard), combatIndex);
+    }
+
+    public static void setNthCardReward(List<String> searchCards, int combatIndex){
+        if (searchCards != null && !searchCards.isEmpty()) {
+            NthCardRewardFilter filter = new NthCardRewardFilter(searchCards, combatIndex);
             filters.put("nthCardRewardFilter" + combatIndex, filter);
         } else {
             filters.remove("nthCardRewardFilter" + combatIndex);
@@ -168,6 +176,21 @@ public class FilterManager {
     }
 
     // --------------------------------------------------------------------------------
+
+    public static void setBlessingFilter(NeowReward.NeowRewardType blessing, HashMap<String, Integer> cards, NeowReward.NeowRewardDrawback drawback){
+        if (blessing == NeowReward.NeowRewardType.RANDOM_COLORLESS_2) {
+            preRngCounters.put(SeedHelper.RNGType.CARD, 3);
+        }
+        BlessingFilter filter = new BlessingFilter(blessing, cards, drawback);
+        filters.put("blessingFilter", filter);
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public static void setCallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic){
+        CallingBellFilter filter = new CallingBellFilter(commonRelic, uncommonRelic, rareRelic);
+        filters.put("callingBellFilter", filter);
+    }
 
     public static void print() {
         System.out.println("FilterManager has " + filters.size() + " filters");

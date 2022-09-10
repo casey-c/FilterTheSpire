@@ -19,7 +19,6 @@ public class NthColorlessRareCardFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        String cardId = CardRngSimulator.getInstance().nthColorlessRareCard(seed, encounterNumber);
-        return cardNames.contains(cardId);
+        return CardRngSimulator.getInstance().isValidColorlessRareCardFromNeow(seed, cardNames);
     }
 }

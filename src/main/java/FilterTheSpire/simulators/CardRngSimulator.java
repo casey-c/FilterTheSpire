@@ -1,5 +1,6 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.FilterManager;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import FilterTheSpire.utils.CharacterPool;
 import FilterTheSpire.utils.SeedHelper;
@@ -9,6 +10,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rooms.MonsterRoom;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CardRngSimulator {
     private static CardRngSimulator singleton = null;
@@ -24,13 +26,15 @@ public class CardRngSimulator {
 
     }
 
-    public String nthColorlessRareCard(long seed, int encounterIndex) {
+    public boolean isValidColorlessRareCardFromNeow(long seed, List<String> searchCards) {
+        int numCardsInReward = 3;
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
-        AbstractCard card = AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE);
-        for(int i = 0; i < encounterIndex; ++i) {
-            card = AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE);
+        List<String> cardRewards = new ArrayList<>();
+        for(int i = 0; i < numCardsInReward; ++i) {
+            cardRewards.add(AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE).cardID);
         }
-        return card.cardID;
+        cardRewards.retainAll(searchCards);
+        return cardRewards.size() > 0;
     }
 
     /**
@@ -38,13 +42,18 @@ public class CardRngSimulator {
      * basically assumes X combats in a row without card rewards in between, so should only be called with very low numbers
      * @param seed: seed as long
      * @param combatIndex: which combat card should appear in (0 = first combat)
-     * @param searchCard: which card to search in the card reward
+     * @param searchCards: which cards to search in the card reward
      * @return true if the search cards were found in the combat rewards
      */
-    public boolean getNthCardReward(long seed, int combatIndex, String searchCard) {
+    public boolean getNthCardReward(long seed, int combatIndex, List<String> searchCards) {
         int numCardsInReward = 3;
+
         CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
+
+        for (int i = 0; i < FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0); i++) {
+            cardRng.randomLong();
+        }
 
         boolean containsDupe = true;
         CardRewardInfo cardReward = null;
@@ -82,12 +91,13 @@ public class CardRngSimulator {
                     }
                 }
 
-                if (searchCard.equals(cardReward.cardId) && i == combatIndex){
-                    return true;
-                }
-
                 rewards.add(cardReward);
                 containsDupe = true;
+            }
+
+            List<String> cardIds = rewards.stream().map(c -> c.cardId).collect(Collectors.toList());
+            if (cardIds.containsAll(searchCards) && i == combatIndex){
+                return true;
             }
 
             for (CardRewardInfo card: rewards) {
