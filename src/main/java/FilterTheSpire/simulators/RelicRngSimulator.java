@@ -27,6 +27,11 @@ public class RelicRngSimulator {
         return getRelicPools(relicRng).get(relicTier);
     }
 
+    public HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed) {
+        Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
+        return getRelicPools(relicRng);
+    }
+
     private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(Random relicRng) {
         HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
         List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);

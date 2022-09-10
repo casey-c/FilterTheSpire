@@ -2,7 +2,6 @@ package FilterTheSpire.simulators;
 
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import com.megacrit.cardcrawl.random.Random;
@@ -125,7 +124,7 @@ public class BlessingSimulator {
                     isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
                     break;
                 case RANDOM_COLORLESS_2:
-                    isValid = isValid && searchCards.containsKey(CardRngSimulator.getInstance().nthColorlessRareCard(seed, 0));
+                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessRareCardFromNeow(seed, new ArrayList<>(searchCards.keySet()));
                     break;
             }
         }
