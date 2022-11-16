@@ -1,5 +1,6 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.FilterManager;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -10,6 +11,8 @@ import java.util.*;
 
 public class RelicRngSimulator {
     private static RelicRngSimulator singleton = null;
+    public long seed = 0;
+    HashMap<AbstractRelic.RelicTier, List<String>> currentRelicPool = null;
 
     public static RelicRngSimulator getInstance(){
         if (singleton == null){
@@ -24,24 +27,29 @@ public class RelicRngSimulator {
 
     public List<String> getRelicPools(long seed, AbstractRelic.RelicTier relicTier) {
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        return getRelicPools(relicRng).get(relicTier);
+        return getRelicPools(seed, relicRng).get(relicTier);
     }
 
     public HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed) {
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        return getRelicPools(relicRng);
+        return getRelicPools(seed, relicRng);
     }
 
-    private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(Random relicRng) {
-        HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
-        List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);
-        for (AbstractRelic.RelicTier rarity: rarities) {
-            List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, rarity));
-            Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
-            map.put(rarity, relicPool);
+    private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed, Random relicRng) {
+        if (this.seed != seed){
+            HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
+            List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);
+            for (AbstractRelic.RelicTier rarity: rarities) {
+                List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, rarity));
+                Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
+                map.put(rarity, relicPool);
+            }
+
+            this.seed = seed;
+            this.currentRelicPool = map;
         }
 
-        return map;
+        return this.currentRelicPool;
     }
 
     /**
@@ -54,7 +62,7 @@ public class RelicRngSimulator {
      */
     public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(relicRng);
+        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng);
 
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         for (int i = 0; i < encounterIndex; i++){
@@ -63,7 +71,7 @@ public class RelicRngSimulator {
 
         AbstractRelic.RelicTier encounterRelicTier = returnRandomRelicTier(relicRng);
         int rarityOccurrences = Collections.frequency(relicRngRarities, encounterRelicTier);
-        return searchRelics.contains(relicList.get(encounterRelicTier).get(rarityOccurrences));
+        return searchRelics.contains(relicList.get(encounterRelicTier).get(rarityOccurrences + FilterManager.neowBonusRelicsCount.getOrDefault(encounterRelicTier, 0)));
     }
 
 
@@ -85,7 +93,7 @@ public class RelicRngSimulator {
             throw new IllegalArgumentException();
         }
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(relicRng);
+        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng);
 
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         int encounters = 0;
@@ -97,10 +105,10 @@ public class RelicRngSimulator {
                 encounters++;
             }
             AbstractRelic.RelicTier encounterRelicTier = returnRandomRelicTier(relicRng);
-            int rarityOccurrences = Collections.frequency(relicRngRarities, encounterRelicTier);
-            String encounteredRelic = relicList.get(encounterRelicTier).get(rarityOccurrences);
-            relicsFound.add(encounteredRelic);
             relicRngRarities.add(encounterRelicTier);
+            int rarityOccurrences = Collections.frequency(relicRngRarities, encounterRelicTier);
+            String encounteredRelic = relicList.get(encounterRelicTier).get(rarityOccurrences - 1 + FilterManager.neowBonusRelicsCount.getOrDefault(encounterRelicTier, 0));
+            relicsFound.add(encounteredRelic);
             encounters++;
         }
 

@@ -96,7 +96,7 @@ public class CardRngSimulator {
             }
 
             List<String> cardIds = rewards.stream().map(c -> c.cardId).collect(Collectors.toList());
-            if (cardIds.containsAll(searchCards) && i == combatIndex){
+            if (cardIds.containsAll(searchCards)){
                 return true;
             }
 

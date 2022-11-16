@@ -1,5 +1,6 @@
 package FilterTheSpire.multithreading;
 
+import FilterTheSpire.utils.CardPoolHelper;
 import FilterTheSpire.utils.RestartHelper;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
@@ -91,6 +92,7 @@ public class SeedSearcher {
                 SeedHelper.cachedSeed = null;
 
                 RestartHelper.restart();
+                CardPoolHelper.resetCharacterCardPoolsForSettings();
 
                 return;
             }

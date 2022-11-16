@@ -10,11 +10,11 @@ import java.util.List;
 
 public abstract class CharacterPool {
     public List<String> commonCardPool;
-    public List<String> reversedCommonCardPool;
+    private List<String> reversedCommonCardPool;
     public List<String> uncommonCardPool;
-    public List<String> reversedUncommonCardPool;
+    private List<String> reversedUncommonCardPool;
     public List<String> rareCardPool;
-    public List<String> reversedRareCardPool;
+    private List<String> reversedRareCardPool;
     public ArrayList<String> commonRelicPool;;
     public ArrayList<String> uncommonRelicPool;
     public ArrayList<String> rareRelicPool;
@@ -168,27 +168,49 @@ public abstract class CharacterPool {
 
     public abstract List<String> getCardPool(boolean shouldReverseCommonCardPool);
 
+    public abstract List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool);
+
     public String getCard(AbstractCard.CardRarity rarity, Random rng){
         switch(rarity) {
             case COMMON:
-                return reversedCommonCardPool.get(rng.random(reversedCommonCardPool.size() - 1));
+                return getReversedCommonCardPool().get(rng.random(reversedCommonCardPool.size() - 1));
             case UNCOMMON:
-                return reversedUncommonCardPool.get(rng.random(reversedUncommonCardPool.size() - 1));
+                return getReversedUncommonCardPool().get(rng.random(reversedUncommonCardPool.size() - 1));
             case RARE:
-                return reversedRareCardPool.get(rng.random(reversedRareCardPool.size() - 1));
+                return getReversedRareCardPool().get(rng.random(reversedRareCardPool.size() - 1));
             default:
                 throw new IllegalArgumentException();
         }
     }
 
-    protected void setReversedCardPools(){
-        reversedCommonCardPool = new ArrayList<>(commonCardPool);
-        Collections.reverse(reversedCommonCardPool);
+    public List<String> getReversedCommonCardPool() {
+        if (reversedCommonCardPool == null){
+            reversedCommonCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.COMMON), false));
+            Collections.reverse(reversedCommonCardPool);
+        }
+        return reversedCommonCardPool;
+    }
 
-        reversedUncommonCardPool = new ArrayList<>(uncommonCardPool);
-        Collections.reverse(reversedUncommonCardPool);
+    public List<String> getReversedUncommonCardPool() {
+        if (reversedUncommonCardPool == null){
+            reversedUncommonCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.UNCOMMON), false));
+            Collections.reverse(reversedUncommonCardPool);
+        }
+        return reversedUncommonCardPool;
+    }
 
-        reversedRareCardPool = new ArrayList<>(rareCardPool);
-        Collections.reverse(reversedRareCardPool);
+    public List<String> getReversedRareCardPool() {
+        if (reversedRareCardPool == null){
+            reversedRareCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.RARE), false));
+            Collections.reverse(reversedRareCardPool);
+        }
+
+        return reversedRareCardPool;
+    }
+
+    protected void resetCardPoolsForSettings() {
+        reversedCommonCardPool = null;
+        reversedUncommonCardPool = null;
+        reversedRareCardPool = null;
     }
 }

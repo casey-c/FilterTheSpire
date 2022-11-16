@@ -5,9 +5,11 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import com.megacrit.cardcrawl.random.Random;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 // This logic can be found in NeowReward.class
 public class BlessingSimulator {
@@ -24,7 +26,11 @@ public class BlessingSimulator {
 
     }
 
-    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback){
+    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, String relicId, NeowReward.NeowRewardDrawback drawback){
+        HashMap<AbstractRelic.RelicTier, List<String>> relicPools = null;
+        if (rewardType == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC || rewardType == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
+            relicPools = RelicRngSimulator.getInstance().getRelicPools(seed);
+        }
         switch (rewardType){
             case THREE_CARDS:
             case ONE_RANDOM_RARE_CARD:
@@ -38,7 +44,7 @@ public class BlessingSimulator {
             case TEN_PERCENT_HP_BONUS:
             case THREE_ENEMY_KILL:
             case HUNDRED_GOLD:
-                return isSecondBlessingValid(seed, rewardType);
+                return isSecondBlessingValid(seed, rewardType, relicId, relicPools);
             case RANDOM_COLORLESS_2:
             case REMOVE_TWO:
             case ONE_RARE_RELIC:
@@ -46,7 +52,7 @@ public class BlessingSimulator {
             case TWO_FIFTY_GOLD:
             case TRANSFORM_TWO_CARDS:
             case TWENTY_PERCENT_HP_BONUS:
-                return isThirdBlessingValid(seed, rewardType, searchCards, drawback);
+                return isThirdBlessingValid(seed, rewardType, searchCards, relicId, drawback, relicPools);
             default:
                 throw new IllegalArgumentException("Neow Bonus not found");
         }
@@ -78,7 +84,7 @@ public class BlessingSimulator {
         return isValid;
     }
 
-    private boolean isSecondBlessingValid(long seed, NeowReward.NeowRewardType rewardType) {
+    private boolean isSecondBlessingValid(long seed, NeowReward.NeowRewardType rewardType, String relicId, HashMap<AbstractRelic.RelicTier, List<String>> relicPools) {
         Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
 
@@ -89,10 +95,15 @@ public class BlessingSimulator {
         neowRewardTypes.add(NeowReward.NeowRewardType.THREE_ENEMY_KILL);
         neowRewardTypes.add(NeowReward.NeowRewardType.HUNDRED_GOLD);
 
-        return blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
+        boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
+        if (relicId != null && rewardType == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC){
+            isValid &= relicPools.get(AbstractRelic.RelicTier.COMMON).get(0).equals(relicId);
+        }
+
+        return isValid;
     }
 
-    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback) {
+    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, String relicId, NeowReward.NeowRewardDrawback drawback, HashMap<AbstractRelic.RelicTier, List<String>> relicPools) {
         Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
         blessingRng.random(); // Random Second Blessing
@@ -127,6 +138,9 @@ public class BlessingSimulator {
                     isValid = isValid && CardRngSimulator.getInstance().isValidColorlessRareCardFromNeow(seed, new ArrayList<>(searchCards.keySet()));
                     break;
             }
+        }
+        if (relicId != null && rewardType == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
+            isValid &= relicPools.get(AbstractRelic.RelicTier.RARE).get(0).equals(relicId);
         }
         return isValid;
     }

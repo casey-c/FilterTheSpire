@@ -5,6 +5,7 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CardPoolHelper {
     public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
@@ -12,6 +13,10 @@ public class CardPoolHelper {
         cardRarities.add(AbstractCard.CardRarity.COMMON);
         cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
         cardRarities.add(AbstractCard.CardRarity.RARE);
+        return getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
+    }
+
+    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool){
         ArrayList<String> cardPool = new ArrayList<>();
 
         boolean hasColorlessEnabled = ModHelper.isModEnabled("Colorless Cards");
@@ -21,7 +26,7 @@ public class CardPoolHelper {
                 switch (rarity){
                     case COMMON:
                         if (shouldReverseCommonCardPool){
-                            cardPool.addAll(color.reversedCommonCardPool);
+                            cardPool.addAll(color.getReversedCommonCardPool());
                         } else {
                             cardPool.addAll(color.commonCardPool);
                         }
@@ -89,5 +94,13 @@ public class CardPoolHelper {
             "The Bomb",
             "Sadistic Nature"
         ));
+    }
+
+    // the card pools are set depending on the settings the player sets (custom runs usually), reset it when we find a seed for the next run
+    public static void resetCharacterCardPoolsForSettings() {
+        IroncladPool.getInstance().resetCardPoolsForSettings();
+        SilentPool.getInstance().resetCardPoolsForSettings();
+        DefectPool.getInstance().resetCardPoolsForSettings();
+        WatcherPool.getInstance().resetCardPoolsForSettings();
     }
 }
