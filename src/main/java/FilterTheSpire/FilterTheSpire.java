@@ -1,14 +1,7 @@
 package FilterTheSpire;
 
-import FilterTheSpire.filters.BlessingFilter;
-import FilterTheSpire.filters.NthColorlessRareCardFilter;
-import FilterTheSpire.filters.PandorasCardFilter;
 import FilterTheSpire.multithreading.SeedSearcher;
-import FilterTheSpire.simulators.CardTransformSimulator;
-import FilterTheSpire.utils.Config;
-import FilterTheSpire.utils.ExtraColors;
-import FilterTheSpire.utils.ExtraFonts;
-import FilterTheSpire.utils.SeedTesting;
+import FilterTheSpire.utils.*;
 import basemod.BaseMod;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
@@ -21,12 +14,6 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.neow.NeowReward;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.logging.Filter;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
@@ -53,17 +40,20 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
 //        FilterManager.setFirstBossIs("Slime Boss");
 //        FilterManager.setFirstEliteIs("3 Sentries");
-//        FilterManager.setFirstCombatIs("2 Louse");
+//        FilterManager.setFirstCombatIs("Jaw Worm");
 //        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("Apotheosis"), 1));
 
 //        FilterManager.setBossSwapIs("Pandora's Box");
 
         // for testing, try different rarities
 //        ArrayList<String> relicsToSearch = new ArrayList<>();
-//        relicsToSearch.add("Dead Branch");
-//        relicsToSearch.add("Toy Ornithopter");
-//        relicsToSearch.add("Shuriken");
-//        FilterManager.setNthRelicFromValidList(relicsToSearch);
+//        relicsToSearch.add(BagOfMarbles.ID);
+//        relicsToSearch.add(BagOfPreparation.ID);
+//        FilterManager.setRelicsInEncounters(relicsToSearch, Arrays.asList(1,2,3,4));
+//
+//        ArrayList<String> relicsToSearch2 = new ArrayList<>();
+//        relicsToSearch2.add(Girya.ID);
+//        FilterManager.setNthRelicFromValidList(relicsToSearch2, 0);
     }
 
     // --------------------------------------------------------------------------------
@@ -74,27 +64,21 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     @Override
     public void receivePostDungeonInitialize() {
 //        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("Apotheosis", 1);
-//        cards.put("Accuracy", 1);
+//        cards.put(Feed.ID, 2);
 //        FilterManager.setPandorasCardFilter(cards);
 //        FilterManager.setAstrolabeCardFilter(cards);
 //        FilterManager.setValidatorFromString(
 //                "blessingFilter2",
 //                new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards, NeowReward.NeowRewardDrawback.TEN_PERCENT_HP_LOSS)
 //        );
-//        FilterManager.setValidatorFromString("blessingFilter1", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, cards));
-//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD, "Glass Knife"));
-
+//        FilterManager.setCallingBellFilter(Vajra.ID, BlueCandle.ID, DuVuDoll.ID);
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
-
-            // TODO: debug remove
-//            SeedTesting.bossTest();
-
             return;
         }
 
         if (firstTimeThrough && !Settings.seedSet) {
+            CardPoolHelper.resetCharacterCardPoolsForSettings();
             FilterManager.sortFilters();
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
