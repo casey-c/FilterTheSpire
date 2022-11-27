@@ -13,6 +13,8 @@ public class RelicRngSimulator {
     private static RelicRngSimulator singleton = null;
     public long seed = 0;
     HashMap<AbstractRelic.RelicTier, List<String>> currentRelicPool = null;
+    private final List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);
+    private final int rarityCount = rarities.size();
 
     public static RelicRngSimulator getInstance(){
         if (singleton == null){
@@ -38,7 +40,6 @@ public class RelicRngSimulator {
     private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed, Random relicRng) {
         if (this.seed != seed){
             HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
-            List<AbstractRelic.RelicTier> rarities = Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE, AbstractRelic.RelicTier.SHOP, AbstractRelic.RelicTier.BOSS);
             for (AbstractRelic.RelicTier rarity: rarities) {
                 List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(AbstractDungeon.player.chosenClass, rarity));
                 Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
@@ -47,6 +48,9 @@ public class RelicRngSimulator {
 
             this.seed = seed;
             this.currentRelicPool = map;
+        }
+        else {
+            relicRng.setCounter(rarityCount);
         }
 
         return this.currentRelicPool;
