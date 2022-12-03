@@ -15,8 +15,6 @@ import java.util.ArrayList;
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class ShopRelicFilterScreen extends RelicFilterScreen {
-    public boolean isShowing = false;
-
     public ShopRelicFilterScreen() {
         super(AbstractRelic.RelicTier.SHOP);
     }
@@ -40,25 +38,30 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "First Shop Relic", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
 
-        float infoLeft = 1120.0f;
-        float infoTopMain = 667.0f;
-        float infoTopControls = 472.0f;
-
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Shop Relics will appear in the first Shop. If no relics are selected, it will choose from the entire pool.",
-                infoLeft * Settings.scale,
-                infoTopMain * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                (INFO_TOP_MAIN * Settings.scale) + 120F,
+                INFO_WIDTH * Settings.scale,
+                30.0f * Settings.scale,
+                Settings.CREAM_COLOR);
+
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipBodyFont,
+                "Before Ascension 16: 143-157 gold NL Ascension 16+: 157-172 gold",
+                INFO_LEFT * Settings.scale,
+                (INFO_TOP_MAIN * Settings.scale) - 75F,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                infoLeft * Settings.scale,
-                infoTopControls * Settings.scale,
-                371.0f * Settings.scale,
+                INFO_LEFT * Settings.scale,
+                INFO_TOP_CONTROLS * Settings.scale,
+                INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Color.GRAY);
     }
@@ -77,9 +80,5 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
         ArrayList<String> enabledRelics = getEnabledRelics();
         FilterTheSpire.config.setShopRelicFilter(enabledRelics);
         FilterManager.setShopFiltersFromValidList(enabledRelics, 0);
-    }
-
-    public void show() {
-        this.isShowing = true;
     }
 }

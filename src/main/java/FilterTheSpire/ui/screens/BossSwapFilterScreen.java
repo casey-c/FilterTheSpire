@@ -21,13 +21,6 @@ import java.util.Arrays;
 public class BossSwapFilterScreen extends RelicFilterScreen {
     private ModLabeledToggleButton neowBonusToggle;
 
-    private static final float INFO_LEFT = 1120.0f;
-    private static final float INFO_BOTTOM_CHECK = 670.0f;
-    private static final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
-    private static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
-
-    private static final float INFO_WIDTH = 371.0f;
-
     public BossSwapFilterScreen() {
         super(AbstractRelic.RelicTier.BOSS);
     }
@@ -74,10 +67,12 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 
-        for (RelicUIObject x : relicUIObjects.values())
-            x.render(sb);
+        for (RelicUIObject relic : relicUIObjects.values()){
+            relic.render(sb);
+        }
 
-        neowBonusToggle.render(sb);
+        this.returnButton.render(sb);
+        this.neowBonusToggle.render(sb);
 
         // Title text
         float titleLeft = 386.0f;
@@ -104,8 +99,13 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
     }
 
     public void update() {
-        for (RelicUIObject x : relicUIObjects.values()){
-            x.update();
+        this.returnButton.update();
+        for (RelicUIObject relic : relicUIObjects.values()){
+            relic.update();
+        }
+
+        if (this.returnButton.hb.clickStarted){
+            this.enableHitboxes(false);
         }
         neowBonusToggle.update();
     }

@@ -18,8 +18,13 @@ public abstract class RelicFilterScreen {
     public TreeSet<String> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
     private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
-    public final ActionButton returnButton = new ActionButton(256, 200, "Return");
-    private boolean isShowing = false;
+    public final ActionButton returnButton = new ActionButton(256, 450, "Back");
+    public boolean isShowing = false;
+    public static final float INFO_LEFT = 1120.0f;
+    public static  final float INFO_BOTTOM_CHECK = 670.0f;
+    public static  final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
+    public static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
+    public static  final float INFO_WIDTH = 371.0f;
 
     public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier){
         this.relicScreenTier = relicScreenTier;
@@ -33,7 +38,7 @@ public abstract class RelicFilterScreen {
         postSetup();
     }
 
-    public void populateRelics() {
+    protected void populateRelics() {
         ArrayList<String> relicPool = new ArrayList<>();
 
         RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
@@ -95,7 +100,7 @@ public abstract class RelicFilterScreen {
         }
     }
 
-    public void renderBg(SpriteBatch sb) {
+    private void renderBg(SpriteBatch sb) {
         // Draw our screen texture in the center
         sb.setColor(Color.WHITE);
         sb.draw(TEX_BG,
@@ -111,7 +116,7 @@ public abstract class RelicFilterScreen {
         renderForeground(sb);
     }
 
-    public void selectOnly(String id) {
+    protected void selectOnly(String id) {
         if (relicUIObjects.containsKey(id)) {
             clearAll();
             relicUIObjects.get(id).isEnabled = true;
@@ -119,7 +124,7 @@ public abstract class RelicFilterScreen {
         }
     }
 
-    public void invertAll() {
+    protected void invertAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = !obj.isEnabled;
         }
@@ -127,7 +132,7 @@ public abstract class RelicFilterScreen {
         refreshFilters();
     }
 
-    public void selectAll() {
+    protected void selectAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = true;
         }
@@ -135,7 +140,7 @@ public abstract class RelicFilterScreen {
         refreshFilters();
     }
 
-    public void clearAll() {
+    protected void clearAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = false;
         }
@@ -143,7 +148,7 @@ public abstract class RelicFilterScreen {
         refreshFilters();
     }
 
-    public ArrayList<String> getEnabledRelics() {
+    protected ArrayList<String> getEnabledRelics() {
         ArrayList<String> list = new ArrayList<>();
 
         for (RelicUIObject obj : relicUIObjects.values()) {
