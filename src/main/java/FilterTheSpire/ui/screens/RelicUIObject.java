@@ -12,9 +12,6 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 
 public class RelicUIObject {
-    private int size = 100;
-    private int hbSize = 75;
-    private int hbOffset = 50;
 
     private Hitbox hb;
 
@@ -24,20 +21,22 @@ public class RelicUIObject {
     private static final Texture TEX_SELECTED_BG = new Texture("FilterTheSpire/images/relic_bg.png");
 
     public boolean isEnabled = false;
-    private IRelicFilterScreen parent;
+    private RelicFilterScreen parent;
 
-    public RelicUIObject(IRelicFilterScreen parent, String relicID, float x, float y) {
+    public RelicUIObject(RelicFilterScreen parent, String relicID, float x, float y) {
         this.relicID = relicID;
         this.tex = ImageMaster.getRelicImg(relicID);
         this.x = x;
         this.y = y;
         this.parent = parent;
 
+        int hbSize = 75;
         hb = new Hitbox(hbSize * Settings.scale, hbSize * Settings.scale);
     }
 
     public void enableHitbox() {
         // Need to adjust them (hb are centered) -- this random guess is probably totally off
+        int hbOffset = 50;
         hb.move((x + hbOffset) * Settings.scale, (y + hbOffset) * Settings.scale);
     }
 
@@ -47,6 +46,7 @@ public class RelicUIObject {
 
     public void render(SpriteBatch sb) {
         // Grow a bit larger when hovered
+        int size = 100;
         float s = (hb.hovered) ? size * 1.10f : size;
 
         float roundedScaledX = Math.round(x * Settings.scale);

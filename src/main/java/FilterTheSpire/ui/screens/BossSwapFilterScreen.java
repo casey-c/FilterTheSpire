@@ -8,29 +8,18 @@ import basemod.ModToggleButton;
 import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.helpers.FontHelper;
-import com.megacrit.cardcrawl.helpers.Hitbox;
-import com.megacrit.cardcrawl.helpers.RelicLibrary;
-import com.megacrit.cardcrawl.helpers.TipHelper;
+import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
-public class BossSwapFilterScreen implements IRelicFilterScreen {
-    private TreeSet<String> bossRelics = new TreeSet<>();
-    private HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
-    ModLabeledToggleButton neowBonusToggle;
+public class BossSwapFilterScreen extends RelicFilterScreen {
+    private ModLabeledToggleButton neowBonusToggle;
 
     private static final float INFO_LEFT = 1120.0f;
     private static final float INFO_BOTTOM_CHECK = 670.0f;
@@ -40,50 +29,11 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
     private static final float INFO_WIDTH = 371.0f;
 
     public BossSwapFilterScreen() {
-        setup();
+        super(AbstractRelic.RelicTier.BOSS);
     }
 
-    private void populateRelics() {
-        ArrayList<String> relics = new ArrayList<>();
-
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.IRONCLAD);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.THE_SILENT);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.DEFECT);
-        RelicLibrary.populateRelicPool(relics, AbstractRelic.RelicTier.BOSS, AbstractPlayer.PlayerClass.WATCHER);
-
-        bossRelics.addAll(relics);
+    void postSetup() {
         removeClassUpgradedRelics();
-    }
-
-    // Don't allow unswappable relics to enter the pool
-    private void removeClassUpgradedRelics() {
-        Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
-                .forEach(bossRelics::remove);
-    }
-
-    private void makeUIObjects() {
-        // Note: relic textures are 128x128 originally, with some internal spacing
-        float left = 410.0f;
-        float top = 587.0f;
-
-        float spacing = 84.0f;
-
-        int ix = 0;
-        int iy = 0;
-        final int perRow = 5;
-
-        for (String id : bossRelics) {
-            float tx = left + ix * spacing;
-            float ty = top - iy * spacing;
-
-            relicUIObjects.put(id, new RelicUIObject(this, id, tx, ty));
-
-            ix++;
-            if (ix > perRow) {
-                ix = 0;
-                iy++;
-            }
-        }
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
                 INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
@@ -110,20 +60,15 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
             }
         };
     }
-    private void loadFromConfig() {
-        ArrayList<String> loaded = FilterTheSpire.config.getBossSwapFilter();
-        for (String relic : loaded) {
-            if (relicUIObjects.containsKey(relic))
-                relicUIObjects.get(relic).isEnabled = true;
-        }
 
-        refreshFilters();
+    // Don't allow unswappable relics to enter the pool
+    private void removeClassUpgradedRelics() {
+        Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
+                .forEach(relics::remove);
     }
 
-    private void setup() {
-        populateRelics();
-        makeUIObjects();
-        loadFromConfig();
+    ArrayList<String> getFilter() {
+        return FilterTheSpire.config.getBossSwapFilter();
     }
 
     public void renderForeground(SpriteBatch sb) {
@@ -138,7 +83,6 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
-
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
@@ -159,78 +103,11 @@ public class BossSwapFilterScreen implements IRelicFilterScreen {
                 Color.GRAY);
     }
 
-    public void enableHitboxes(boolean enabled) {
-        for (RelicUIObject obj : relicUIObjects.values()) {
-            if (enabled)
-                obj.enableHitbox();
-            else
-                obj.disableHitbox();
-        }
-    }
-
-    public void render(SpriteBatch sb) {
-        renderForeground(sb);
-    }
-
     public void update() {
         for (RelicUIObject x : relicUIObjects.values()){
             x.update();
         }
         neowBonusToggle.update();
-    }
-
-    // --------------------------------------------------------------------------------
-
-    public void clearAll() {
-        for (RelicUIObject obj : relicUIObjects.values()) {
-            obj.isEnabled = false;
-        }
-
-        refreshFilters();
-    }
-
-    private void select(String id) {
-        if (relicUIObjects.containsKey(id)) {
-            relicUIObjects.get(id).isEnabled = true;
-            refreshFilters();
-        }
-    }
-
-    public void selectOnly(String id) {
-        if (relicUIObjects.containsKey(id)) {
-            clearAll();
-            relicUIObjects.get(id).isEnabled = true;
-            refreshFilters();
-        }
-    }
-
-    public void invertAll() {
-        for (RelicUIObject obj : relicUIObjects.values()) {
-            obj.isEnabled = !obj.isEnabled;
-        }
-
-        refreshFilters();
-    }
-
-    public void selectAll() {
-        for (RelicUIObject obj : relicUIObjects.values()) {
-            obj.isEnabled = true;
-        }
-
-        refreshFilters();
-    }
-
-    // --------------------------------------------------------------------------------
-
-    public ArrayList<String> getEnabledRelics() {
-        ArrayList<String> list = new ArrayList<>();
-
-        for (RelicUIObject obj : relicUIObjects.values()) {
-            if (obj.isEnabled)
-                list.add(obj.relicID);
-        }
-
-        return list;
     }
 
     public void refreshFilters() {

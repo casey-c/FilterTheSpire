@@ -1,0 +1,162 @@
+package FilterTheSpire.ui.screens;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
+import runhistoryplus.ui.filters.ActionButton;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeSet;
+
+public abstract class RelicFilterScreen {
+    public AbstractRelic.RelicTier relicScreenTier;
+    public TreeSet<String> relics = new TreeSet<>();
+    public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
+    private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
+    public final ActionButton returnButton = new ActionButton(256, 200, "Return");
+    private boolean isShowing = false;
+
+    public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier){
+        this.relicScreenTier = relicScreenTier;
+        setup();
+    }
+
+    private void setup() {
+        populateRelics();
+        makeUIObjects();
+        loadFromConfig();
+        postSetup();
+    }
+
+    public void populateRelics() {
+        ArrayList<String> relicPool = new ArrayList<>();
+
+        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
+        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.THE_SILENT);
+        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.DEFECT);
+        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.WATCHER);
+
+        relics.addAll(relicPool);
+    }
+
+    private void makeUIObjects() {
+        // Note: relic textures are 128x128 originally, with some internal spacing
+        float left = 410.0f;
+        float top = 587.0f;
+
+        float spacing = 84.0f;
+
+        int ix = 0;
+        int iy = 0;
+        final int perRow = 5;
+
+        for (String id : relics) {
+            float tx = left + ix * spacing;
+            float ty = top - iy * spacing;
+
+            relicUIObjects.put(id, new RelicUIObject(this, id, tx, ty));
+
+            ix++;
+            if (ix > perRow) {
+                ix = 0;
+                iy++;
+            }
+        }
+    }
+
+    private void loadFromConfig() {
+        ArrayList<String> loaded = getFilter();
+        for (String relic : loaded) {
+            if (relicUIObjects.containsKey(relic))
+                relicUIObjects.get(relic).isEnabled = true;
+        }
+
+        refreshFilters();
+    }
+
+    public void enableHitboxes(boolean enabled) {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            if (enabled)
+                obj.enableHitbox();
+            else
+                obj.disableHitbox();
+        }
+
+        if (enabled && isShowing){
+            this.returnButton.show();
+        } else{
+            this.returnButton.hide();
+            isShowing = false;
+        }
+    }
+
+    public void renderBg(SpriteBatch sb) {
+        // Draw our screen texture in the center
+        sb.setColor(Color.WHITE);
+        sb.draw(TEX_BG,
+                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.scale)) * 0.5f),
+                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.scale)) * 0.5f),
+                Math.round(TEX_BG.getWidth() * Settings.scale),
+                Math.round(TEX_BG.getHeight() * Settings.scale)
+        );
+    }
+
+    public void render(SpriteBatch sb) {
+        renderBg(sb);
+        renderForeground(sb);
+    }
+
+    public void selectOnly(String id) {
+        if (relicUIObjects.containsKey(id)) {
+            clearAll();
+            relicUIObjects.get(id).isEnabled = true;
+            refreshFilters();
+        }
+    }
+
+    public void invertAll() {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            obj.isEnabled = !obj.isEnabled;
+        }
+
+        refreshFilters();
+    }
+
+    public void selectAll() {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            obj.isEnabled = true;
+        }
+
+        refreshFilters();
+    }
+
+    public void clearAll() {
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            obj.isEnabled = false;
+        }
+
+        refreshFilters();
+    }
+
+    public ArrayList<String> getEnabledRelics() {
+        ArrayList<String> list = new ArrayList<>();
+
+        for (RelicUIObject obj : relicUIObjects.values()) {
+            if (obj.isEnabled)
+                list.add(obj.relicID);
+        }
+
+        return list;
+    }
+
+    abstract ArrayList<String> getFilter();
+    abstract void postSetup();
+    abstract void renderForeground(SpriteBatch sb);
+    abstract void update();
+    abstract void refreshFilters();
+}
