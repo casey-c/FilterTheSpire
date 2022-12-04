@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 public abstract class RelicFilterScreen {
-    public AbstractRelic.RelicTier relicScreenTier;
     public TreeSet<String> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
     private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
@@ -27,24 +26,23 @@ public abstract class RelicFilterScreen {
     public static  final float INFO_WIDTH = 371.0f;
 
     public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier){
-        this.relicScreenTier = relicScreenTier;
-        setup();
+        setup(relicScreenTier);
     }
 
-    private void setup() {
-        populateRelics();
+    private void setup(AbstractRelic.RelicTier relicScreenTier) {
+        populateRelics(relicScreenTier);
         makeUIObjects();
         loadFromConfig();
         postSetup();
     }
 
-    protected void populateRelics() {
+    protected void populateRelics(AbstractRelic.RelicTier relicScreenTier) {
         ArrayList<String> relicPool = new ArrayList<>();
 
-        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
-        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.THE_SILENT);
-        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.DEFECT);
-        RelicLibrary.populateRelicPool(relicPool, this.relicScreenTier, AbstractPlayer.PlayerClass.WATCHER);
+        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
+        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.THE_SILENT);
+        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.DEFECT);
+        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.WATCHER);
 
         relics.addAll(relicPool);
     }

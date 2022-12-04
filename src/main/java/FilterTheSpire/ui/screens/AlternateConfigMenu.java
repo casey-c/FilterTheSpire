@@ -29,11 +29,11 @@ public class AlternateConfigMenu extends ModPanel {
     public AlternateConfigMenu(){
         super();
 
-        bossRelicButton = new ModLabeledButton("Choose Boss Relics", 400.0F, 460.0F, this, (self) -> {
+        bossRelicButton = new ModLabeledButton("Choose Boss Relics", 400.0F, 550.0F, this, (self) -> {
             bossRelicScreen.isShowing = true;
         });
 
-        shopRelicButton = new ModLabeledButton("Choose Shop Relics", 400.0F, 550.0F, this, (self) -> {
+        shopRelicButton = new ModLabeledButton("Choose Shop Relics", 400.0F, 460.0F, this, (self) -> {
             shopRelicScreen.isShowing = true;
         });
     }
