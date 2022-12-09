@@ -16,7 +16,7 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
         super(AbstractRelic.RelicTier.SHOP, FilterType.NthShopRelic);
     }
 
-    void postSetup() {}
+    void postRelicSetup() {}
 
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);

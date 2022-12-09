@@ -42,9 +42,9 @@ public abstract class RelicFilterScreen {
 
     private void setup() {
         populateRelics();
+        postRelicSetup();
         makeUIObjects();
         loadFromConfig();
-        postSetup();
     }
 
     protected void populateRelics() {
@@ -174,7 +174,7 @@ public abstract class RelicFilterScreen {
         FilterManager.setFilter(filterObject);
     }
 
-    abstract void postSetup();
+    abstract void postRelicSetup();
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
 }
