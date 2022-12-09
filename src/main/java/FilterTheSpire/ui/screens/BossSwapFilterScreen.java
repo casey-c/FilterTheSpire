@@ -1,6 +1,5 @@
 package FilterTheSpire.ui.screens;
 
-import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.FilterType;
@@ -13,7 +12,6 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /*
@@ -106,11 +104,5 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
             this.enableHitboxes(false);
         }
         neowBonusToggle.update();
-    }
-
-    public void refreshFilters() {
-        ArrayList<String> enabledRelics = getEnabledRelics();
-        FilterTheSpire.config.updateFilter(FilterType.NthBossRelic, enabledRelics);
-        FilterManager.setBossSwapFiltersFromValidList(enabledRelics, filterObject.encounterIndex);
     }
 }

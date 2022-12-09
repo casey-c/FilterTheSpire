@@ -44,9 +44,8 @@ public class Config {
         return currentFilters.activeFilters.getOrDefault(filterType, new FilterObject(filterType));
     }
 
-    public void updateFilter(FilterType filterType, List<String> enabledList){
-        FilterObject filter = new FilterObject(filterType, enabledList);
-        currentFilters.activeFilters.put(filter.filterType, filter);
+    public void updateFilter(FilterObject filterObject){
+        currentFilters.activeFilters.put(filterObject.filterType, filterObject);
 
         // update settings
         Gson gson = new Gson();

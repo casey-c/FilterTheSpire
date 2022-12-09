@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.ActionButton;
@@ -167,8 +168,13 @@ public abstract class RelicFilterScreen {
         return list;
     }
 
+    public void refreshFilters() {
+        filterObject.anyOf = getEnabledRelics();
+        FilterTheSpire.config.updateFilter(filterObject);
+        FilterManager.setFilter(filterObject);
+    }
+
     abstract void postSetup();
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
-    abstract void refreshFilters();
 }

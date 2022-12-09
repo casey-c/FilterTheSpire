@@ -9,7 +9,7 @@ public class FilterFactory {
             case Boss:
                 return new BossFilter(filterObject.anyOf);
             case NthBossRelic:
-                return new NthBossRelicFilter(filterObject.anyOf);
+                return new NthBossRelicFilter(filterObject.anyOf, filterObject.possibleEncounterIndices);
             case NthColorlessRareCard:
                 return new NthColorlessRareCardFilter(filterObject.anyOf);
             case NthCombat:
@@ -19,8 +19,7 @@ public class FilterFactory {
             case NthShopRelic:
                 return new NthShopRelicFilter(filterObject.anyOf);
             case PandorasCard:
-                // Since this is hardcoded to look for 6 blade dances, lets not even risk creating this yet
-                throw new NotImplementedException("PandorasCard");
+                return new PandorasCardFilter(filterObject.anyOf);
             default:
                 throw new NotImplementedException("Unknown filter type");
         }
