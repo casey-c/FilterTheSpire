@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.FilterType;
 import basemod.ModLabeledToggleButton;
 import basemod.ModToggleButton;
 import basemod.ReflectionHacks;
@@ -21,8 +22,9 @@ import java.util.Arrays;
 public class BossSwapFilterScreen extends RelicFilterScreen {
     private ModLabeledToggleButton neowBonusToggle;
 
+
     public BossSwapFilterScreen() {
-        super(AbstractRelic.RelicTier.BOSS);
+        super(AbstractRelic.RelicTier.BOSS, FilterType.NthBossRelic);
     }
 
     void postSetup() {
@@ -58,10 +60,6 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
     private void removeClassUpgradedRelics() {
         Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
                 .forEach(relics::remove);
-    }
-
-    ArrayList<String> getFilter() {
-        return FilterTheSpire.config.getBossSwapFilter();
     }
 
     public void renderForeground(SpriteBatch sb) {
@@ -112,7 +110,7 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
 
     public void refreshFilters() {
         ArrayList<String> enabledRelics = getEnabledRelics();
-        FilterTheSpire.config.setBossSwapFilter(enabledRelics);
-        FilterManager.setBossSwapFiltersFromValidList(enabledRelics);
+        FilterTheSpire.config.updateFilter(FilterType.NthBossRelic, enabledRelics);
+        FilterManager.setBossSwapFiltersFromValidList(enabledRelics, filterObject.encounterIndex);
     }
 }

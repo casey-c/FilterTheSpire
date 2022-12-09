@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.FilterType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -16,11 +17,7 @@ import java.util.ArrayList;
  */
 public class ShopRelicFilterScreen extends RelicFilterScreen {
     public ShopRelicFilterScreen() {
-        super(AbstractRelic.RelicTier.SHOP);
-    }
-
-    ArrayList<String> getFilter() {
-        return FilterTheSpire.config.getShopRelicFilter();
+        super(AbstractRelic.RelicTier.SHOP, FilterType.NthShopRelic);
     }
 
     void postSetup() {}
@@ -78,7 +75,7 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
 
     public void refreshFilters() {
         ArrayList<String> enabledRelics = getEnabledRelics();
-        FilterTheSpire.config.setShopRelicFilter(enabledRelics);
-        FilterManager.setShopFiltersFromValidList(enabledRelics, 0);
+        FilterTheSpire.config.updateFilter(FilterType.NthShopRelic, enabledRelics);
+        FilterManager.setShopFiltersFromValidList(enabledRelics, filterObject.encounterIndex);
     }
 }

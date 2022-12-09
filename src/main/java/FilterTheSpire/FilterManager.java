@@ -79,7 +79,7 @@ public class FilterManager {
         }
     }
 
-    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
+    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs, int encounterIndex) {
         if (relicIDs.size() > 0){
             NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
             filters.put("bossSwapIsOneOf", filter);
