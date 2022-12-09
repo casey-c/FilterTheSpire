@@ -31,9 +31,9 @@ public abstract class RelicFilterScreen {
 
     private void setup(AbstractRelic.RelicTier relicScreenTier) {
         populateRelics(relicScreenTier);
+        postRelicSetup();
         makeUIObjects();
         loadFromConfig();
-        postSetup();
     }
 
     protected void populateRelics(AbstractRelic.RelicTier relicScreenTier) {
@@ -158,7 +158,7 @@ public abstract class RelicFilterScreen {
     }
 
     abstract ArrayList<String> getFilter();
-    abstract void postSetup();
+    abstract void postRelicSetup();
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
     abstract void refreshFilters();

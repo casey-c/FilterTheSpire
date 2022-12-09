@@ -25,7 +25,7 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
         super(AbstractRelic.RelicTier.BOSS);
     }
 
-    void postSetup() {
+    void postRelicSetup() {
         removeClassUpgradedRelics();
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",

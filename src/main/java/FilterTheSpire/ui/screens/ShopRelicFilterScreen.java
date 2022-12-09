@@ -23,7 +23,7 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
         return FilterTheSpire.config.getShopRelicFilter();
     }
 
-    void postSetup() {}
+    void postRelicSetup() {}
 
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
