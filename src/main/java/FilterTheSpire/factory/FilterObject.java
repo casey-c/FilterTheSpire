@@ -2,18 +2,25 @@ package FilterTheSpire.factory;
 
 import FilterTheSpire.utils.FilterType;
 
-import java.util.List;
+import java.util.*;
 
 public class FilterObject {
-    protected FilterType filterType;
-    protected List<String> anyOf;
+    public FilterType filterType;
+    public List<String> anyOf;
     // Do we need an exclusion list? Seems like we only need the anyOf list
     protected List<String> noneOf;
     protected Integer actNumber; // Integer so it's a nullable reference type for serialization
-    protected Integer nthInsideAct;
+    public List<Integer> possibleEncounterIndices;
+
+    public FilterObject(FilterType filterType) {
+        this.filterType = filterType;
+        this.anyOf = new ArrayList<>();
+        this.possibleEncounterIndices = Collections.singletonList(0);
+    }
 
     public FilterObject(FilterType filterType, List<String> anyOf) {
         this.filterType = filterType;
         this.anyOf = anyOf;
+        this.possibleEncounterIndices = Collections.singletonList(0);
     }
 }

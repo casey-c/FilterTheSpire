@@ -1,6 +1,10 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterManager;
+import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.ActionButton;
+import FilterTheSpire.utils.FilterType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,27 +20,34 @@ import java.util.TreeSet;
 public abstract class RelicFilterScreen {
     public TreeSet<String> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
-    private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
-    public final ActionButton returnButton = new ActionButton(256, 450, "Back");
+    public FilterObject filterObject;
     public boolean isShowing = false;
+    public final ActionButton returnButton = new ActionButton(256, 450, "Back");
     public static final float INFO_LEFT = 1120.0f;
     public static  final float INFO_BOTTOM_CHECK = 670.0f;
     public static  final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
     public static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
     public static  final float INFO_WIDTH = 371.0f;
 
-    public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier){
-        setup(relicScreenTier);
+    private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
+    private AbstractRelic.RelicTier relicScreenTier;
+    private FilterType filterType;
+
+
+    public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier, FilterType filterType){
+        this.relicScreenTier = relicScreenTier;
+        this.filterType = filterType;
+        setup();
     }
 
-    private void setup(AbstractRelic.RelicTier relicScreenTier) {
-        populateRelics(relicScreenTier);
+    private void setup() {
+        populateRelics();
         postRelicSetup();
         makeUIObjects();
         loadFromConfig();
     }
 
-    protected void populateRelics(AbstractRelic.RelicTier relicScreenTier) {
+    protected void populateRelics() {
         ArrayList<String> relicPool = new ArrayList<>();
 
         RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
@@ -73,8 +84,8 @@ public abstract class RelicFilterScreen {
     }
 
     private void loadFromConfig() {
-        ArrayList<String> loaded = getFilter();
-        for (String relic : loaded) {
+        this.filterObject = FilterTheSpire.config.getFilter(this.filterType);
+        for (String relic : filterObject.anyOf) {
             if (relicUIObjects.containsKey(relic))
                 relicUIObjects.get(relic).isEnabled = true;
         }
@@ -157,9 +168,13 @@ public abstract class RelicFilterScreen {
         return list;
     }
 
-    abstract ArrayList<String> getFilter();
+    public void refreshFilters() {
+        filterObject.anyOf = getEnabledRelics();
+        FilterTheSpire.config.updateFilter(filterObject);
+        FilterManager.setFilter(filterObject);
+    }
+
     abstract void postRelicSetup();
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
-    abstract void refreshFilters();
 }
