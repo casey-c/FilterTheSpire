@@ -1,29 +1,22 @@
 package FilterTheSpire.ui.screens;
 
-import FilterTheSpire.FilterManager;
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.FilterType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-import java.util.ArrayList;
-
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class ShopRelicFilterScreen extends RelicFilterScreen {
     public ShopRelicFilterScreen() {
-        super(AbstractRelic.RelicTier.SHOP);
+        super(AbstractRelic.RelicTier.SHOP, FilterType.NthShopRelic);
     }
 
-    ArrayList<String> getFilter() {
-        return FilterTheSpire.config.getShopRelicFilter();
-    }
-
-    void postSetup() {}
+    void postRelicSetup() {}
 
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
@@ -74,11 +67,5 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
         if (this.returnButton.hb.clickStarted){
             this.enableHitboxes(false);
         }
-    }
-
-    public void refreshFilters() {
-        ArrayList<String> enabledRelics = getEnabledRelics();
-        FilterTheSpire.config.setShopRelicFilter(enabledRelics);
-        FilterManager.setShopFiltersFromValidList(enabledRelics, 0);
     }
 }
