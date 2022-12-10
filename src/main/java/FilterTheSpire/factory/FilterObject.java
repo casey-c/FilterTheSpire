@@ -8,13 +8,14 @@ public class FilterObject {
     public FilterType filterType;
     public List<String> anyOf;
     // Do we need an exclusion list? Seems like we only need the anyOf list
-    protected List<String> noneOf;
+    public List<String> noneOf;
     protected Integer actNumber; // Integer so it's a nullable reference type for serialization
     public List<Integer> possibleEncounterIndices;
 
     public FilterObject(FilterType filterType) {
         this.filterType = filterType;
         this.anyOf = new ArrayList<>();
+        this.noneOf = new ArrayList<>();
         this.possibleEncounterIndices = Collections.singletonList(0);
     }
 

@@ -25,6 +25,9 @@ public class BlessingSimulator {
     }
 
     public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback){
+        if (rewardType == null){
+            return isThirdBlessingValid(seed, null, searchCards, drawback);
+        }
         switch (rewardType){
             case THREE_CARDS:
             case ONE_RANDOM_RARE_CARD:
@@ -113,11 +116,11 @@ public class BlessingSimulator {
             neowRewardTypes.add(NeowReward.NeowRewardType.TWENTY_PERCENT_HP_BONUS);
         }
 
-        boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
+        boolean isValid = rewardType == null || blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
         if (drawback != null) {
             isValid = isValid && drawbackNum == (drawback.ordinal() - 1);
         }
-        if (!searchCards.isEmpty()){
+        if (rewardType != null && !searchCards.isEmpty()){
             switch (rewardType){
                 case TRANSFORM_TWO_CARDS:
                     blessingRng.random();

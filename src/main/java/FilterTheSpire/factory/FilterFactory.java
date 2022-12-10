@@ -20,6 +20,8 @@ public class FilterFactory {
                 return new NthShopRelicFilter(filterObject.anyOf);
             case PandorasCard:
                 return new PandorasCardFilter(filterObject.anyOf);
+            case NeowBonus:
+                return new BlessingFilter(filterObject.anyOf, filterObject.noneOf);
             default:
                 throw new NotImplementedException("Unknown filter type");
         }
