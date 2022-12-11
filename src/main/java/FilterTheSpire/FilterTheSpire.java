@@ -46,7 +46,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
         stopButton = new ModLabeledButton("Stop Searching",
                 Settings.WIDTH / 10.0f,
-                150 * Settings.scale,//Settings.HEIGHT / 4.0f,
+                150 * Settings.scale,
                 Settings.CREAM_COLOR,
                 Color.GOLD,
                 FontHelper.tipHeaderFont,
