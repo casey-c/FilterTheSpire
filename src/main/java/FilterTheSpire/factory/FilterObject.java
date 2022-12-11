@@ -1,6 +1,7 @@
 package FilterTheSpire.factory;
 
 import FilterTheSpire.utils.FilterType;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ public class FilterObject {
     protected Integer actNumber; // Integer so it's a nullable reference type for serialization
     public List<Integer> possibleEncounterIndices;
     public HashMap<String, Integer> searchCards;
+    public AbstractPlayer.PlayerClass character;
 
     public FilterObject(FilterType filterType) {
         this.filterType = filterType;

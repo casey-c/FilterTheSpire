@@ -35,7 +35,6 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     private NeowReward.NeowRewardDrawback currentDrawbackValue;
     private HashMap<String, String> cardNameToId = new HashMap<>();
     private String[] cards = new String[2];
-    private AbstractPlayer.PlayerClass character = null;
 
     private final List<NeowReward.NeowRewardType> characterCardBonuses = Arrays.asList(
             NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD,
@@ -48,6 +47,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     private HashMap<NeowReward.NeowRewardType, NeowReward.NeowRewardDrawback> illegalCombinations = new HashMap<>();
 
     private final ArrayList<NeowReward.NeowRewardType> cardRewardBonuses = new ArrayList<>();
+    private boolean isInitialLoad;
 
     private static class NeowBonus {
         public NeowReward.NeowRewardType value;
@@ -70,6 +70,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     }
 
     public NeowBonusFilterScreen(){
+        isInitialLoad = true;
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NeowBonus);
 
         cardRewardBonuses.addAll(characterCardBonuses);
@@ -118,7 +119,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         drawbacks.add(new NeowDrawback(NeowReward.NeowRewardDrawback.TEN_PERCENT_HP_LOSS, "Lose 10% Max HP"));
         drawbacks.add(new NeowDrawback(NeowReward.NeowRewardDrawback.NO_GOLD, "Lose all Gold"));
         drawbacks.add(new NeowDrawback(NeowReward.NeowRewardDrawback.CURSE, "Obtain a Curse"));
-        drawbacks.add(new NeowDrawback(NeowReward.NeowRewardDrawback.PERCENT_DAMAGE, "Take 30% damage"));
+        drawbacks.add(new NeowDrawback(NeowReward.NeowRewardDrawback.PERCENT_DAMAGE, "Take roughly 27% damage"));
 
         int defaultDrawbackIndex = 0;
         if (filterObject.secondaryValues.size() > 0){
@@ -128,6 +129,26 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     defaultDrawbackIndex = i + 1;
                     break;
                 }
+            }
+        }
+
+        int defaultCharacterIndex = 0;
+        if (filterObject.character != null){
+            switch (filterObject.character){
+                case IRONCLAD:
+                    defaultCharacterIndex = 1;
+                    break;
+                case THE_SILENT:
+                    defaultCharacterIndex = 2;
+                    break;
+                case DEFECT:
+                    defaultCharacterIndex = 3;
+                    break;
+                case WATCHER:
+                    defaultCharacterIndex = 4;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -148,9 +169,16 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
 
         this.neowBonusDropdown.setSelectedIndex(defaultBonusIndex);
         this.drawbackDropdown.setSelectedIndex(defaultDrawbackIndex);
+        this.characterDropdown.setSelectedIndex(defaultCharacterIndex);
+        FilterManager.setFilter(filterObject);
+        isInitialLoad = false;
     }
 
     public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
+        if (isInitialLoad) {
+            return;
+        }
+
         if (dropdownMenu == this.neowBonusDropdown) {
             filterObject.possibleValues.clear();
             if (this.neowBonusDropdown.getSelectedIndex() > 0) {
@@ -192,16 +220,16 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         } else if (dropdownMenu == this.characterDropdown) {
             switch (i){
                 case 1:
-                    character = AbstractPlayer.PlayerClass.IRONCLAD;
+                    filterObject.character = AbstractPlayer.PlayerClass.IRONCLAD;
                     break;
                 case 2:
-                    character = AbstractPlayer.PlayerClass.THE_SILENT;
+                    filterObject.character = AbstractPlayer.PlayerClass.THE_SILENT;
                     break;
                 case 3:
-                    character = AbstractPlayer.PlayerClass.DEFECT;
+                    filterObject.character = AbstractPlayer.PlayerClass.DEFECT;
                     break;
                 case 4:
-                    character = AbstractPlayer.PlayerClass.WATCHER;
+                    filterObject.character = AbstractPlayer.PlayerClass.WATCHER;
                     break;
                 default:
                     break;
@@ -269,6 +297,15 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         float yPosition = 550.0F;
 
         if (characterCardBonuses.contains(currentBonusValue)) {
+            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
+                    "If you filter on cards, the character dropdown should match the character you will play next. " +
+                            "If you filter on cards that are on a different character than the one you're playing, a " +
+                            "seed will never be found.",
+                    xPosition * Settings.xScale,
+                    (yPosition * Settings.yScale) - 120.0F,
+                    600 * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.CREAM_COLOR);
             if (this.characterDropdown.getSelectedIndex() > 0) {
                 this.cardDropdown.render(sb, (xPosition * Settings.xScale), yPosition * Settings.yScale);
                 if (currentBonusValue == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
@@ -323,18 +360,19 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     }
 
     private void setCardDropdownValues() {
-        CharacterPool characterPool = character != null ? CharacterPoolFactory.getCharacterPool(character) : null;
+        CharacterPool characterPool = filterObject.character != null ? CharacterPoolFactory.getCharacterPool(filterObject.character) : null;
         if (currentBonusValue != null){
             ArrayList<String> cardList = new ArrayList<>();
+            List<String> sortedList = null;
             cardList.add("Any Card");
             switch (currentBonusValue) {
                 case ONE_RANDOM_RARE_CARD:
                 case THREE_RARE_CARDS:
                     // set dropdown to character rares
                     if (characterPool != null){
-                        ArrayList<String> rareCards = getFriendlyCardNames(characterPool.rareCardPool);
-                        rareCards.sort(String::compareTo);
-                        cardList.addAll(rareCards);
+                        sortedList = getFriendlyCardNames(characterPool.rareCardPool);
+                        sortedList.sort(String::compareTo);
+                        cardList.addAll(sortedList);
                         cardDropdown = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
                     }
                     break;
@@ -344,9 +382,9 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                         ArrayList<String> cards = new ArrayList<>();
                         cards.addAll(characterPool.commonCardPool);
                         cards.addAll(characterPool.uncommonCardPool);
-                        ArrayList<String> nonRares = getFriendlyCardNames(cards);
-                        nonRares.sort(String::compareTo);
-                        cardList.addAll(nonRares);
+                        sortedList = getFriendlyCardNames(cards);
+                        sortedList.sort(String::compareTo);
+                        cardList.addAll(sortedList);
                         cardDropdown = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
                     }
                     break;
@@ -354,9 +392,9 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 case TRANSFORM_TWO_CARDS:
                     // set dropdown to character entire card pool
                     if (characterPool != null){
-                        List<String> cards = getFriendlyCardNames(characterPool.getCardPool(false));
-                        cards.sort(String::compareTo);
-                        cardList.addAll(cards);
+                        sortedList = getFriendlyCardNames(characterPool.getCardPool(false));
+                        sortedList.sort(String::compareTo);
+                        cardList.addAll(sortedList);
                         cardDropdown = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
                         if (currentBonusValue == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
                             cardDropdown2 = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
@@ -365,20 +403,31 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     break;
                 case RANDOM_COLORLESS:
                     // set dropdown to uncommon colorless
-                    List<String> uncommonColorless = getFriendlyCardNames(CardPoolHelper.getUncommonColorlessCards());
-                    uncommonColorless.sort(String::compareTo);
-                    cardList.addAll(uncommonColorless);
+                    sortedList = getFriendlyCardNames(CardPoolHelper.getUncommonColorlessCards());
+                    sortedList.sort(String::compareTo);
+                    cardList.addAll(sortedList);
                     cardDropdown = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
                     break;
                 case RANDOM_COLORLESS_2:
                     // set dropdown to rare colorless
-                    List<String> rareColorless = getFriendlyCardNames(CardPoolHelper.getRareColorlessCards());
-                    rareColorless.sort(String::compareTo);
-                    cardList.addAll(rareColorless);
+                    sortedList = getFriendlyCardNames(CardPoolHelper.getRareColorlessCards());
+                    sortedList.sort(String::compareTo);
+                    cardList.addAll(sortedList);
                     cardDropdown = new DropdownMenu(this, cardList, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
                     break;
                 default:
                     break;
+            }
+
+            if (isInitialLoad && sortedList != null) {
+                for (String searchCard: filterObject.searchCards.keySet()) {
+                    int index = findIndexOfCard(sortedList, searchCard);
+                    if (cardDropdown.getSelectedIndex() > 0){
+                        cardDropdown2.setSelectedIndex(index);
+                    } else {
+                        cardDropdown.setSelectedIndex(index);
+                    }
+                }
             }
         }
     }
@@ -394,7 +443,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     }
 
     private void clearCharacterFilter(){
-        character = null;
+        filterObject.character = null;
         this.characterDropdown.setSelectedIndex(0);
     }
 
@@ -402,5 +451,17 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         filterObject.searchCards.clear();
         this.cardDropdown.setSelectedIndex(0);
         this.cardDropdown2.setSelectedIndex(0);
+    }
+
+    private int findIndexOfCard(List<String> sortedFriendlyCardList, String searchCard){
+        if (isInitialLoad){
+            for (int i = 0; i < sortedFriendlyCardList.size(); i++) {
+                String cardId = cardNameToId.getOrDefault(sortedFriendlyCardList.get(i), null);
+                if (cardId.equals(searchCard)) {
+                    return i + 1; // Add one to account for "Any"
+                }
+            }
+        }
+        return 0; // default to "Any" option
     }
 }
