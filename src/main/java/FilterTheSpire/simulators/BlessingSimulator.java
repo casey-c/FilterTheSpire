@@ -71,11 +71,22 @@ public class BlessingSimulator {
             blessingRng.random();
             blessingRng.random();
             blessingRng.random(0, 3);
-            if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
-                blessingRng.random();
-                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
-            } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
-                isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+            switch (rewardType){
+                case TRANSFORM_CARD:
+                    blessingRng.random();
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
+                    break;
+                case THREE_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardRngSimulator.getInstance().isValidCardRewardFromNeow(blessingRng, false, new ArrayList<>(searchCards.keySet()));
+                    break;
+                case ONE_RANDOM_RARE_CARD:
+                    blessingRng.random();
+                    isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+                    break;
+                case RANDOM_COLORLESS:
+                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, new ArrayList<>(searchCards.keySet()), AbstractCard.CardRarity.UNCOMMON);
+                    break;
             }
         }
         return isValid;
@@ -122,12 +133,16 @@ public class BlessingSimulator {
         }
         if (rewardType != null && !searchCards.isEmpty()){
             switch (rewardType){
+                case THREE_RARE_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardRngSimulator.getInstance().isValidCardRewardFromNeow(blessingRng, true, new ArrayList<>(searchCards.keySet()));
+                    break;
                 case TRANSFORM_TWO_CARDS:
                     blessingRng.random();
                     isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
                     break;
                 case RANDOM_COLORLESS_2:
-                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessRareCardFromNeow(seed, new ArrayList<>(searchCards.keySet()));
+                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, new ArrayList<>(searchCards.keySet()), AbstractCard.CardRarity.RARE);
                     break;
             }
         }

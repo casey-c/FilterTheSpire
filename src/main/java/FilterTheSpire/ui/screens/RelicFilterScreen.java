@@ -69,7 +69,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
 
     private void loadFromConfig() {
         this.filterObject = FilterTheSpire.config.getFilter(this.filterType);
-        for (String relic : filterObject.anyOf) {
+        for (String relic : filterObject.possibleValues) {
             if (relicUIObjects.containsKey(relic))
                 relicUIObjects.get(relic).isEnabled = true;
         }
@@ -137,7 +137,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
     }
 
     public void refreshFilters() {
-        filterObject.anyOf = getEnabledRelics();
+        filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.updateFilter(filterObject);
         FilterManager.setFilter(filterObject);
     }

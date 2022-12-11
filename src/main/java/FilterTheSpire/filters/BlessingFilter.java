@@ -12,14 +12,14 @@ public class BlessingFilter extends AbstractFilter {
     private HashMap<String, Integer> searchCards;
     private NeowReward.NeowRewardDrawback drawback = null;
 
-    public BlessingFilter(List<String> rewardType, List<String> drawback) {
+    public BlessingFilter(List<String> rewardType, List<String> drawback, HashMap<String, Integer> searchCards) {
         if (rewardType != null && rewardType.size() > 0){
             this.rewardType = NeowReward.NeowRewardType.valueOf(rewardType.get(0));
         }
         if (drawback != null && drawback.size() > 0){
             this.drawback = NeowReward.NeowRewardDrawback.valueOf(drawback.get(0));
         }
-        this.searchCards = new HashMap<>();
+        this.searchCards = searchCards;
     }
 
     public BlessingFilter(NeowReward.NeowRewardType rewardType) {

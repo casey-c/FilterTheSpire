@@ -51,7 +51,7 @@ public class FilterManager {
 
     public static void setFilter(FilterObject filterObject){
         String indices = filterObject.possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
-        if (filterObject.anyOf.size() > 0){
+        if (filterObject.possibleValues.size() > 0){
             AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);
             filters.put(filterObject.filterType + indices, filter);
         } else {
