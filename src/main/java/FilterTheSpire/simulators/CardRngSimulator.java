@@ -26,12 +26,12 @@ public class CardRngSimulator {
 
     }
 
-    public boolean isValidColorlessRareCardFromNeow(long seed, List<String> searchCards) {
+    public boolean isValidColorlessCardFromNeow(long seed, List<String> searchCards, AbstractCard.CardRarity rarity) {
         int numCardsInReward = 3;
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
         List<String> cardRewards = new ArrayList<>();
         for(int i = 0; i < numCardsInReward; ++i) {
-            cardRewards.add(AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, AbstractCard.CardRarity.RARE).cardID);
+            cardRewards.add(AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, rarity).cardID);
         }
         cardRewards.retainAll(searchCards);
         return cardRewards.size() > 0;
@@ -110,6 +110,29 @@ public class CardRngSimulator {
         return false;
     }
 
+    public boolean isValidCardRewardFromNeow(Random rng, boolean isRareOnly, List<String> searchCards) {
+        final int numCardsInReward = 3;
+        CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
+
+        ArrayList<String> rewardCards = new ArrayList<>();
+        for(int i = 0; i < numCardsInReward; ++i) {
+            AbstractCard.CardRarity rarity = rng.randomBoolean(0.33F) ? AbstractCard.CardRarity.UNCOMMON : AbstractCard.CardRarity.COMMON;
+            if (isRareOnly) {
+                rarity = AbstractCard.CardRarity.RARE;
+            }
+
+            String card = neowGetCard(rng, pool, rarity);
+
+            while(rewardCards.contains(card)) {
+                card = neowGetCard(rng, pool, rarity);
+            }
+
+            rewardCards.add(card);
+        }
+
+        return rewardCards.containsAll(searchCards);
+    }
+
     private static class CardRewardInfo {
         public String cardId;
         public AbstractCard.CardRarity rarity;
@@ -118,6 +141,22 @@ public class CardRngSimulator {
             this.cardId = cardId;
             this.rarity = rarity;
         }
+    }
+
+    private String neowGetCard(Random rng, CharacterPool pool, AbstractCard.CardRarity rarity){
+        String card = null;
+        switch(rarity) {
+            case RARE:
+                card = pool.reversedRareCardPool.get(rng.random(pool.reversedRareCardPool.size() - 1));
+                break;
+            case UNCOMMON:
+                card = pool.reversedUncommonCardPool.get(rng.random(pool.reversedUncommonCardPool.size() - 1));
+                break;
+            case COMMON:
+                card = pool.reversedCommonCardPool.get(rng.random(pool.reversedCommonCardPool.size() - 1));
+                break;
+        }
+        return card;
     }
 }
 

@@ -20,22 +20,32 @@ public class AlternateConfigMenu extends ModPanel {
     private static Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
     private BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
     private ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
+    private NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
     private ModLabeledButton bossRelicButton;
     private ModLabeledButton shopRelicButton;
+    private ModLabeledButton neowBonusButton;
     private boolean visible = false;
-
-
 
     public AlternateConfigMenu(){
         super();
 
-        bossRelicButton = new ModLabeledButton("Choose Boss Relics", 400.0F, 550.0F, this, (self) -> {
-            bossRelicScreen.isShowing = true;
-        });
+        final float xPosition = 400.0F;
+        float yPosition = 550.0F;
 
-        shopRelicButton = new ModLabeledButton("Choose Shop Relics", 400.0F, 460.0F, this, (self) -> {
-            shopRelicScreen.isShowing = true;
-        });
+        // We should try and make it so we don't need to repeat this over and over
+        bossRelicButton = new ModLabeledButton("Choose Boss Relics", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { bossRelicScreen.isShowing = true; });
+
+        yPosition -= 90.0F;
+        shopRelicButton = new ModLabeledButton("Choose Shop Relics", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { shopRelicScreen.isShowing = true; });
+
+        yPosition -= 90.0F;
+        neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { neowBonusScreen.isShowing = true; });
     }
 
     @Override
@@ -60,9 +70,9 @@ public class AlternateConfigMenu extends ModPanel {
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "You can choose which filters you want to apply. You can use them at the same time or neither.",
-                RelicFilterScreen.INFO_LEFT * Settings.scale,
-                RelicFilterScreen.INFO_TOP_MAIN * Settings.scale,
-                RelicFilterScreen.INFO_WIDTH * Settings.scale,
+                FilterScreen.INFO_LEFT * Settings.scale,
+                FilterScreen.INFO_TOP_MAIN * Settings.scale,
+                FilterScreen.INFO_WIDTH * Settings.scale,
                 30.0f * Settings.scale,
                 Settings.CREAM_COLOR);
     }
@@ -72,11 +82,14 @@ public class AlternateConfigMenu extends ModPanel {
         renderBg(sb);
         bossRelicButton.render(sb);
         shopRelicButton.render(sb);
+        neowBonusButton.render(sb);
 
         if (bossRelicScreen.isShowing) {
             bossRelicScreen.render(sb);
         } else if (shopRelicScreen.isShowing) {
             shopRelicScreen.render(sb);
+        } else if (neowBonusScreen.isShowing) {
+            neowBonusScreen.render(sb);
         }
     }
 
@@ -88,9 +101,12 @@ public class AlternateConfigMenu extends ModPanel {
         } else if (shopRelicScreen.isShowing) {
             shopRelicScreen.update();
             shopRelicScreen.enableHitboxes(true);
+        } else if (neowBonusScreen.isShowing) {
+            neowBonusScreen.update();
         } else {
             bossRelicButton.update();
             shopRelicButton.update();
+            neowBonusButton.update();
         }
 
         if (InputHelper.pressedEscape) {
@@ -112,15 +128,9 @@ public class AlternateConfigMenu extends ModPanel {
         // Enable and disable hitboxes
         if (isUp && !visible) {
             visible = true;
-            if (shopRelicScreen.isShowing){
-                shopRelicScreen.enableHitboxes(true);
-            }
         }
         else if (!isUp && visible) {
             visible = false;
-            if (!shopRelicScreen.isShowing){
-                shopRelicScreen.enableHitboxes(false);
-            }
         }
     }
 }

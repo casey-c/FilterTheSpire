@@ -46,11 +46,11 @@ public class CardPoolHelper {
         return cardPool;
     }
 
-    private static ArrayList<String> getUncommonColorlessCards(){
+    public static ArrayList<String> getUncommonColorlessCards(){
         return new ArrayList<>(Arrays.asList(
             "Madness",
             "Mind Blast",
-            "Jack of All Trades",
+            "Jack Of All Trades",
             "Swift Strike",
             "Good Instincts",
             "Finesse",
@@ -66,12 +66,12 @@ public class CardPoolHelper {
             "Impatience",
             "Dramatic Entrance",
             "Trip",
-            "Panic Button",
+            "PanicButton",
             "Dark Shackles"
         ));
     }
 
-    private static ArrayList<String> getRareColorlessCards(){
+    public static ArrayList<String> getRareColorlessCards(){
         return new ArrayList<>(Arrays.asList(
             "Thinking Ahead",
             "Metamorphosis",
@@ -79,7 +79,7 @@ public class CardPoolHelper {
             "Magnetism",
             "Chrysalis",
             "Transmutation",
-            "Hand of Greed",
+            "HandOfGreed",
             "Mayhem",
             "Apotheosis",
             "Secret Weapon",

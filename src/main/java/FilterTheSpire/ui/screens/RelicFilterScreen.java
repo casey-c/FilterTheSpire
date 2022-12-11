@@ -2,14 +2,8 @@ package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
-import FilterTheSpire.factory.FilterObject;
-import FilterTheSpire.ui.components.ActionButton;
 import FilterTheSpire.utils.FilterType;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
@@ -17,22 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-public abstract class RelicFilterScreen {
+public abstract class RelicFilterScreen extends FilterScreen {
     public TreeSet<String> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
-    public FilterObject filterObject;
-    public boolean isShowing = false;
-    public final ActionButton returnButton = new ActionButton(256, 450, "Back");
-    public static final float INFO_LEFT = 1120.0f;
-    public static  final float INFO_BOTTOM_CHECK = 670.0f;
-    public static  final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
-    public static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
-    public static  final float INFO_WIDTH = 371.0f;
 
-    private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
     private AbstractRelic.RelicTier relicScreenTier;
     private FilterType filterType;
-
 
     public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier, FilterType filterType){
         this.relicScreenTier = relicScreenTier;
@@ -85,7 +69,7 @@ public abstract class RelicFilterScreen {
 
     private void loadFromConfig() {
         this.filterObject = FilterTheSpire.config.getFilter(this.filterType);
-        for (String relic : filterObject.anyOf) {
+        for (String relic : filterObject.possibleValues) {
             if (relicUIObjects.containsKey(relic))
                 relicUIObjects.get(relic).isEnabled = true;
         }
@@ -107,22 +91,6 @@ public abstract class RelicFilterScreen {
             this.returnButton.hide();
             isShowing = false;
         }
-    }
-
-    private void renderBg(SpriteBatch sb) {
-        // Draw our screen texture in the center
-        sb.setColor(Color.WHITE);
-        sb.draw(TEX_BG,
-                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.scale)) * 0.5f),
-                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.scale)) * 0.5f),
-                Math.round(TEX_BG.getWidth() * Settings.scale),
-                Math.round(TEX_BG.getHeight() * Settings.scale)
-        );
-    }
-
-    public void render(SpriteBatch sb) {
-        renderBg(sb);
-        renderForeground(sb);
     }
 
     protected void selectOnly(String id) {
@@ -169,12 +137,10 @@ public abstract class RelicFilterScreen {
     }
 
     public void refreshFilters() {
-        filterObject.anyOf = getEnabledRelics();
+        filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.updateFilter(filterObject);
         FilterManager.setFilter(filterObject);
     }
 
     abstract void postRelicSetup();
-    abstract void renderForeground(SpriteBatch sb);
-    abstract void update();
 }
