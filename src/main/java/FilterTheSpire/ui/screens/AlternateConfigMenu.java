@@ -33,19 +33,19 @@ public class AlternateConfigMenu extends ModPanel {
         float yPosition = 550.0F;
 
         // We should try and make it so we don't need to repeat this over and over
-        bossRelicButton = new ModLabeledButton("Choose Boss Relics", xPosition, yPosition, this, (self) -> {
-            bossRelicScreen.isShowing = true;
-        });
+        bossRelicButton = new ModLabeledButton("Choose Boss Relics", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { bossRelicScreen.isShowing = true; });
 
         yPosition -= 90.0F;
-        shopRelicButton = new ModLabeledButton("Choose Shop Relics", xPosition, yPosition, this, (self) -> {
-            shopRelicScreen.isShowing = true;
-        });
+        shopRelicButton = new ModLabeledButton("Choose Shop Relics", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { shopRelicScreen.isShowing = true; });
 
         yPosition -= 90.0F;
-        neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition, this, (self) -> {
-            neowBonusScreen.isShowing = true;
-        });
+        neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { neowBonusScreen.isShowing = true; });
     }
 
     @Override
