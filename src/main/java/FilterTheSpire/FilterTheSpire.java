@@ -1,35 +1,29 @@
 package FilterTheSpire;
 
-import FilterTheSpire.filters.BlessingFilter;
-import FilterTheSpire.filters.NthColorlessRareCardFilter;
-import FilterTheSpire.filters.PandorasCardFilter;
 import FilterTheSpire.multithreading.SeedSearcher;
-import FilterTheSpire.simulators.CardTransformSimulator;
 import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
-import FilterTheSpire.utils.SeedTesting;
 import basemod.BaseMod;
+import basemod.ModLabeledButton;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import basemod.interfaces.PostUpdateSubscriber;
 import basemod.interfaces.RenderSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.neow.NeowReward;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.logging.Filter;
+import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
 @SpireInitializer
-public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
+public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
     private static final String version = "0.1.6";
     public static void initialize() { new FilterTheSpire(); }
 
@@ -38,6 +32,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public static Config config;
 
     private static Texture BG;
+
+    private ModLabeledButton stopButton;
 
     public FilterTheSpire() {
         BaseMod.subscribe(this);
@@ -48,22 +44,32 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
+        stopButton = new ModLabeledButton("Stop Searching",
+                Settings.WIDTH / 10.0f,
+                150 * Settings.scale,
+                Settings.CREAM_COLOR,
+                Color.GOLD,
+                FontHelper.tipHeaderFont,
+                null,
+                (button) -> {
+                    if (AbstractDungeon.player != null){
+                        CardCrawlGame.startOver();
+                        Settings.isTrial = false;
+                        Settings.isDailyRun = false;
+                        Settings.isEndless = false;
+                        CardCrawlGame.trial = null;
+                        SaveAndContinue.deleteSave(AbstractDungeon.player);
+                    }
+
+                    if (SEARCHING_FOR_SEEDS){
+                        SEARCHING_FOR_SEEDS = false;
+                        firstTimeThrough = true;
+                        searcherActive = false;
+                    }
+        });
+
         config = new Config();
         Config.setupConfigMenu();
-
-//        FilterManager.setFirstBossIs("Slime Boss");
-//        FilterManager.setFirstEliteIs("3 Sentries");
-//        FilterManager.setFirstCombatIs("2 Louse");
-//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("Apotheosis"), 1));
-
-//        FilterManager.setBossSwapIs("Pandora's Box");
-
-        // for testing, try different rarities
-//        ArrayList<String> relicsToSearch = new ArrayList<>();
-//        relicsToSearch.add("Dead Branch");
-//        relicsToSearch.add("Toy Ornithopter");
-//        relicsToSearch.add("Shuriken");
-//        FilterManager.setNthRelicFromValidList(relicsToSearch);
     }
 
     // --------------------------------------------------------------------------------
@@ -73,24 +79,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-//        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put("Apotheosis", 1);
-//        cards.put("Accuracy", 1);
-//        FilterManager.setPandorasCardFilter(cards);
-//        FilterManager.setAstrolabeCardFilter(cards);
-//        FilterManager.setValidatorFromString(
-//                "blessingFilter2",
-//                new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards, NeowReward.NeowRewardDrawback.TEN_PERCENT_HP_LOSS)
-//        );
-//        FilterManager.setValidatorFromString("blessingFilter1", new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, cards));
-//        FilterManager.setValidatorFromString("blessingFilter", new BlessingFilter(NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD, "Glass Knife"));
-
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
-
-            // TODO: debug remove
-//            SeedTesting.bossTest();
-
             return;
         }
 
@@ -213,6 +203,17 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     grayTextColor
             );
 
+            // buttons
+            if (!currentlyFading){
+                stopButton.render(sb);
+            }
+        }
+    }
+
+    @Override
+    public void receivePostUpdate() {
+        if (searcherActive){
+            stopButton.update();
         }
     }
 }
