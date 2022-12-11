@@ -62,9 +62,9 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         stopButton = new ModLabeledButton("Stop Searching",
                 Settings.WIDTH / 10.0f,
                 150 * Settings.scale,//Settings.HEIGHT / 4.0f,
-                grayTextColor,
-                creamTextColor,
-                FontHelper.menuBannerFont,
+                Settings.CREAM_COLOR,
+                Color.GOLD,
+                FontHelper.tipHeaderFont,
                 null,
                 (button) -> {
                     if (AbstractDungeon.player != null){
@@ -256,6 +256,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostUpdate() {
-        stopButton.update();
+        if (searcherActive){
+            stopButton.update();
+        }
     }
 }
