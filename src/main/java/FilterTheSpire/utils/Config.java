@@ -8,16 +8,15 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.google.gson.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class Config {
-    private Properties defaults = new Properties();
     private SpireConfig spireConfig;
+    private FilterGroupConfig currentFilters;
+    private final String filterKey = "filters";
 
     public Config() {
+        Properties defaults = new Properties();
         defaults.put("bossSwapFilter", "[]");
         defaults.put("shopRelicFilter", "[]");
 
@@ -27,61 +26,30 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        initializeFilterList();
     }
 
-    private void setStringList(String key, ArrayList<String> values) {
-        JsonArray arr = new JsonArray();
-        for (String s : values)
-            arr.add(s);
-
-        spireConfig.setString(key, arr.toString());
-
-        try {
-            spireConfig.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ArrayList<String> getStringList(String key) {
-        ArrayList<String> res = new ArrayList<>();
-
-        if (spireConfig != null && spireConfig.has(key)) {
-            String s = spireConfig.getString(key);
-
-            JsonParser parser = new JsonParser();
-            JsonArray json = (JsonArray) parser.parse(s);
-
-            for (JsonElement e : json) {
-                if (e.isJsonPrimitive())
-                    res.add(e.getAsString());
-            }
-        }
-
-        return res;
-    }
-
-    public FilterGroupConfig getFilterList(String key){
-        FilterGroupConfig filterGroupConfig = null;
-
-        if (spireConfig != null && spireConfig.has(key)) {
-            String s = spireConfig.getString(key);
+    private void initializeFilterList(){
+        if (spireConfig != null && spireConfig.has(filterKey)) {
+            String s = spireConfig.getString(filterKey);
             Gson gson = new Gson();
-            filterGroupConfig = gson.fromJson(s, FilterGroupConfig.class);
+            currentFilters = gson.fromJson(s, FilterGroupConfig.class);
+        } else {
+            currentFilters = new FilterGroupConfig(new HashMap<>(), null);
         }
-
-        return filterGroupConfig;
     }
 
-    public void setFilterList(String key, List<FilterObject> activeFilters, List<PresetFilterGroup> presetGroups){
-        FilterGroupConfig filterConfigValue = new FilterGroupConfig(activeFilters, presetGroups);
-        setFilterList(key, filterConfigValue);
+    public FilterObject getFilter(FilterType filterType){
+        return currentFilters.activeFilters.getOrDefault(filterType, new FilterObject(filterType));
     }
 
-    public void setFilterList(String key, FilterGroupConfig configValue){
+    public void updateFilter(FilterObject filterObject){
+        currentFilters.activeFilters.put(filterObject.filterType, filterObject);
+
+        // update settings
         Gson gson = new Gson();
-
-        spireConfig.setString(key, gson.toJson(configValue));
+        spireConfig.setString(filterKey, gson.toJson(currentFilters));
 
         try {
             spireConfig.save();
@@ -110,25 +78,6 @@ public class Config {
     public boolean getBooleanKey(String key){
         return spireConfig.getBool(key);
     }
-
-    // --------------------------------------------------------------------------------
-
-    public void setBossSwapFilter(ArrayList<String> enabledList) {
-        setStringList("bossSwapFilter", enabledList);
-
-        // just to test the config, lets also store the new pattern
-        FilterObject f = new FilterObject(FilterType.NthBossRelic, enabledList);
-        setFilterList("filterGroups", Collections.singletonList(f), null);
-    }
-
-    public ArrayList<String> getBossSwapFilter() { return getStringList("bossSwapFilter"); }
-
-    // --------------------------------------------------------------------------------
-
-    public void setShopRelicFilter(ArrayList<String> enabledList) { setStringList("shopRelicFilter", enabledList); }
-    public ArrayList<String> getShopRelicFilter() { return getStringList("shopRelicFilter"); }
-
-    // --------------------------------------------------------------------------------
 
     // (Main Menu -> Mods) menu setup
     public static void setupConfigMenu() {

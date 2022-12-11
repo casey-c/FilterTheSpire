@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardRngSimulator;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class NthColorlessRareCardFilter extends AbstractFilter{
     }
 
     public boolean isSeedValid(long seed) {
-        String cardId = CardRngSimulator.getInstance().nthColorlessRareCard(seed, encounterNumber);
-        return cardNames.contains(cardId);
+        return CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, cardNames, AbstractCard.CardRarity.RARE);
     }
 }

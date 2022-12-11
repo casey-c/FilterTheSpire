@@ -114,9 +114,11 @@ public class DefectPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Runic Capacitor");
+
+        setReversedCardPools();
     }
 
-    public List<String> getCardPool() {
+    public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -130,6 +132,6 @@ public class DefectPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(DefectPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCommonCardPool);
     }
 }

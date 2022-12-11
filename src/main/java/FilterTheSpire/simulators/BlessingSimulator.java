@@ -24,7 +24,10 @@ public class BlessingSimulator {
 
     }
 
-    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards){
+    public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback){
+        if (rewardType == null){
+            return isThirdBlessingValid(seed, null, searchCards, drawback);
+        }
         switch (rewardType){
             case THREE_CARDS:
             case ONE_RANDOM_RARE_CARD:
@@ -46,7 +49,7 @@ public class BlessingSimulator {
             case TWO_FIFTY_GOLD:
             case TRANSFORM_TWO_CARDS:
             case TWENTY_PERCENT_HP_BONUS:
-                return isThirdBlessingValid(seed, rewardType, searchCards);
+                return isThirdBlessingValid(seed, rewardType, searchCards, drawback);
             default:
                 throw new IllegalArgumentException("Neow Bonus not found");
         }
@@ -68,10 +71,22 @@ public class BlessingSimulator {
             blessingRng.random();
             blessingRng.random();
             blessingRng.random(0, 3);
-            if (rewardType == NeowReward.NeowRewardType.TRANSFORM_CARD){
-                isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1);
-            } else if (rewardType == NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD){
-                isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+            switch (rewardType){
+                case TRANSFORM_CARD:
+                    blessingRng.random();
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
+                    break;
+                case THREE_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardRngSimulator.getInstance().isValidCardRewardFromNeow(blessingRng, false, new ArrayList<>(searchCards.keySet()));
+                    break;
+                case ONE_RANDOM_RARE_CARD:
+                    blessingRng.random();
+                    isValid = isValid && searchCards.containsKey(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE, blessingRng).cardID);
+                    break;
+                case RANDOM_COLORLESS:
+                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, new ArrayList<>(searchCards.keySet()), AbstractCard.CardRarity.UNCOMMON);
+                    break;
             }
         }
         return isValid;
@@ -91,7 +106,7 @@ public class BlessingSimulator {
         return blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
     }
 
-    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
+    private boolean isThirdBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback) {
         Random blessingRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.NEOW);
         blessingRng.random(); // Random First Blessing
         blessingRng.random(); // Random Second Blessing
@@ -112,10 +127,24 @@ public class BlessingSimulator {
             neowRewardTypes.add(NeowReward.NeowRewardType.TWENTY_PERCENT_HP_BONUS);
         }
 
-        boolean isValid = blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
-        if (!searchCards.isEmpty() && rewardType == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
-            blessingRng.random();
-            isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2);
+        boolean isValid = rewardType == null || blessingRng.random(0, neowRewardTypes.size() - 1) == neowRewardTypes.indexOf(rewardType);
+        if (drawback != null) {
+            isValid = isValid && drawbackNum == (drawback.ordinal() - 1);
+        }
+        if (rewardType != null && !searchCards.isEmpty()){
+            switch (rewardType){
+                case THREE_RARE_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardRngSimulator.getInstance().isValidCardRewardFromNeow(blessingRng, true, new ArrayList<>(searchCards.keySet()));
+                    break;
+                case TRANSFORM_TWO_CARDS:
+                    blessingRng.random();
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
+                    break;
+                case RANDOM_COLORLESS_2:
+                    isValid = isValid && CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, new ArrayList<>(searchCards.keySet()), AbstractCard.CardRarity.RARE);
+                    break;
+            }
         }
         return isValid;
     }

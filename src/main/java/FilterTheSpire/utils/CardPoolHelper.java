@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CardPoolHelper {
-    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors){
+    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
         ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
         cardRarities.add(AbstractCard.CardRarity.COMMON);
         cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
@@ -20,7 +20,11 @@ public class CardPoolHelper {
                 CharacterPool color = colors.get(i);
                 switch (rarity){
                     case COMMON:
-                        cardPool.addAll(color.commonCardPool);
+                        if (shouldReverseCommonCardPool){
+                            cardPool.addAll(color.reversedCommonCardPool);
+                        } else {
+                            cardPool.addAll(color.commonCardPool);
+                        }
                         break;
                     case UNCOMMON:
                         cardPool.addAll(color.uncommonCardPool);
@@ -42,11 +46,11 @@ public class CardPoolHelper {
         return cardPool;
     }
 
-    private static ArrayList<String> getUncommonColorlessCards(){
+    public static ArrayList<String> getUncommonColorlessCards(){
         return new ArrayList<>(Arrays.asList(
             "Madness",
             "Mind Blast",
-            "Jack of All Trades",
+            "Jack Of All Trades",
             "Swift Strike",
             "Good Instincts",
             "Finesse",
@@ -62,12 +66,12 @@ public class CardPoolHelper {
             "Impatience",
             "Dramatic Entrance",
             "Trip",
-            "Panic Button",
+            "PanicButton",
             "Dark Shackles"
         ));
     }
 
-    private static ArrayList<String> getRareColorlessCards(){
+    public static ArrayList<String> getRareColorlessCards(){
         return new ArrayList<>(Arrays.asList(
             "Thinking Ahead",
             "Metamorphosis",
@@ -75,7 +79,7 @@ public class CardPoolHelper {
             "Magnetism",
             "Chrysalis",
             "Transmutation",
-            "Hand of Greed",
+            "HandOfGreed",
             "Mayhem",
             "Apotheosis",
             "Secret Weapon",

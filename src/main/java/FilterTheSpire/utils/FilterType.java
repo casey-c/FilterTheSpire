@@ -7,5 +7,6 @@ public enum FilterType {
     NthCombat,
     NthElite,
     NthShopRelic,
-    PandorasCard
+    PandorasCard,
+    NeowBonus
 }

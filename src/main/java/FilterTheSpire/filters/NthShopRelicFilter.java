@@ -15,6 +15,11 @@ public class NthShopRelicFilter extends AbstractFilter {
         this.encounterIndex = 0; // Get the first shop relic if no index is specified.
     }
 
+    public NthShopRelicFilter(List<String> shopRelicNames, int encounterIndex) {
+        this.shopRelicNames = shopRelicNames;
+        this.encounterIndex = encounterIndex;
+    }
+
     public boolean isSeedValid(long seed) {
         List<String> shopRelicPool = RelicRngSimulator.getInstance().getRelicPools(seed, AbstractRelic.RelicTier.SHOP);
         Collections.reverse(shopRelicPool); // Shop relics are done in reverse order

@@ -7,20 +7,21 @@ public class FilterFactory {
     public static AbstractFilter getAbstractFilterFromFilterObject(FilterObject filterObject) {
         switch (filterObject.filterType) {
             case Boss:
-                return new BossFilter(filterObject.anyOf);
+                return new BossFilter(filterObject.possibleValues);
             case NthBossRelic:
-                return new NthBossRelicFilter(filterObject.anyOf);
+                return new NthBossRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices);
             case NthColorlessRareCard:
-                return new NthColorlessRareCardFilter(filterObject.anyOf);
+                return new NthColorlessRareCardFilter(filterObject.possibleValues);
             case NthCombat:
-                return new NthCombatFilter(filterObject.anyOf);
+                return new NthCombatFilter(filterObject.possibleValues);
             case NthElite:
-                return new NthEliteFilter(filterObject.anyOf);
+                return new NthEliteFilter(filterObject.possibleValues);
             case NthShopRelic:
-                return new NthShopRelicFilter(filterObject.anyOf);
+                return new NthShopRelicFilter(filterObject.possibleValues);
             case PandorasCard:
-                // Since this is hardcoded to look for 6 blade dances, lets not even risk creating this yet
-                throw new NotImplementedException("PandorasCard");
+                return new PandorasCardFilter(filterObject.possibleValues);
+            case NeowBonus:
+                return new BlessingFilter(filterObject.possibleValues, filterObject.secondaryValues, filterObject.searchCards);
             default:
                 throw new NotImplementedException("Unknown filter type");
         }
