@@ -1,10 +1,9 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
-import basemod.BaseMod;
-import basemod.ModLabeledButton;
-import basemod.ModPanel;
+import basemod.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.screens.mainMenu.MainMenuScreen;
 
@@ -21,6 +22,8 @@ public class AlternateConfigMenu extends ModPanel {
     private BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
     private ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
     private NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
+    private ModLabeledToggleButton neowBonusToggle;
+
     private ModLabeledButton bossRelicButton;
     private ModLabeledButton shopRelicButton;
     private ModLabeledButton neowBonusButton;
@@ -46,6 +49,38 @@ public class AlternateConfigMenu extends ModPanel {
         neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
                 (self) -> { neowBonusScreen.isShowing = true; });
+
+        neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
+                FilterScreen.INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
+                FilterScreen.INFO_BOTTOM_CHECK, // same as above
+                Settings.CREAM_COLOR,
+                FontHelper.charDescFont,
+                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true),
+                null,
+                (modLabel) -> {},
+                (button) -> {
+                    FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
+                }) {
+            // Override the update of the toggle button to add an informational tool tip when hovered
+            @Override
+            public void update() {
+                super.update();
+
+                // Unfortunately, the hb is private so we have to use reflection here
+                Hitbox hb = ReflectionHacks.getPrivate(toggle, ModToggleButton.class, "hb");
+
+                if (hb != null && hb.hovered) {
+                    TipHelper.renderGenericTip(
+                            FilterScreen.INFO_LEFT * Settings.scale,
+                            (FilterScreen.INFO_BOTTOM_CHECK - 40.0f) * Settings.scale,
+                            "Info",
+                            "If checked, you will be guaranteed to see all four Neow options regardless of " +
+                                    "whether or not the previous run made it to the act one boss. NL NL Disabling this " +
+                                    "patch makes the experience more like the base game, but you may not have access " +
+                                    "to the boss swap option.");
+                }
+            }
+        };
     }
 
     @Override
@@ -80,6 +115,7 @@ public class AlternateConfigMenu extends ModPanel {
     @Override
     public void render(SpriteBatch sb) {
         renderBg(sb);
+        neowBonusToggle.render(sb);
         bossRelicButton.render(sb);
         shopRelicButton.render(sb);
         neowBonusButton.render(sb);
@@ -95,6 +131,7 @@ public class AlternateConfigMenu extends ModPanel {
 
     @Override
     public void update() {
+        neowBonusToggle.update();
         if (bossRelicScreen.isShowing){
             bossRelicScreen.update();
             bossRelicScreen.enableHitboxes(true);
