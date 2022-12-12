@@ -1,6 +1,7 @@
 package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.ui.components.FilterTextInput;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import basemod.*;
@@ -23,6 +24,7 @@ public class AlternateConfigMenu extends ModPanel {
     private ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
     private NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
     private ModLabeledToggleButton neowBonusToggle;
+//    private FilterTextInput textInput;
 
     private ModLabeledButton bossRelicButton;
     private ModLabeledButton shopRelicButton;
@@ -81,6 +83,8 @@ public class AlternateConfigMenu extends ModPanel {
                 }
             }
         };
+
+//        textInput = new FilterTextInput(600F, 819F);
     }
 
     @Override
@@ -119,6 +123,8 @@ public class AlternateConfigMenu extends ModPanel {
         shopRelicButton.render(sb);
         neowBonusButton.render(sb);
 
+//        textInput.render(sb);
+
         if (bossRelicScreen.isShowing) {
             bossRelicScreen.render(sb);
         } else if (shopRelicScreen.isShowing) {
@@ -147,6 +153,7 @@ public class AlternateConfigMenu extends ModPanel {
             neowBonusButton.update();
         }
 
+//        textInput.update();
 
         if (InputHelper.pressedEscape) {
             BaseMod.modSettingsUp = false;
