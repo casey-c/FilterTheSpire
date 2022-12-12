@@ -115,7 +115,6 @@ public class AlternateConfigMenu extends ModPanel {
     @Override
     public void render(SpriteBatch sb) {
         renderBg(sb);
-        neowBonusToggle.render(sb);
         bossRelicButton.render(sb);
         shopRelicButton.render(sb);
         neowBonusButton.render(sb);
@@ -126,12 +125,13 @@ public class AlternateConfigMenu extends ModPanel {
             shopRelicScreen.render(sb);
         } else if (neowBonusScreen.isShowing) {
             neowBonusScreen.render(sb);
+        } else {
+            neowBonusToggle.render(sb);
         }
     }
 
     @Override
     public void update() {
-        neowBonusToggle.update();
         if (bossRelicScreen.isShowing){
             bossRelicScreen.update();
             bossRelicScreen.enableHitboxes(true);
@@ -141,10 +141,12 @@ public class AlternateConfigMenu extends ModPanel {
         } else if (neowBonusScreen.isShowing) {
             neowBonusScreen.update();
         } else {
+            neowBonusToggle.update();
             bossRelicButton.update();
             shopRelicButton.update();
             neowBonusButton.update();
         }
+
 
         if (InputHelper.pressedEscape) {
             BaseMod.modSettingsUp = false;
