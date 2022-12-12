@@ -283,29 +283,21 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 30.0f * Settings.scale,
                 Settings.CREAM_COLOR);
 
-        FontHelper.renderSmartText(sb,
-                FontHelper.tipBodyFont,
-                "WARNING: Some bonuses and drawbacks can never pair together: " +
-                        "NL Obtain a Curse - Remove 2 Cards NL Lose all Gold - Gain 250 Gold NL Lose 10% Max HP - Gain 20% Max HP",
-                INFO_LEFT * Settings.scale,
-                (INFO_TOP_MAIN * Settings.scale) - 170.0F,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
-                Settings.RED_TEXT_COLOR);
+        if (!filterObject.searchCards.keySet().isEmpty()){
+            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
+                    "WARNING: If you filter on cards that are on a different character than the one you're " +
+                            "playing, a seed will never be found.",
+                    INFO_LEFT * Settings.xScale,
+                    (INFO_TOP_MAIN * Settings.yScale) - 170.0F,
+                    INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.RED_TEXT_COLOR);
+        }
 
         final float xPosition = 400.0F;
         float yPosition = 550.0F;
 
         if (characterCardBonuses.contains(currentBonusValue)) {
-            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
-                    "If you filter on cards, the character dropdown should match the character you will play next. " +
-                            "If you filter on cards that are on a different character than the one you're playing, a " +
-                            "seed will never be found.",
-                    xPosition * Settings.xScale,
-                    (yPosition * Settings.yScale) - 120.0F,
-                    600 * Settings.xScale,
-                    30.0f * Settings.yScale,
-                    Settings.CREAM_COLOR);
             if (this.characterDropdown.getSelectedIndex() > 0) {
                 this.cardDropdown.render(sb, (xPosition * Settings.xScale), yPosition * Settings.yScale);
                 if (currentBonusValue == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
