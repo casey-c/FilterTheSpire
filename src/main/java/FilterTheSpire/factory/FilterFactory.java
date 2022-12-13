@@ -22,6 +22,8 @@ public class FilterFactory {
                 return new PandorasCardFilter(filterObject.possibleValues);
             case NeowBonus:
                 return new BlessingFilter(filterObject.possibleValues, filterObject.secondaryValues, filterObject.searchCards);
+            case NthRelic:
+                return new NthRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices.get(0));
             default:
                 throw new NotImplementedException("Unknown filter type");
         }

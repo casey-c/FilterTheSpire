@@ -1,11 +1,8 @@
 package FilterTheSpire.ui.screens;
 
-import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.FilterType;
-import basemod.ModLabeledToggleButton;
-import basemod.ModToggleButton;
-import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -13,13 +10,14 @@ import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class BossSwapFilterScreen extends RelicFilterScreen {
     public BossSwapFilterScreen() {
-        super(AbstractRelic.RelicTier.BOSS, FilterType.NthBossRelic);
+        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic);
     }
 
     void postRelicSetup() {
@@ -67,6 +65,7 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
 
     public void update() {
         this.returnButton.update();
+        this.enableHitboxes(true);
         for (RelicUIObject relic : relicUIObjects.values()){
             relic.update();
         }

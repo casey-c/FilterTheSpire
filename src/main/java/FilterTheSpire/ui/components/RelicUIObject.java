@@ -1,5 +1,6 @@
-package FilterTheSpire.ui.screens;
+package FilterTheSpire.ui.components;
 
+import FilterTheSpire.ui.screens.RelicFilterScreen;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.KeyHelper;
 import com.badlogic.gdx.graphics.Color;
@@ -17,6 +18,7 @@ public class RelicUIObject {
 
     public String relicID;
     private float x, y;
+    private float scroll;
     private Texture tex;
     private static final Texture TEX_SELECTED_BG = new Texture("FilterTheSpire/images/relic_bg.png");
 
@@ -37,7 +39,7 @@ public class RelicUIObject {
     public void enableHitbox() {
         // Need to adjust them (hb are centered) -- this random guess is probably totally off
         int hbOffset = 50;
-        hb.move((x + hbOffset) * Settings.scale, (y + hbOffset) * Settings.scale);
+        hb.move((x + hbOffset) * Settings.scale, (y + hbOffset + this.scroll) * Settings.scale);
     }
 
     public void disableHitbox() {
@@ -49,17 +51,18 @@ public class RelicUIObject {
         int size = 100;
         float s = (hb.hovered) ? size * 1.10f : size;
 
-        float roundedScaledX = Math.round(x * Settings.scale);
-        float roundedScaledY = Math.round(y * Settings.scale);
-        float roundedScaledS = Math.round(s * Settings.scale);
+        float roundedScaledX = Math.round(x * Settings.xScale);
+        float roundedScaledY = Math.round((y + this.scroll) * Settings.yScale);
+        float roundedScaledW = Math.round(s * Settings.xScale);
+        float roundedScaledH = Math.round(s * Settings.yScale);
 
         if (isEnabled) {
             sb.setColor(ExtraColors.SEL_RELIC_BG);
             sb.draw(TEX_SELECTED_BG,
                     roundedScaledX,
                     roundedScaledY,
-                    roundedScaledS,
-                    roundedScaledS);
+                    roundedScaledW,
+                    roundedScaledH);
 
             sb.setColor(Color.WHITE);
         } else {
@@ -69,8 +72,8 @@ public class RelicUIObject {
         sb.draw(tex,
                 roundedScaledX,
                 roundedScaledY,
-                roundedScaledS,
-                roundedScaledS);
+                roundedScaledW,
+                roundedScaledH);
 
         // DEBUG
         hb.render(sb);
@@ -135,6 +138,14 @@ public class RelicUIObject {
             handleClick();
         }
 
+    }
+
+    public void scroll(float scrollY) {
+        this.scroll = scrollY;
+    }
+
+    public float getScrollPosition(){
+        return (y + this.scroll) * Settings.yScale;
     }
 }
 

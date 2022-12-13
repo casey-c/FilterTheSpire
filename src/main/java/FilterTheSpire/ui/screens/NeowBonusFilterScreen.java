@@ -292,6 +292,15 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.RED_TEXT_COLOR);
+        } else if (currentBonusValue == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC ||
+                currentBonusValue == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
+            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
+                    "You can combine the Relic filter with the Relic Neow Bonuses to get a specific relic from Neow.",
+                    INFO_LEFT * Settings.xScale,
+                    (INFO_TOP_MAIN * Settings.yScale) - 170.0F,
+                    INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.GREEN_TEXT_COLOR);
         }
 
         final float xPosition = 400.0F;

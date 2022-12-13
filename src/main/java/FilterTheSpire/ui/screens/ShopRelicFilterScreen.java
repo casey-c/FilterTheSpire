@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.FilterType;
 import com.badlogic.gdx.graphics.Color;
@@ -8,12 +9,14 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
+import java.util.Collections;
+
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class ShopRelicFilterScreen extends RelicFilterScreen {
     public ShopRelicFilterScreen() {
-        super(AbstractRelic.RelicTier.SHOP, FilterType.NthShopRelic);
+        super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic);
     }
 
     void postRelicSetup() {}
@@ -61,6 +64,7 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
 
     public void update() {
         this.returnButton.update();
+        this.enableHitboxes(true);
         for (RelicUIObject x : relicUIObjects.values())
             x.update();
 

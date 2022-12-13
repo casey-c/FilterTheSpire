@@ -2,6 +2,7 @@ package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.FilterType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
@@ -9,17 +10,18 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 public abstract class RelicFilterScreen extends FilterScreen {
     public TreeSet<String> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
-    private AbstractRelic.RelicTier relicScreenTier;
+    private List<AbstractRelic.RelicTier> relicScreenTiers;
     private FilterType filterType;
 
-    public RelicFilterScreen(AbstractRelic.RelicTier relicScreenTier, FilterType filterType){
-        this.relicScreenTier = relicScreenTier;
+    public RelicFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
+        this.relicScreenTiers = relicScreenTiers;
         this.filterType = filterType;
         setup();
     }
@@ -34,12 +36,14 @@ public abstract class RelicFilterScreen extends FilterScreen {
     protected void populateRelics() {
         ArrayList<String> relicPool = new ArrayList<>();
 
-        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.IRONCLAD);
-        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.THE_SILENT);
-        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.DEFECT);
-        RelicLibrary.populateRelicPool(relicPool, relicScreenTier, AbstractPlayer.PlayerClass.WATCHER);
+        for (AbstractRelic.RelicTier tier: relicScreenTiers) {
+            RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.IRONCLAD);
+            RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.THE_SILENT);
+            RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.DEFECT);
+            RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.WATCHER);
 
-        relics.addAll(relicPool);
+            relics.addAll(relicPool);
+        }
     }
 
     private void makeUIObjects() {
@@ -93,7 +97,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
         }
     }
 
-    protected void selectOnly(String id) {
+    public void selectOnly(String id) {
         if (relicUIObjects.containsKey(id)) {
             clearAll();
             relicUIObjects.get(id).isEnabled = true;
@@ -101,7 +105,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
         }
     }
 
-    protected void invertAll() {
+    public void invertAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = !obj.isEnabled;
         }
@@ -109,7 +113,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
         refreshFilters();
     }
 
-    protected void selectAll() {
+    public void selectAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = true;
         }
@@ -117,7 +121,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
         refreshFilters();
     }
 
-    protected void clearAll() {
+    public void clearAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = false;
         }

@@ -22,11 +22,13 @@ public class AlternateConfigMenu extends ModPanel {
     private BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
     private ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
     private NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
+    private NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen();
     private ModLabeledToggleButton neowBonusToggle;
 
     private ModLabeledButton bossRelicButton;
     private ModLabeledButton shopRelicButton;
     private ModLabeledButton neowBonusButton;
+    private ModLabeledButton nthRelicButton;
     private boolean visible = false;
 
     public AlternateConfigMenu(){
@@ -49,6 +51,11 @@ public class AlternateConfigMenu extends ModPanel {
         neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
                 (self) -> { neowBonusScreen.isShowing = true; });
+
+        yPosition -= 90.0F;
+        nthRelicButton = new ModLabeledButton("Choose Relic Filter", xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
+                (self) -> { nthRelicFilterScreen.isShowing = true; });
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
                 FilterScreen.INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
@@ -118,6 +125,7 @@ public class AlternateConfigMenu extends ModPanel {
         bossRelicButton.render(sb);
         shopRelicButton.render(sb);
         neowBonusButton.render(sb);
+        nthRelicButton.render(sb);
 
         if (bossRelicScreen.isShowing) {
             bossRelicScreen.render(sb);
@@ -125,7 +133,9 @@ public class AlternateConfigMenu extends ModPanel {
             shopRelicScreen.render(sb);
         } else if (neowBonusScreen.isShowing) {
             neowBonusScreen.render(sb);
-        } else {
+        } else if (nthRelicFilterScreen.isShowing) {
+            nthRelicFilterScreen.render(sb);
+        }else {
             neowBonusToggle.render(sb);
         }
     }
@@ -134,19 +144,19 @@ public class AlternateConfigMenu extends ModPanel {
     public void update() {
         if (bossRelicScreen.isShowing){
             bossRelicScreen.update();
-            bossRelicScreen.enableHitboxes(true);
         } else if (shopRelicScreen.isShowing) {
             shopRelicScreen.update();
-            shopRelicScreen.enableHitboxes(true);
         } else if (neowBonusScreen.isShowing) {
             neowBonusScreen.update();
+        } else if (nthRelicFilterScreen.isShowing) {
+            nthRelicFilterScreen.update();
         } else {
             neowBonusToggle.update();
             bossRelicButton.update();
             shopRelicButton.update();
             neowBonusButton.update();
+            nthRelicButton.update();
         }
-
 
         if (InputHelper.pressedEscape) {
             BaseMod.modSettingsUp = false;
