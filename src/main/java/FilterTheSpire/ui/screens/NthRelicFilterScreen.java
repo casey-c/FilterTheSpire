@@ -76,11 +76,20 @@ public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBar
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Relics will appear from the first encounter. If no relics are selected, it will choose from the entire pool.",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_MAIN * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN * Settings.yScale) + 100,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
+
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipBodyFont,
+                "Treasure chest size may make this incorrect. This filter is mainly used for random relics from events and elites.",
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN * Settings.yScale) - 40,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
