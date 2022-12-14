@@ -31,8 +31,8 @@ public class ExtraFonts {
                     2.0f,
                     0.9f,
                     Settings.QUARTER_TRANSPARENT_BLACK_COLOR.cpy(),
-                    (int)(3.0f * Settings.scale),
-                    (int)(3.0f * Settings.scale),
+                    (int)(3.0f * Settings.xScale),
+                    (int)(3.0f * Settings.yScale),
                     "font/Kreon-Bold.ttf");
         }
 
@@ -51,8 +51,8 @@ public class ExtraFonts {
                     8.0f,
                     0.9f,
                     Settings.QUARTER_TRANSPARENT_BLACK_COLOR.cpy(),
-                    (int)(3.0f * Settings.scale),
-                    (int)(3.0f * Settings.scale),
+                    (int)(3.0f * Settings.xScale),
+                    (int)(3.0f * Settings.yScale),
                     "font/Kreon-Bold.ttf");
         }
         return LARGE_NUMBER_FONT;

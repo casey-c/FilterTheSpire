@@ -78,8 +78,8 @@ public class AlternateConfigMenu extends ModPanel {
 
                 if (hb != null && hb.hovered) {
                     TipHelper.renderGenericTip(
-                            FilterScreen.INFO_LEFT * Settings.scale,
-                            (FilterScreen.INFO_BOTTOM_CHECK - 40.0f) * Settings.scale,
+                            FilterScreen.INFO_LEFT * Settings.xScale,
+                            (FilterScreen.INFO_BOTTOM_CHECK - 40.0f) * Settings.yScale,
                             "Info",
                             "If checked, you will be guaranteed to see all four Neow options regardless of " +
                                     "whether or not the previous run made it to the act one boss. NL NL Disabling this " +
@@ -99,23 +99,23 @@ public class AlternateConfigMenu extends ModPanel {
         // Draw our screen texture in the center
         sb.setColor(Color.WHITE);
         sb.draw(TEX_BG,
-                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.scale)) * 0.5f),
-                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.scale)) * 0.5f),
-                Math.round(TEX_BG.getWidth() * Settings.scale),
-                Math.round(TEX_BG.getHeight() * Settings.scale)
+                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.xScale)) * 0.5f),
+                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.yScale)) * 0.5f),
+                Math.round(TEX_BG.getWidth() * Settings.xScale),
+                Math.round(TEX_BG.getHeight() * Settings.yScale)
         );
 
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Filter Menu", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Filter Menu", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "You can choose which filters you want to apply. You can use them at the same time or neither.",
-                FilterScreen.INFO_LEFT * Settings.scale,
-                FilterScreen.INFO_TOP_MAIN * Settings.scale,
-                FilterScreen.INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                FilterScreen.INFO_LEFT * Settings.xScale,
+                FilterScreen.INFO_TOP_MAIN * Settings.yScale,
+                FilterScreen.INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
     }
 

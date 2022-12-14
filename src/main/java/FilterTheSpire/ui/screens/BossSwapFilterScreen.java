@@ -42,24 +42,24 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_MAIN * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN + 50F) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_CONTROLS * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                INFO_TOP_CONTROLS * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Color.GRAY);
     }
 

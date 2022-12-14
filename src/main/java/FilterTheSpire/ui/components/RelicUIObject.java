@@ -33,13 +33,13 @@ public class RelicUIObject {
         this.parent = parent;
 
         int hbSize = 75;
-        hb = new Hitbox(hbSize * Settings.scale, hbSize * Settings.scale);
+        hb = new Hitbox(hbSize * Settings.xScale, hbSize * Settings.yScale);
     }
 
     public void enableHitbox() {
         // Need to adjust them (hb are centered) -- this random guess is probably totally off
         int hbOffset = 50;
-        hb.move((x + hbOffset) * Settings.scale, (y + hbOffset + this.scroll) * Settings.scale);
+        hb.move((x + hbOffset) * Settings.xScale, (y + hbOffset + this.scroll) * Settings.yScale);
     }
 
     public void disableHitbox() {

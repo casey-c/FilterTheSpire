@@ -77,7 +77,7 @@ public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBar
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Relics will appear from the first encounter. If no relics are selected, it will choose from the entire pool.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN * Settings.yScale) + 100,
+                (INFO_TOP_MAIN + 100) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
@@ -86,7 +86,7 @@ public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBar
                 FontHelper.tipBodyFont,
                 "Treasure chest size may make this incorrect. This filter is mainly used for random relics from events and elites.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN * Settings.yScale) - 40,
+                (INFO_TOP_MAIN - 50) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.GOLD_COLOR);
@@ -94,10 +94,10 @@ public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBar
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_CONTROLS * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                INFO_TOP_CONTROLS * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Color.GRAY);
     }
 
