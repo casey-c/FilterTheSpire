@@ -430,6 +430,10 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     } else {
                         cardDropdown.setSelectedIndex(index);
                         cards[0] = searchCard;
+                        if (filterObject.searchCards.get(searchCard) > 1) {
+                            cardDropdown2.setSelectedIndex(index);
+                            cards[1] = searchCard;
+                        }
                     }
                 }
             }

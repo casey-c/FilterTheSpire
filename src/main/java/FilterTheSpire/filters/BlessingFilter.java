@@ -22,34 +22,6 @@ public class BlessingFilter extends AbstractFilter {
         this.searchCards = searchCards;
     }
 
-    public BlessingFilter(NeowReward.NeowRewardType rewardType) {
-        this.rewardType = rewardType;
-        this.searchCards = new HashMap<>();
-    }
-
-    public BlessingFilter(NeowReward.NeowRewardType rewardType, NeowReward.NeowRewardDrawback drawback) {
-        this.rewardType = rewardType;
-        this.searchCards = new HashMap<>();
-        this.drawback = drawback;
-    }
-
-    public BlessingFilter(NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards) {
-        this.rewardType = rewardType;
-        this.searchCards = searchCards;
-    }
-
-    public BlessingFilter(NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, NeowReward.NeowRewardDrawback drawback) {
-        this.rewardType = rewardType;
-        this.searchCards = searchCards;
-        this.drawback = drawback;
-    }
-
-    public BlessingFilter(NeowReward.NeowRewardType rewardType, String relicId, NeowReward.NeowRewardDrawback drawback) {
-        this.rewardType = rewardType;
-        this.relicId = relicId;
-        this.drawback = drawback;
-    }
-
     public boolean isSeedValid(long seed) {
         if (this.rewardType == null && this.drawback == null){
             return true;

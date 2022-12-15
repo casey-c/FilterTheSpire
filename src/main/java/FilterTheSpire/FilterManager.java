@@ -160,26 +160,6 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setBlessingCardFilter(NeowReward.NeowRewardType blessing, HashMap<String, Integer> cards, NeowReward.NeowRewardDrawback drawback){
-        if (blessing == NeowReward.NeowRewardType.RANDOM_COLORLESS_2 || blessing == NeowReward.NeowRewardType.THREE_SMALL_POTIONS) {
-            preRngCounters.put(SeedHelper.RNGType.CARD, 3);
-        }
-        BlessingFilter filter = new BlessingFilter(blessing, cards, drawback);
-        filters.put("blessingFilter", filter);
-    }
-
-    public static void setBlessingRelicFilter(NeowReward.NeowRewardType blessing, String relicId, NeowReward.NeowRewardDrawback drawback){
-       if (blessing == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
-            neowBonusRelicsCount.put(AbstractRelic.RelicTier.RARE, 1);
-        } else if (blessing == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC) {
-            neowBonusRelicsCount.put(AbstractRelic.RelicTier.COMMON, 1);
-        }
-        BlessingFilter filter = new BlessingFilter(blessing, relicId, drawback);
-        filters.put("blessingFilter", filter);
-    }
-
-    // --------------------------------------------------------------------------------
-
     public static void setCallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic){
         CallingBellFilter filter = new CallingBellFilter(commonRelic, uncommonRelic, rareRelic);
         neowBonusRelicsCount.put(AbstractRelic.RelicTier.COMMON, 1);
