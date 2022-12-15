@@ -71,8 +71,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
         config = new Config();
         Config.setupConfigMenu();
-
-        FilterManager.addEventFilter("Accursed Blacksmith");
     }
 
     // --------------------------------------------------------------------------------
