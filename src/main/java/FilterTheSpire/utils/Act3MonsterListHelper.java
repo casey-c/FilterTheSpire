@@ -4,17 +4,17 @@ import com.megacrit.cardcrawl.monsters.MonsterInfo;
 
 import java.util.ArrayList;
 
-public class Act3Helper extends ActHelper {
-    private static Act3Helper singleton = null;
+public class Act3MonsterListHelper extends MonsterListHelper {
+    private static Act3MonsterListHelper singleton = null;
 
-    public static Act3Helper getInstance(){
+    public static Act3MonsterListHelper getInstance(){
         if (singleton == null){
-            singleton = new Act3Helper();
+            singleton = new Act3MonsterListHelper();
         }
         return singleton;
     }
 
-    private Act3Helper(){
+    private Act3MonsterListHelper(){
         super();
 
         weakMonsterCombats = 2;

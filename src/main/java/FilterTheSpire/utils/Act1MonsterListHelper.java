@@ -1,22 +1,20 @@
 package FilterTheSpire.utils;
 
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
 
 import java.util.ArrayList;
 
-public class Act1Helper extends ActHelper {
-    private static Act1Helper singleton = null;
+public class Act1MonsterListHelper extends MonsterListHelper {
+    private static Act1MonsterListHelper singleton = null;
 
-    public static Act1Helper getInstance(){
+    public static Act1MonsterListHelper getInstance(){
         if (singleton == null){
-            singleton = new Act1Helper();
+            singleton = new Act1MonsterListHelper();
         }
         return singleton;
     }
 
-    private Act1Helper(){
+    private Act1MonsterListHelper(){
         super();
 
         weakMonsterCombats = 3;

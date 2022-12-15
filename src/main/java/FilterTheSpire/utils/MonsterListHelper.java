@@ -11,8 +11,8 @@ import com.megacrit.cardcrawl.random.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public abstract class ActHelper {
-    public ActHelper(){
+public abstract class MonsterListHelper {
+    public MonsterListHelper(){
         initializeWeakMonsters();
         initializeStrongMonsters();
         initializeElites();
@@ -22,8 +22,6 @@ public abstract class ActHelper {
     public int weakMonsterCombats;
     public int strongMonsterCombats;
     public int eliteMonsterCombats;
-    public ArrayList<String> eventList = new ArrayList<>();
-    public ArrayList<String> shrineList = new ArrayList<>();
     public ArrayList<MonsterInfo> weakMonsterPool = new ArrayList<>();
     public ArrayList<MonsterInfo> strongMonsterPool = new ArrayList<>();
     public ArrayList<MonsterInfo> eliteMonsterPool = new ArrayList<>();
