@@ -119,14 +119,6 @@ public class SilentPool extends CharacterPool {
         shopRelicPool.add("TwistedFunnel");
     }
 
-    public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
-        ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
-        cardRarities.add(AbstractCard.CardRarity.COMMON);
-        cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
-        cardRarities.add(AbstractCard.CardRarity.RARE);
-        return getCardPool(cardRarities, shouldReverseCommonCardPool);
-    }
-
     public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {

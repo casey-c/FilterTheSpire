@@ -1,15 +1,8 @@
 package FilterTheSpire.utils;
 
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.events.AbstractEvent;
-import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
-import com.megacrit.cardcrawl.random.Random;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public abstract class MonsterListHelper {
     public MonsterListHelper(){

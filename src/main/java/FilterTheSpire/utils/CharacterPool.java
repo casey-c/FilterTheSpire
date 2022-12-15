@@ -166,7 +166,13 @@ public abstract class CharacterPool {
         ));
     }
 
-    public abstract List<String> getCardPool(boolean shouldReverseCommonCardPool);
+    public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
+        ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
+        cardRarities.add(AbstractCard.CardRarity.COMMON);
+        cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
+        cardRarities.add(AbstractCard.CardRarity.RARE);
+        return getCardPool(cardRarities, shouldReverseCommonCardPool);
+    }
 
     public abstract List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool);
 
