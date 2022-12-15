@@ -1,20 +1,20 @@
 package FilterTheSpire.factory;
 
-import FilterTheSpire.utils.Act1MonsterListHelper;
-import FilterTheSpire.utils.Act2MonsterListHelper;
-import FilterTheSpire.utils.Act3MonsterListHelper;
-import FilterTheSpire.utils.MonsterListHelper;
+import FilterTheSpire.utils.Act1Helper;
+import FilterTheSpire.utils.Act2Helper;
+import FilterTheSpire.utils.Act3Helper;
+import FilterTheSpire.utils.ActHelper;
 import org.apache.commons.lang3.NotImplementedException;
 
 public class MonsterListHelperFactory {
-    public static MonsterListHelper getMonsterListHelperFromActNumber(int actNumber) {
+    public static ActHelper getMonsterListHelperFromActNumber(int actNumber) {
         switch (actNumber) {
             case 1:
-                return Act1MonsterListHelper.getInstance();
+                return Act1Helper.getInstance();
             case 2:
-                return Act2MonsterListHelper.getInstance();
+                return Act2Helper.getInstance();
             case 3:
-                return Act3MonsterListHelper.getInstance();
+                return Act3Helper.getInstance();
             default:
                 throw new NotImplementedException("Must use Acts 1 through 3");
         }

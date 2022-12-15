@@ -7,14 +7,28 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class PandorasCardFilter extends AbstractFilter {
     private HashMap<String, Integer> searchCards;
     private int totalTransformCount;
 
+    public PandorasCardFilter(List<String> searchCards) {
+        this();
+        HashMap<String, Integer> cardCounts = new HashMap<>();
+        for (String s : searchCards) {
+            cardCounts.put(s, cardCounts.getOrDefault(s, 0) + 1);
+        }
+        this.searchCards = cardCounts;
+    }
+
     public PandorasCardFilter(HashMap<String, Integer> searchCards){
-        this.sortOrder = 2;
+        this();
         this.searchCards = searchCards;
+    }
+
+    private PandorasCardFilter(){
+        this.sortOrder = 2;
         this.totalTransformCount = AbstractDungeon.player.getStartingDeck().size() -
                 ((AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.IRONCLAD) ? 1 : 2);
     }

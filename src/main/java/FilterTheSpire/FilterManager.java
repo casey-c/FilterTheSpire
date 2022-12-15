@@ -1,5 +1,7 @@
 package FilterTheSpire;
 
+import FilterTheSpire.factory.FilterFactory;
+import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.filters.*;
 import FilterTheSpire.utils.SeedHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
@@ -60,45 +62,19 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
+    public static void setFilter(FilterObject filterObject){
+        String indices = filterObject.possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+        if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0){
+            AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);
+            filters.put(filterObject.filterType + indices, filter);
+        } else {
+            filters.remove(filterObject.filterType + indices);
+        }
+    }
+
     public static void setFirstCombatIs(String enemyName) {
         NthCombatFilter filter = new NthCombatFilter(Collections.singletonList(enemyName));
         setValidatorFromString("firstCombatIs", filter);
-    }
-
-//    public static void setFirstCombatsAre(ArrayList<String> enemyNames) {
-//        ArrayList<String> combatOrder = enemyNames;
-//        NthCombatFilter filter = new NthCombatFilter(combatOrder);
-//        setValidatorFromString("firstCombatsAre", filter);
-//    }
-
-    // --------------------------------------------------------------------------------
-
-    public static void setBossSwapIs(String relic, int encounterIndex) {
-        if (!relic.isEmpty()){
-            NthBossRelicFilter filter = new NthBossRelicFilter(Collections.singletonList(relic), encounterIndex);
-            filters.put("bossSwapIsOneOf" + encounterIndex, filter);
-        } else {
-            filters.remove("bossSwapIsOneOf" + encounterIndex);
-        }
-    }
-
-    public static void setBossSwapIs(String relic, List<Integer> possibleEncounterIndices) {
-        String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
-        if (!relic.isEmpty()){
-            NthBossRelicFilter filter = new NthBossRelicFilter(Collections.singletonList(relic), possibleEncounterIndices);
-            filters.put("bossSwapIsOneOf" + indices, filter);
-        } else {
-            filters.remove("bossSwapIsOneOf" + indices);
-        }
-    }
-
-    public static void setBossSwapFiltersFromValidList(ArrayList<String> relicIDs) {
-        if (relicIDs.size() > 0){
-            NthBossRelicFilter filter = new NthBossRelicFilter(relicIDs);
-            filters.put("bossSwapIsOneOf", filter);
-        } else {
-            filters.remove("bossSwapIsOneOf");
-        }
     }
 
     // --------------------------------------------------------------------------------
@@ -131,21 +107,6 @@ public class FilterManager {
 
     public static void setAstrolabeCardFilter(HashMap<String, Integer> searchCards) {
         filters.put("astrolabeFilter", new AstrolabeCardFilter(searchCards));
-    }
-
-    // --------------------------------------------------------------------------------
-
-    public static void setShopRelicFilter(String relic, int encounterIndex) {
-        setShopFiltersFromValidList(Collections.singletonList(relic), encounterIndex);
-    }
-
-    public static void setShopFiltersFromValidList(List<String> relicIds, int encounterIndex) {
-        if (relicIds.size() > 0){
-            NthShopRelicFilter filter = new NthShopRelicFilter(relicIds, encounterIndex);
-            filters.put("shopRelicIsOneOf"+encounterIndex, filter);
-        } else {
-            filters.remove("shopRelicIsOneOf"+encounterIndex);
-        }
     }
 
     // --------------------------------------------------------------------------------

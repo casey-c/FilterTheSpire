@@ -2,21 +2,29 @@ package FilterTheSpire;
 
 import FilterTheSpire.multithreading.SeedSearcher;
 import FilterTheSpire.utils.*;
+import FilterTheSpire.utils.Config;
+import FilterTheSpire.utils.ExtraColors;
+import FilterTheSpire.utils.ExtraFonts;
 import basemod.BaseMod;
+import basemod.ModLabeledButton;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import basemod.interfaces.PostUpdateSubscriber;
 import basemod.interfaces.RenderSubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
 @SpireInitializer
-public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber {
+public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
     private static final String version = "0.1.6";
     public static void initialize() { new FilterTheSpire(); }
 
@@ -25,6 +33,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public static Config config;
 
     private static Texture BG;
+
+    private ModLabeledButton stopButton;
 
     public FilterTheSpire() {
         BaseMod.subscribe(this);
@@ -35,25 +45,34 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
+        stopButton = new ModLabeledButton("Stop Searching",
+                Settings.WIDTH / 10.0f,
+                150 * Settings.yScale,
+                Settings.CREAM_COLOR,
+                Color.GOLD,
+                FontHelper.tipHeaderFont,
+                null,
+                (button) -> {
+                    if (AbstractDungeon.player != null){
+                        CardCrawlGame.startOver();
+                        Settings.isTrial = false;
+                        Settings.isDailyRun = false;
+                        Settings.isEndless = false;
+                        CardCrawlGame.trial = null;
+                        SaveAndContinue.deleteSave(AbstractDungeon.player);
+                    }
+
+                    if (SEARCHING_FOR_SEEDS){
+                        SEARCHING_FOR_SEEDS = false;
+                        firstTimeThrough = true;
+                        searcherActive = false;
+                    }
+        });
+
         config = new Config();
         Config.setupConfigMenu();
 
-//        FilterManager.setFirstBossIs("Slime Boss");
-//        FilterManager.setFirstEliteIs("3 Sentries");
-//        FilterManager.setFirstCombatIs("Jaw Worm");
-//        FilterManager.setValidatorFromString("colorlessRareIs", new NthColorlessRareCardFilter(Collections.singletonList("Apotheosis"), 1));
-
-//        FilterManager.setBossSwapIs("Pandora's Box");
-
-        // for testing, try different rarities
-//        ArrayList<String> relicsToSearch = new ArrayList<>();
-//        relicsToSearch.add(BagOfMarbles.ID);
-//        relicsToSearch.add(BagOfPreparation.ID);
-//        FilterManager.setRelicsInEncounters(relicsToSearch, Arrays.asList(1,2,3,4));
-//
-//        ArrayList<String> relicsToSearch2 = new ArrayList<>();
-//        relicsToSearch2.add(Girya.ID);
-//        FilterManager.setNthRelicFromValidList(relicsToSearch2, 0);
+        FilterManager.addEventFilter("Accursed Blacksmith");
     }
 
     // --------------------------------------------------------------------------------
@@ -63,15 +82,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-//        HashMap<String, Integer> cards = new HashMap<>();
-//        cards.put(Feed.ID, 2);
-//        FilterManager.setPandorasCardFilter(cards);
-//        FilterManager.setAstrolabeCardFilter(cards);
-//        FilterManager.setValidatorFromString(
-//                "blessingFilter2",
-//                new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS, cards, NeowReward.NeowRewardDrawback.TEN_PERCENT_HP_LOSS)
-//        );
-//        FilterManager.setCallingBellFilter(Vajra.ID, BlueCandle.ID, DuVuDoll.ID);
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
             return;
@@ -169,7 +179,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     FontHelper.menuBannerFont,
                     "Searching for the perfect seed...",
                     (Settings.WIDTH * 0.5f),
-                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
+                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.yScale),
                     creamTextColor
             );
 
@@ -177,26 +187,37 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     FontHelper.menuBannerFont,
                     "Seeds Explored",
                     (Settings.WIDTH * 0.5f),
-                    321 * Settings.scale,
+                    321 * Settings.yScale,
                     grayTextColor
             );
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
                     "Filter the Spire",
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    945 * Settings.scale,
+                    Settings.WIDTH - (85.0f * Settings.xScale),
+                    945 * Settings.yScale,
                     grayTextColor
             );
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
                     version,
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    890 * Settings.scale,
+                    Settings.WIDTH - (85.0f * Settings.xScale),
+                    890 * Settings.yScale,
                     grayTextColor
             );
 
+            // buttons
+            if (!currentlyFading){
+                stopButton.render(sb);
+            }
+        }
+    }
+
+    @Override
+    public void receivePostUpdate() {
+        if (searcherActive){
+            stopButton.update();
         }
     }
 }
