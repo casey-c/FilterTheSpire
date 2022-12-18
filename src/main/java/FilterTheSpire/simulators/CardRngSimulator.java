@@ -147,13 +147,13 @@ public class CardRngSimulator {
         String card = null;
         switch(rarity) {
             case RARE:
-                card = pool.reversedRareCardPool.get(rng.random(pool.reversedRareCardPool.size() - 1));
+                card = pool.getReversedRareCardPool().get(rng.random(pool.getReversedRareCardPool().size() - 1));
                 break;
             case UNCOMMON:
-                card = pool.reversedUncommonCardPool.get(rng.random(pool.reversedUncommonCardPool.size() - 1));
+                card = pool.getReversedUncommonCardPool().get(rng.random(pool.getReversedUncommonCardPool().size() - 1));
                 break;
             case COMMON:
-                card = pool.reversedCommonCardPool.get(rng.random(pool.reversedCommonCardPool.size() - 1));
+                card = pool.getReversedCommonCardPool().get(rng.random(pool.getReversedCommonCardPool().size() - 1));
                 break;
         }
         return card;

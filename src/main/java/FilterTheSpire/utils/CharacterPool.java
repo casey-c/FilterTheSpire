@@ -10,11 +10,11 @@ import java.util.List;
 
 public abstract class CharacterPool {
     public List<String> commonCardPool;
-    public List<String> reversedCommonCardPool;
+    private List<String> reversedCommonCardPool;
     public List<String> uncommonCardPool;
-    public List<String> reversedUncommonCardPool;
+    private List<String> reversedUncommonCardPool;
     public List<String> rareCardPool;
-    public List<String> reversedRareCardPool;
+    private List<String> reversedRareCardPool;
     public ArrayList<String> commonRelicPool;;
     public ArrayList<String> uncommonRelicPool;
     public ArrayList<String> rareRelicPool;
