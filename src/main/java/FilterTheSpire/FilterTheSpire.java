@@ -25,7 +25,7 @@ import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
-    private static final String version = "0.1.6";
+    private static final String version = "0.1.7";
     public static void initialize() { new FilterTheSpire(); }
 
     // Used by the patches to not double up VFX and SFX

@@ -268,7 +268,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 "This filter allows you to choose which bonuses Neow will offer at the start of the run. You are " +
                         "only able to filter on one bonus.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN + 120F) * Settings.yScale,
+                (INFO_TOP_MAIN + 100F) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
@@ -278,7 +278,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 "If you use this in conjunction with the Boss Swap filter, you can either Boss Swap or your chosen " +
                         "Boss relic will appear after the Act 1 boss.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN  - 20F) * Settings.yScale,
+                (INFO_TOP_MAIN - 30F)  * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
@@ -288,7 +288,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     "WARNING: If you filter on cards that are on a different character than the one you're " +
                             "playing, a seed will never be found.",
                     INFO_LEFT * Settings.xScale,
-                    (INFO_TOP_MAIN  - 170.0F) * Settings.yScale,
+                    (INFO_TOP_MAIN  - 190.0F) * Settings.yScale,
                     INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.RED_TEXT_COLOR);
@@ -297,14 +297,14 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
             FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
                     "You can combine the Relic filter with the Relic Neow Bonuses to get a specific relic from Neow.",
                     INFO_LEFT * Settings.xScale,
-                    (INFO_TOP_MAIN - 170.0F) * Settings.yScale,
+                    (INFO_TOP_MAIN - 190.0F) * Settings.yScale,
                     INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.GREEN_TEXT_COLOR);
         }
 
         final float xPosition = 400.0F;
-        float yPosition = 550.0F;
+        float yPosition = 530.0F;
         final float spacingIncrement = 65F;
 
         if (characterCardBonuses.contains(currentBonusValue)) {

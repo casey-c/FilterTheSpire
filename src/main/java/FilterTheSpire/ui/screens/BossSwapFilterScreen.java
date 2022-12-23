@@ -48,7 +48,7 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN + 50F) * Settings.yScale,
+                (INFO_TOP_MAIN + 100F) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);

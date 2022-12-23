@@ -35,7 +35,7 @@ public class AlternateConfigMenu extends ModPanel {
         super();
 
         final float xPosition = 400.0F;
-        float yPosition = 550.0F;
+        float yPosition = FilterScreen.INFO_TOP_MAIN;
 
         // We should try and make it so we don't need to repeat this over and over
         bossRelicButton = new ModLabeledButton("Choose Boss Relics", xPosition, yPosition,
