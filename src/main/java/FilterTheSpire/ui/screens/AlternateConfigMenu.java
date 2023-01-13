@@ -16,46 +16,56 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.screens.mainMenu.MainMenuScreen;
+import com.megacrit.cardcrawl.ui.DialogWord;
+import com.megacrit.cardcrawl.vfx.SpeechTextEffect;
+
+import java.util.ArrayList;
 
 public class AlternateConfigMenu extends ModPanel {
     private static Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
-    private BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
-    private ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
-    private NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
-    private NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen();
     private ModLabeledToggleButton neowBonusToggle;
 
-    private ModLabeledButton bossRelicButton;
-    private ModLabeledButton shopRelicButton;
-    private ModLabeledButton neowBonusButton;
-    private ModLabeledButton nthRelicButton;
+    private ArrayList<ModLabeledButton> filterButtons = new ArrayList<>();
+    private ArrayList<FilterScreen> filterScreens = new ArrayList<>();
+    private ModLabeledButton clearButton;
+    SpeechTextEffect clearMessage;
+
     private boolean visible = false;
 
-    public AlternateConfigMenu(){
+    public AlternateConfigMenu() {
         super();
 
         final float xPosition = 400.0F;
         float yPosition = FilterScreen.INFO_TOP_MAIN;
 
-        // We should try and make it so we don't need to repeat this over and over
-        bossRelicButton = new ModLabeledButton("Choose Boss Relics", xPosition, yPosition,
-                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
-                (self) -> { bossRelicScreen.isShowing = true; });
+        BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
+        filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
         yPosition -= 90.0F;
-        shopRelicButton = new ModLabeledButton("Choose Shop Relics", xPosition, yPosition,
-                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
-                (self) -> { shopRelicScreen.isShowing = true; });
+        ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
+        filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
         yPosition -= 90.0F;
-        neowBonusButton = new ModLabeledButton("Choose Neow Bonuses", xPosition, yPosition,
-                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
-                (self) -> { neowBonusScreen.isShowing = true; });
+        NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
+        filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
 
         yPosition -= 90.0F;
-        nthRelicButton = new ModLabeledButton("Choose Relic Filter", xPosition, yPosition,
-                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont,this,
-                (self) -> { nthRelicFilterScreen.isShowing = true; });
+        NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen();
+        filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
+
+        filterScreens.add(bossRelicScreen);
+        filterScreens.add(shopRelicScreen);
+        filterScreens.add(neowBonusScreen);
+        filterScreens.add(nthRelicFilterScreen);
+        clearButton = new ModLabeledButton("Clear All Filters", FilterScreen.INFO_LEFT + 50.0F, 805.0f,
+                Settings.CREAM_COLOR, Color.RED, FontHelper.tipHeaderFont, this,
+                (self) -> {
+                    FilterTheSpire.config.clearFilters();
+                    for (FilterScreen screen : filterScreens) {
+                        screen.clearFilter();
+                    }
+                    clearMessage = new SpeechTextEffect((clearButton.getX() - 125.0F) * Settings.xScale, 850.0f * Settings.yScale, 2.0F, "Filters Cleared", DialogWord.AppearEffect.BUMP_IN);
+                });
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
                 FilterScreen.INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
@@ -64,7 +74,8 @@ public class AlternateConfigMenu extends ModPanel {
                 FontHelper.charDescFont,
                 FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true),
                 null,
-                (modLabel) -> {},
+                (modLabel) -> {
+                },
                 (button) -> {
                     FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled);
                 }) {
@@ -111,7 +122,7 @@ public class AlternateConfigMenu extends ModPanel {
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
-                "You can choose which filters you want to apply. You can use them at the same time or neither.",
+                "This mod assumes that all cards and relics have been unlocked by leveling each character. If you have not unlocked everything, the filters will not work consistently.",
                 FilterScreen.INFO_LEFT * Settings.xScale,
                 FilterScreen.INFO_TOP_MAIN * Settings.yScale,
                 FilterScreen.INFO_WIDTH * Settings.xScale,
@@ -122,40 +133,46 @@ public class AlternateConfigMenu extends ModPanel {
     @Override
     public void render(SpriteBatch sb) {
         renderBg(sb);
-        bossRelicButton.render(sb);
-        shopRelicButton.render(sb);
-        neowBonusButton.render(sb);
-        nthRelicButton.render(sb);
+        for (ModLabeledButton button : filterButtons) {
+            button.render(sb);
+        }
 
-        if (bossRelicScreen.isShowing) {
-            bossRelicScreen.render(sb);
-        } else if (shopRelicScreen.isShowing) {
-            shopRelicScreen.render(sb);
-        } else if (neowBonusScreen.isShowing) {
-            neowBonusScreen.render(sb);
-        } else if (nthRelicFilterScreen.isShowing) {
-            nthRelicFilterScreen.render(sb);
-        }else {
+        boolean isShowingFilterScreen = false;
+        for (FilterScreen screen : filterScreens) {
+            if (screen.isShowing) {
+                screen.render(sb);
+                isShowingFilterScreen = true;
+                break;
+            }
+        }
+        if (!isShowingFilterScreen) {
             neowBonusToggle.render(sb);
+            clearButton.render(sb);
+            if (clearMessage != null && !clearMessage.isDone) {
+                clearMessage.render(sb);
+            }
         }
     }
 
     @Override
     public void update() {
-        if (bossRelicScreen.isShowing){
-            bossRelicScreen.update();
-        } else if (shopRelicScreen.isShowing) {
-            shopRelicScreen.update();
-        } else if (neowBonusScreen.isShowing) {
-            neowBonusScreen.update();
-        } else if (nthRelicFilterScreen.isShowing) {
-            nthRelicFilterScreen.update();
-        } else {
+        boolean isShowingFilterScreen = false;
+        for (FilterScreen screen : filterScreens) {
+            if (screen.isShowing) {
+                screen.update();
+                isShowingFilterScreen = true;
+                break;
+            }
+        }
+        if (!isShowingFilterScreen) {
             neowBonusToggle.update();
-            bossRelicButton.update();
-            shopRelicButton.update();
-            neowBonusButton.update();
-            nthRelicButton.update();
+            clearButton.update();
+            for (ModLabeledButton button : filterButtons) {
+                button.update();
+            }
+            if (clearMessage != null && !clearMessage.isDone) {
+                clearMessage.update();
+            }
         }
 
         if (InputHelper.pressedEscape) {
@@ -165,8 +182,6 @@ public class AlternateConfigMenu extends ModPanel {
 
         if (!BaseMod.modSettingsUp) {
             this.waitingOnEvent = false;
-            bossRelicScreen.isShowing = false;
-            shopRelicScreen.isShowing = false;
             Gdx.input.setInputProcessor(this.oldInputProcessor);
             CardCrawlGame.mainMenuScreen.lighten();
             CardCrawlGame.mainMenuScreen.screen = MainMenuScreen.CurScreen.MAIN_MENU;
@@ -177,9 +192,16 @@ public class AlternateConfigMenu extends ModPanel {
         // Enable and disable hitboxes
         if (isUp && !visible) {
             visible = true;
-        }
-        else if (!isUp && visible) {
+        } else if (!isUp && visible) {
             visible = false;
         }
+    }
+
+    private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, FilterScreen screen) {
+        return new ModLabeledButton(buttonText, xPosition, yPosition,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
+                (self) -> {
+                    screen.isShowing = true;
+                });
     }
 }

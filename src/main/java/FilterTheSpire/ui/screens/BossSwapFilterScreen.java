@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
@@ -26,8 +27,8 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
 
     // Don't allow unswappable relics to enter the pool
     private void removeClassUpgradedRelics() {
-        Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
-                .forEach(relics::remove);
+        List<String> invalidSwaps = Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater");
+        relics.removeIf(relic -> invalidSwaps.contains(relic.relicId));
     }
 
     public void renderForeground(SpriteBatch sb) {

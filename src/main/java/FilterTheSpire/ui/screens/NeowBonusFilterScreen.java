@@ -361,6 +361,14 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         FilterManager.setFilter(filterObject);
     }
 
+    public void resetUI(){
+        neowBonusDropdown.setSelectedIndex(0);
+        drawbackDropdown.setSelectedIndex(0);
+        characterDropdown.setSelectedIndex(0);
+        cardDropdown.setSelectedIndex(0);
+        cardDropdown2.setSelectedIndex(0);
+    }
+
     private void setCardDropdownValues() {
         CharacterPool characterPool = filterObject.character != null ? CharacterPoolFactory.getCharacterPool(filterObject.character) : null;
         if (currentBonusValue != null){

@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 public class RelicUIObject {
 
@@ -25,8 +26,8 @@ public class RelicUIObject {
     public boolean isEnabled = false;
     private RelicFilterScreen parent;
 
-    public RelicUIObject(RelicFilterScreen parent, String relicID, float x, float y) {
-        this.relicID = relicID;
+    public RelicUIObject(RelicFilterScreen parent, AbstractRelic relic, float x, float y) {
+        this.relicID = relic.relicId;
         this.tex = ImageMaster.getRelicImg(relicID);
         this.x = x;
         this.y = y;

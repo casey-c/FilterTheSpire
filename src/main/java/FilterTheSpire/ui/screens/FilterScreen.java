@@ -35,8 +35,14 @@ public abstract class FilterScreen {
         renderForeground(sb);
     }
 
+    public void clearFilter(){
+        filterObject = new FilterObject(filterObject.filterType);
+        resetUI();
+    }
+
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
     abstract void refreshFilters();
+    abstract void resetUI();
 }
 

@@ -8,13 +8,10 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class RelicFilterScreen extends FilterScreen {
-    public TreeSet<String> relics = new TreeSet<>();
+    public TreeSet<AbstractRelic> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
     private List<AbstractRelic.RelicTier> relicScreenTiers;
@@ -41,9 +38,15 @@ public abstract class RelicFilterScreen extends FilterScreen {
             RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.THE_SILENT);
             RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.DEFECT);
             RelicLibrary.populateRelicPool(relicPool, tier, AbstractPlayer.PlayerClass.WATCHER);
-
-            relics.addAll(relicPool);
         }
+
+        List<AbstractRelic> relicObjects = new ArrayList<>();
+        for (String relicId: relicPool) {
+            AbstractRelic relic = RelicLibrary.getRelic(relicId);
+            relicObjects.add(relic);
+        }
+        relicObjects.sort(Comparator.comparing(relic -> relic.name));
+        this.relics.addAll(relicObjects);
     }
 
     private void makeUIObjects() {
@@ -57,11 +60,11 @@ public abstract class RelicFilterScreen extends FilterScreen {
         int iy = 0;
         final int perRow = 5;
 
-        for (String id : relics) {
+        for (AbstractRelic relic : relics) {
             float tx = left + ix * spacing;
             float ty = top - iy * spacing;
 
-            relicUIObjects.put(id, new RelicUIObject(this, id, tx, ty));
+            relicUIObjects.put(relic.relicId, new RelicUIObject(this, relic, tx, ty));
 
             ix++;
             if (ix > perRow) {
@@ -144,6 +147,10 @@ public abstract class RelicFilterScreen extends FilterScreen {
         filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.updateFilter(filterObject);
         FilterManager.setFilter(filterObject);
+    }
+
+    public void resetUI(){
+        clearAll();
     }
 
     abstract void postRelicSetup();
