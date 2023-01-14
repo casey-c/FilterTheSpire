@@ -1,6 +1,7 @@
 package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.patches.DropdownMenuPatch;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
 import basemod.*;
@@ -16,14 +17,19 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.screens.mainMenu.MainMenuScreen;
+import com.megacrit.cardcrawl.screens.options.DropdownMenu;
+import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 import com.megacrit.cardcrawl.ui.DialogWord;
 import com.megacrit.cardcrawl.vfx.SpeechTextEffect;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
-public class AlternateConfigMenu extends ModPanel {
+public class AlternateConfigMenu extends ModPanel implements DropdownMenuListener {
     private static Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
     private ModLabeledToggleButton neowBonusToggle;
+    private DropdownMenu threadCountDropdown;
 
     private ArrayList<ModLabeledButton> filterButtons = new ArrayList<>();
     private ArrayList<FilterScreen> filterScreens = new ArrayList<>();
@@ -72,11 +78,11 @@ public class AlternateConfigMenu extends ModPanel {
                 FilterScreen.INFO_BOTTOM_CHECK, // same as above
                 Settings.CREAM_COLOR,
                 FontHelper.charDescFont,
-                FilterTheSpire.config.getBooleanKeyOrSetDefault("allNeowBonuses", true),
+                FilterTheSpire.config.getBooleanKeyOrSetDefault(FilterTheSpire.config.allNeowBonusesKey, true),
                 null,
                 (modLabel) -> {
                 },
-                (button) -> FilterTheSpire.config.setBooleanKey("allNeowBonuses", button.enabled)) {
+                (button) -> FilterTheSpire.config.setBooleanKey(FilterTheSpire.config.allNeowBonusesKey, button.enabled)) {
             // Override the update of the toggle button to add an informational tool tip when hovered
             @Override
             public void update() {
@@ -97,9 +103,27 @@ public class AlternateConfigMenu extends ModPanel {
                 }
             }
         };
+
+        String[] threadCounts = IntStream.range(2, 9).mapToObj(String::valueOf).toArray(String[]::new);
+        threadCountDropdown = new DropdownMenu(this, threadCounts, FontHelper.cardDescFont_N, Settings.CREAM_COLOR) {
+            // Override the update of the toggle button to add an informational tool tip when hovered
+            public void update() {
+                super.update();
+                Hitbox hb = DropdownMenuPatch.HitboxField.dropdownHitbox.get(threadCountDropdown);
+                if (hb != null && hb.hovered) {
+                    TipHelper.renderGenericTip(
+                            (FilterScreen.INFO_LEFT + 310.0F) * Settings.xScale,
+                            (FilterScreen.INFO_TOP_CONTROLS - 25.0F) * Settings.yScale,
+                            "Info",
+                            "A higher number will search for seeds faster but will be more CPU intensive. " +
+                                    "The default is 2, none of these will make the game crash, but may affect background processes.");
+                }
+            }
+        };
+        int index = ArrayUtils.indexOf(threadCounts, String.valueOf(FilterTheSpire.config.getIntKeyOrSetDefault(FilterTheSpire.config.threadCountKey, 2)));
+        threadCountDropdown.setSelectedIndex(index);
     }
 
-    @Override
     public void renderBg(SpriteBatch sb) {
         // Dim to diminish the rest of the config menu
         sb.setColor(ExtraColors.SCREEN_DIM);
@@ -117,15 +141,6 @@ public class AlternateConfigMenu extends ModPanel {
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Filter Menu", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
-
-        FontHelper.renderSmartText(sb,
-                FontHelper.tipBodyFont,
-                "This mod assumes that all cards and relics have been unlocked by leveling each character. If you have not unlocked everything, the filters will not work consistently.",
-                FilterScreen.INFO_LEFT * Settings.xScale,
-                FilterScreen.INFO_TOP_MAIN * Settings.yScale,
-                FilterScreen.INFO_WIDTH * Settings.xScale,
-                30.0f * Settings.yScale,
-                Settings.CREAM_COLOR);
     }
 
     @Override
@@ -146,6 +161,28 @@ public class AlternateConfigMenu extends ModPanel {
         if (!isShowingFilterScreen) {
             neowBonusToggle.render(sb);
             clearButton.render(sb);
+
+            FontHelper.renderSmartText(sb,
+                    FontHelper.tipBodyFont,
+                    "This mod assumes that all cards and relics have been unlocked by leveling each character. If you have not unlocked everything, the filters will not work consistently.",
+                    FilterScreen.INFO_LEFT * Settings.xScale,
+                    FilterScreen.INFO_TOP_MAIN * Settings.yScale,
+                    FilterScreen.INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.CREAM_COLOR);
+
+            FontHelper.renderSmartText(sb,
+                    FontHelper.tipBodyFont,
+                    "Search thread count:",
+                    FilterScreen.INFO_LEFT * Settings.xScale,
+                    FilterScreen.INFO_TOP_CONTROLS * Settings.yScale,
+                    FilterScreen.INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.CREAM_COLOR);
+
+            threadCountDropdown.render(sb,
+                    (FilterScreen.INFO_LEFT + 210.0F) * Settings.xScale,
+                    FilterScreen.INFO_TOP_CONTROLS * Settings.yScale);
             if (clearMessage != null && !clearMessage.isDone) {
                 clearMessage.render(sb);
             }
@@ -165,6 +202,7 @@ public class AlternateConfigMenu extends ModPanel {
         if (!isShowingFilterScreen) {
             neowBonusToggle.update();
             clearButton.update();
+            threadCountDropdown.update();
             for (ModLabeledButton button : filterButtons) {
                 button.update();
             }
@@ -199,5 +237,11 @@ public class AlternateConfigMenu extends ModPanel {
         return new ModLabeledButton(buttonText, xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
                 (self) -> screen.isShowing = true);
+    }
+
+    public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
+        if (dropdownMenu == threadCountDropdown) {
+            FilterTheSpire.config.setIntKey(FilterTheSpire.config.threadCountKey, Integer.parseInt(s));
+        }
     }
 }

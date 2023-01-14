@@ -1,5 +1,6 @@
 package FilterTheSpire.multithreading;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.utils.RestartHelper;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
@@ -9,8 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.*;
 
 public class SeedSearcher {
-    // TODO: make this depend on the user's OS
-    private static final int numThreads = 2; // Runtime.getRuntime().availableProcessors();
+    private static int numThreads = 2;
     private SeedSearcher() { }
 
     // --------------------------------------------------------------------------------
@@ -62,6 +62,7 @@ public class SeedSearcher {
 
     // The main starting point of the searching algorithm - launches a new thread to handle further child threads
     public static void searchForSeed() {
+        numThreads = FilterTheSpire.config.getIntKey(FilterTheSpire.config.threadCountKey);
         runner = new MainSeedRunnable();
         runnerThread = new Thread(runner);
         runnerThread.start();

@@ -15,6 +15,8 @@ public class Config {
     private SpireConfig spireConfig;
     private FilterGroupConfig currentFilters;
     private final String filterKey = "filters";
+    public final String threadCountKey = "threadCount";
+    public final String allNeowBonusesKey = "allNeowBonuses";
 
     public Config() {
         Properties defaults = new Properties();
@@ -82,6 +84,27 @@ public class Config {
 
     public boolean getBooleanKey(String key){
         return spireConfig.getBool(key);
+    }
+
+    public void setIntKey(String key, int val){
+        spireConfig.setInt(key, val);
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getIntKeyOrSetDefault(String key, int defaultValue){
+        if (!spireConfig.has(key)){
+            setIntKey(key, defaultValue);
+        }
+        return getIntKey(key);
+    }
+
+    public int getIntKey(String key){
+        return spireConfig.getInt(key);
     }
 
     // (Main Menu -> Mods) menu setup
