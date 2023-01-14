@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.ui.components.CharacterDropdown;
 import FilterTheSpire.utils.CardPoolHelper;
 import FilterTheSpire.utils.CharacterPool;
 import FilterTheSpire.utils.ExtraFonts;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuListener  {
     private DropdownMenu neowBonusDropdown;
     private DropdownMenu drawbackDropdown;
-    private DropdownMenu characterDropdown;
+    private CharacterDropdown characterDropdown;
     private DropdownMenu cardDropdown;
     private DropdownMenu cardDropdown2;
 
@@ -132,26 +133,6 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
             }
         }
 
-        int defaultCharacterIndex = 0;
-        if (filterObject.character != null){
-            switch (filterObject.character){
-                case IRONCLAD:
-                    defaultCharacterIndex = 1;
-                    break;
-                case THE_SILENT:
-                    defaultCharacterIndex = 2;
-                    break;
-                case DEFECT:
-                    defaultCharacterIndex = 3;
-                    break;
-                case WATCHER:
-                    defaultCharacterIndex = 4;
-                    break;
-                default:
-                    break;
-            }
-        }
-
         ArrayList<String> bonusStrings = bonuses.stream().map(b -> b.description).collect(Collectors.toCollection(ArrayList::new));
         bonusStrings.add(0, "Any Bonus");
         this.neowBonusDropdown = new DropdownMenu(this, bonusStrings, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
@@ -160,8 +141,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         drawbackStrings.add(0, "Any Drawback");
         this.drawbackDropdown = new DropdownMenu(this, drawbackStrings, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
 
-        ArrayList<String> characters = new ArrayList<>(Arrays.asList("Any Character", "Ironclad", "Silent", "Defect", "Watcher"));
-        this.characterDropdown = new DropdownMenu(this, characters, FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
+        this.characterDropdown = new CharacterDropdown(this, filterObject.character);
 
         this.cardDropdown = new DropdownMenu(this, new ArrayList<>(Collections.singletonList("Any Card")), FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
         this.cardDropdown2 = new DropdownMenu(this, new ArrayList<>(Collections.singletonList("Any Card")), FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
@@ -169,7 +149,6 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
 
         this.neowBonusDropdown.setSelectedIndex(defaultBonusIndex);
         this.drawbackDropdown.setSelectedIndex(defaultDrawbackIndex);
-        this.characterDropdown.setSelectedIndex(defaultCharacterIndex);
         FilterManager.setFilter(filterObject);
         isInitialLoad = false;
     }
@@ -218,21 +197,9 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 currentDrawbackValue = null;
             }
         } else if (dropdownMenu == this.characterDropdown) {
-            switch (i){
-                case 1:
-                    filterObject.character = AbstractPlayer.PlayerClass.IRONCLAD;
-                    break;
-                case 2:
-                    filterObject.character = AbstractPlayer.PlayerClass.THE_SILENT;
-                    break;
-                case 3:
-                    filterObject.character = AbstractPlayer.PlayerClass.DEFECT;
-                    break;
-                case 4:
-                    filterObject.character = AbstractPlayer.PlayerClass.WATCHER;
-                    break;
-                default:
-                    break;
+            AbstractPlayer.PlayerClass character = this.characterDropdown.getCharacterFromIndex(i);
+            if (character != null) {
+                filterObject.character = character;
             }
             clearCardFilter();
             setCardDropdownValues();
