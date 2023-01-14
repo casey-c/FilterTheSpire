@@ -261,65 +261,67 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Bonuses", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Bonuses", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which bonuses Neow will offer at the start of the run. You are " +
                         "only able to filter on one bonus.",
-                INFO_LEFT * Settings.scale,
-                (INFO_TOP_MAIN * Settings.scale) + 120F,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN + 100F) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "If you use this in conjunction with the Boss Swap filter, you can either Boss Swap or your chosen " +
                         "Boss relic will appear after the Act 1 boss.",
-                INFO_LEFT * Settings.scale,
-                (INFO_TOP_MAIN * Settings.scale) - 20F,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN - 30F)  * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
 
-        FontHelper.renderSmartText(sb,
-                FontHelper.tipBodyFont,
-                "WARNING: Some bonuses and drawbacks can never pair together: " +
-                        "NL Obtain a Curse - Remove 2 Cards NL Lose all Gold - Gain 250 Gold NL Lose 10% Max HP - Gain 20% Max HP",
-                INFO_LEFT * Settings.scale,
-                (INFO_TOP_MAIN * Settings.scale) - 170.0F,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
-                Settings.RED_TEXT_COLOR);
+        if (!filterObject.searchCards.keySet().isEmpty()){
+            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
+                    "WARNING: If you filter on cards that are on a different character than the one you're " +
+                            "playing, a seed will never be found.",
+                    INFO_LEFT * Settings.xScale,
+                    (INFO_TOP_MAIN  - 190.0F) * Settings.yScale,
+                    INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.RED_TEXT_COLOR);
+        } else if (currentBonusValue == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC ||
+                currentBonusValue == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
+            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
+                    "You can combine the Relic filter with the Relic Neow Bonuses to get a specific relic from Neow.",
+                    INFO_LEFT * Settings.xScale,
+                    (INFO_TOP_MAIN - 190.0F) * Settings.yScale,
+                    INFO_WIDTH * Settings.xScale,
+                    30.0f * Settings.yScale,
+                    Settings.GREEN_TEXT_COLOR);
+        }
 
         final float xPosition = 400.0F;
-        float yPosition = 550.0F;
+        float yPosition = 530.0F;
+        final float spacingIncrement = 65F;
 
         if (characterCardBonuses.contains(currentBonusValue)) {
-            FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
-                    "If you filter on cards, the character dropdown should match the character you will play next. " +
-                            "If you filter on cards that are on a different character than the one you're playing, a " +
-                            "seed will never be found.",
-                    xPosition * Settings.xScale,
-                    (yPosition * Settings.yScale) - 120.0F,
-                    600 * Settings.xScale,
-                    30.0f * Settings.yScale,
-                    Settings.CREAM_COLOR);
             if (this.characterDropdown.getSelectedIndex() > 0) {
                 this.cardDropdown.render(sb, (xPosition * Settings.xScale), yPosition * Settings.yScale);
                 if (currentBonusValue == NeowReward.NeowRewardType.TRANSFORM_TWO_CARDS){
-                    this.cardDropdown2.render(sb, (xPosition * Settings.xScale) + 300.0F, yPosition * Settings.yScale);
+                    this.cardDropdown2.render(sb, (xPosition  + 300.0F) * Settings.xScale, yPosition * Settings.yScale);
                 }
             }
-            this.characterDropdown.render(sb, xPosition * Settings.xScale, (yPosition * Settings.yScale) + 60.0F);
+            this.characterDropdown.render(sb, xPosition * Settings.xScale, (yPosition  + spacingIncrement) * Settings.yScale);
         } else if (cardRewardBonuses.contains(currentBonusValue)) {
             // If is a card option, show card dropdown
             this.cardDropdown.render(sb, (xPosition * Settings.xScale), yPosition * Settings.yScale);
         }
 
-        this.drawbackDropdown.render(sb, xPosition * Settings.xScale, (yPosition * Settings.yScale) + 120.0F);
-        this.neowBonusDropdown.render(sb, xPosition * Settings.xScale, (yPosition * Settings.yScale) + 180.0F);
+        this.drawbackDropdown.render(sb, xPosition * Settings.xScale, (yPosition  + spacingIncrement * 2) * Settings.yScale);
+        this.neowBonusDropdown.render(sb, xPosition * Settings.xScale, (yPosition + spacingIncrement * 3) * Settings.yScale);
     }
 
     public void update() {
@@ -357,6 +359,14 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
     public void refreshFilters(){
         FilterTheSpire.config.updateFilter(filterObject);
         FilterManager.setFilter(filterObject);
+    }
+
+    public void resetUI(){
+        neowBonusDropdown.setSelectedIndex(0);
+        drawbackDropdown.setSelectedIndex(0);
+        characterDropdown.setSelectedIndex(0);
+        cardDropdown.setSelectedIndex(0);
+        cardDropdown2.setSelectedIndex(0);
     }
 
     private void setCardDropdownValues() {
@@ -424,8 +434,14 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     int index = findIndexOfCard(sortedList, searchCard);
                     if (cardDropdown.getSelectedIndex() > 0){
                         cardDropdown2.setSelectedIndex(index);
+                        cards[1] = searchCard;
                     } else {
                         cardDropdown.setSelectedIndex(index);
+                        cards[0] = searchCard;
+                        if (filterObject.searchCards.get(searchCard) > 1) {
+                            cardDropdown2.setSelectedIndex(index);
+                            cards[1] = searchCard;
+                        }
                     }
                 }
             }

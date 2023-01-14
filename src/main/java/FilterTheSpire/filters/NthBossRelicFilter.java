@@ -6,7 +6,7 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.Collections;
 import java.util.List;
 
-public class NthBossRelicFilter extends AbstractFilter{
+public class NthBossRelicFilter extends AbstractFilter {
     private List<String> bossRelicNames;
     private List<Integer> possibleEncounterIndices;
 

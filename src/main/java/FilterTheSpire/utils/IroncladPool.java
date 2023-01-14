@@ -1,5 +1,6 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
@@ -117,11 +118,9 @@ public class IroncladPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Brimstone");
-
-        setReversedCardPools();
     }
 
-    public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
+    public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -135,6 +134,6 @@ public class IroncladPool extends CharacterPool {
             colors.add(SilentPool.getInstance());
         }
         colors.add(IroncladPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCommonCardPool);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
     }
 }

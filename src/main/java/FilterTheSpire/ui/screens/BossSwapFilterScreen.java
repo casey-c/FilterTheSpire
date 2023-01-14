@@ -1,11 +1,8 @@
 package FilterTheSpire.ui.screens;
 
-import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.FilterType;
-import basemod.ModLabeledToggleButton;
-import basemod.ModToggleButton;
-import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -13,13 +10,15 @@ import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class BossSwapFilterScreen extends RelicFilterScreen {
     public BossSwapFilterScreen() {
-        super(AbstractRelic.RelicTier.BOSS, FilterType.NthBossRelic);
+        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic);
     }
 
     void postRelicSetup() {
@@ -28,8 +27,8 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
 
     // Don't allow unswappable relics to enter the pool
     private void removeClassUpgradedRelics() {
-        Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater")
-                .forEach(relics::remove);
+        List<String> invalidSwaps = Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater");
+        relics.removeIf(relic -> invalidSwaps.contains(relic.relicId));
     }
 
     public void renderForeground(SpriteBatch sb) {
@@ -44,29 +43,30 @@ public class BossSwapFilterScreen extends RelicFilterScreen {
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.scale, titleBottom * Settings.scale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_MAIN * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN + 100F) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Controls: NL Click to toggle NL Right+Click to select just one NL NL Shift+Click to select all NL Shift+Right+Click to clear all NL Alt+Click to invert all",
-                INFO_LEFT * Settings.scale,
-                INFO_TOP_CONTROLS * Settings.scale,
-                INFO_WIDTH * Settings.scale,
-                30.0f * Settings.scale,
+                INFO_LEFT * Settings.xScale,
+                INFO_TOP_CONTROLS * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
                 Color.GRAY);
     }
 
     public void update() {
         this.returnButton.update();
+        this.enableHitboxes(true);
         for (RelicUIObject relic : relicUIObjects.values()){
             relic.update();
         }

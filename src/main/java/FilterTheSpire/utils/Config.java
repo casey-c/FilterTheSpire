@@ -9,6 +9,7 @@ import com.google.gson.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Config {
     private SpireConfig spireConfig;
@@ -41,11 +42,15 @@ public class Config {
     }
 
     public FilterObject getFilter(FilterType filterType){
-        return currentFilters.activeFilters.getOrDefault(filterType, new FilterObject(filterType));
+        return getFilter(filterType, Collections.singletonList(0));
+    }
+
+    public FilterObject getFilter(FilterType filterType, List<Integer> indices){
+        return currentFilters.activeFilters.getOrDefault(generateHashKey(filterType, indices), new FilterObject(filterType));
     }
 
     public void updateFilter(FilterObject filterObject){
-        currentFilters.activeFilters.put(filterObject.filterType, filterObject);
+        currentFilters.activeFilters.put(generateHashKey(filterObject), filterObject);
 
         // update settings
         Gson gson = new Gson();
@@ -86,5 +91,28 @@ public class Config {
                 "ojb",
                 "Customize your Slay the Spire experience",
                 new AlternateConfigMenu());
+    }
+
+    public void clearFilters(){
+        currentFilters.activeFilters = new HashMap<>();
+
+        // update settings
+        Gson gson = new Gson();
+        spireConfig.setString(filterKey, gson.toJson(currentFilters));
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
+        String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+        return filterType.toString() + indices;
+    }
+
+    private String generateHashKey(FilterObject filterObject){
+        return generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices);
     }
 }

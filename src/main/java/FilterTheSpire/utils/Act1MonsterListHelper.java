@@ -15,16 +15,22 @@ public class Act1MonsterListHelper extends MonsterListHelper {
     }
 
     private Act1MonsterListHelper(){
+        super();
+
         weakMonsterCombats = 3;
         strongMonsterCombats = 12;
         eliteMonsterCombats = 10;
+    }
 
+    protected void initializeWeakMonsters(){
         weakMonsterPool.add(new MonsterInfo("Cultist", 2.0F));
         weakMonsterPool.add(new MonsterInfo("Jaw Worm", 2.0F));
         weakMonsterPool.add(new MonsterInfo("2 Louse", 2.0F));
         weakMonsterPool.add(new MonsterInfo("Small Slimes", 2.0F));
         MonsterInfo.normalizeWeights(weakMonsterPool);
+    }
 
+    protected void initializeStrongMonsters(){
         strongMonsterPool.add(new MonsterInfo("Blue Slaver", 2.0F));
         strongMonsterPool.add(new MonsterInfo("Gremlin Gang", 1.0F));
         strongMonsterPool.add(new MonsterInfo("Looter", 2.0F));
@@ -36,12 +42,16 @@ public class Act1MonsterListHelper extends MonsterListHelper {
         strongMonsterPool.add(new MonsterInfo("3 Louse", 2.0F));
         strongMonsterPool.add(new MonsterInfo("2 Fungi Beasts", 2.0F));
         MonsterInfo.normalizeWeights(strongMonsterPool);
+    }
 
+    protected void initializeElites(){
         eliteMonsterPool.add(new MonsterInfo("Gremlin Nob", 1.0F));
         eliteMonsterPool.add(new MonsterInfo("Lagavulin", 1.0F));
         eliteMonsterPool.add(new MonsterInfo("3 Sentries", 1.0F));
         MonsterInfo.normalizeWeights(eliteMonsterPool);
+    }
 
+    protected void initializeBosses(){
         bossPool.add("The Guardian");
         bossPool.add("Hexaghost");
         bossPool.add("Slime Boss");
@@ -75,4 +85,6 @@ public class Act1MonsterListHelper extends MonsterListHelper {
         }
         return retVal;
     }
+
+
 }

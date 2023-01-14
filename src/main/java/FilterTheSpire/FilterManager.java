@@ -6,6 +6,7 @@ import FilterTheSpire.filters.*;
 import FilterTheSpire.utils.SeedHelper;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.neow.NeowReward;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,7 +40,19 @@ public class FilterManager {
         return filters.size();
     }
 
+    /**
+     * This is for RNG counters we increment from Neow (such as card rewards incrementing card RNG).
+     */
     public static HashMap<SeedHelper.RNGType, Integer> preRngCounters = new HashMap<>();
+
+    /**
+     * This is for any relic filters you want to add on top of getting relic(s) from Neow.
+     * Use the relic filters as if you weren't getting anything from Neow
+     * Ex: If you want the Rare Relic from Neow to be Dead Branch and first Rare relic encounter to be
+     *     Fossilized Helix, then use the Relic encounter filter for 0th index for Helix and add the
+     *     Blessing filter for Rare relic Dead Branch
+     */
+    public static HashMap<AbstractRelic.RelicTier, Integer> neowBonusRelicsCount = new HashMap<>();
 
     // --------------------------------------------------------------------------------
 
@@ -111,6 +124,15 @@ public class FilterManager {
         }
     }
 
+    public static void addEventFilter(String event){
+        if (event != null && event.length() > 0) {
+            Act1EventFilter filter = new Act1EventFilter(event);
+            filters.put("eventFilter", filter);
+        } else {
+            filters.remove("eventFilter");
+        }
+    }
+
     public static void setRelicsInEncounters(ArrayList<String> relicIds, List<Integer> encounterIndices) {
         String indices = encounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
         if (relicIds.size() > 0) {
@@ -138,18 +160,11 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setBlessingFilter(NeowReward.NeowRewardType blessing, HashMap<String, Integer> cards, NeowReward.NeowRewardDrawback drawback){
-        if (blessing == NeowReward.NeowRewardType.RANDOM_COLORLESS_2) {
-            preRngCounters.put(SeedHelper.RNGType.CARD, 3);
-        }
-        BlessingFilter filter = new BlessingFilter(blessing, cards, drawback);
-        filters.put("blessingFilter", filter);
-    }
-
-    // --------------------------------------------------------------------------------
-
     public static void setCallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic){
         CallingBellFilter filter = new CallingBellFilter(commonRelic, uncommonRelic, rareRelic);
+        neowBonusRelicsCount.put(AbstractRelic.RelicTier.COMMON, 1);
+        neowBonusRelicsCount.put(AbstractRelic.RelicTier.UNCOMMON, 1);
+        neowBonusRelicsCount.put(AbstractRelic.RelicTier.RARE, 1);
         filters.put("callingBellFilter", filter);
     }
 

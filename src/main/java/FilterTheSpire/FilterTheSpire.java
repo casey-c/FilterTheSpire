@@ -1,6 +1,7 @@
 package FilterTheSpire;
 
 import FilterTheSpire.multithreading.SeedSearcher;
+import FilterTheSpire.utils.*;
 import FilterTheSpire.utils.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
@@ -24,7 +25,7 @@ import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
-    private static final String version = "0.1.6";
+    private static final String version = "0.1.7";
     public static void initialize() { new FilterTheSpire(); }
 
     // Used by the patches to not double up VFX and SFX
@@ -46,7 +47,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
         stopButton = new ModLabeledButton("Stop Searching",
                 Settings.WIDTH / 10.0f,
-                150 * Settings.scale,
+                150 * Settings.yScale,
                 Settings.CREAM_COLOR,
                 Color.GOLD,
                 FontHelper.tipHeaderFont,
@@ -85,6 +86,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         }
 
         if (firstTimeThrough && !Settings.seedSet) {
+            CardPoolHelper.resetCharacterCardPoolsForSettings();
             FilterManager.sortFilters();
             SEARCHING_FOR_SEEDS = true;
             firstTimeThrough = false;
@@ -149,8 +151,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                 setColorOpacities(1.0f);
             }
             else {
-                if (fadeTime < 1.0f) setColorOpacities(fadeTime);
-                else setColorOpacities(1.0f);
+                setColorOpacities(Math.min(fadeTime, 1.0f));
             }
         }
 
@@ -175,7 +176,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     FontHelper.menuBannerFont,
                     "Searching for the perfect seed...",
                     (Settings.WIDTH * 0.5f),
-                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.scale),
+                    (Settings.HEIGHT * 0.5f) + (224.0f * Settings.yScale),
                     creamTextColor
             );
 
@@ -183,23 +184,23 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                     FontHelper.menuBannerFont,
                     "Seeds Explored",
                     (Settings.WIDTH * 0.5f),
-                    321 * Settings.scale,
+                    321 * Settings.yScale,
                     grayTextColor
             );
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
                     "Filter the Spire",
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    945 * Settings.scale,
+                    Settings.WIDTH - (85.0f * Settings.xScale),
+                    945 * Settings.yScale,
                     grayTextColor
             );
 
             FontHelper.renderFontRightTopAligned(sb,
                     FontHelper.menuBannerFont,
                     version,
-                    Settings.WIDTH - (85.0f * Settings.scale),
-                    890 * Settings.scale,
+                    Settings.WIDTH - (85.0f * Settings.xScale),
+                    890 * Settings.yScale,
                     grayTextColor
             );
 

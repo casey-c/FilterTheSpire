@@ -1,5 +1,6 @@
 package FilterTheSpire.utils;
 
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
@@ -114,11 +115,9 @@ public class DefectPool extends CharacterPool {
 
         shopRelicPool = getSharedShopRelicPool();
         shopRelicPool.add("Runic Capacitor");
-
-        setReversedCardPools();
     }
 
-    public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
+    public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -132,6 +131,6 @@ public class DefectPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(DefectPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors, shouldReverseCommonCardPool);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
     }
 }

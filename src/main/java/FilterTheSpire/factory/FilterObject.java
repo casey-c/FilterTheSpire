@@ -4,6 +4,7 @@ import FilterTheSpire.utils.FilterType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FilterObject {
     public FilterType filterType;

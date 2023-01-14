@@ -23,10 +23,10 @@ public abstract class FilterScreen {
         // Draw our screen texture in the center
         sb.setColor(Color.WHITE);
         sb.draw(TEX_BG,
-                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.scale)) * 0.5f),
-                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.scale)) * 0.5f),
-                Math.round(TEX_BG.getWidth() * Settings.scale),
-                Math.round(TEX_BG.getHeight() * Settings.scale)
+                Math.round((Settings.WIDTH - (TEX_BG.getWidth() * Settings.xScale)) * 0.5f),
+                Math.round((Settings.HEIGHT - (TEX_BG.getHeight() * Settings.yScale)) * 0.5f),
+                Math.round(TEX_BG.getWidth() * Settings.xScale),
+                Math.round(TEX_BG.getHeight() * Settings.yScale)
         );
     }
 
@@ -35,8 +35,14 @@ public abstract class FilterScreen {
         renderForeground(sb);
     }
 
+    public void clearFilter(){
+        filterObject = new FilterObject(filterObject.filterType);
+        resetUI();
+    }
+
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
     abstract void refreshFilters();
+    abstract void resetUI();
 }
 
