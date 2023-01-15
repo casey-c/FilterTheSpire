@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.evacipated.cardcrawl.modthespire.lib.SpireField;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.TipHelper;
 import com.megacrit.cardcrawl.screens.options.DropdownMenu;
 import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class DropdownMenuPatch {
@@ -19,20 +20,11 @@ public class DropdownMenuPatch {
             method = SpirePatch.CONSTRUCTOR,
             paramtypez = {DropdownMenuListener.class, ArrayList.class, BitmapFont.class, Color.class, int.class}
     )
-    public static class SetHitbox {
+    public static class SetWidth {
         @SpirePostfixPatch
-        public static void setHitbox(DropdownMenu __instance, DropdownMenuListener listener, ArrayList<String> options, BitmapFont font, Color textColor, int maxRows) {
-            // The hb is private so we have to use reflection here
-            Object dropdownRow = ReflectionHacks.getPrivate(__instance, DropdownMenu.class, "selectionBox");
-            Class<?> cls = dropdownRow.getClass();
-            try {
-                Field hitboxField = cls.getDeclaredField("hb");
-                hitboxField.setAccessible(true);
-                Hitbox hb = (Hitbox) hitboxField.get(dropdownRow);
-                HitboxField.dropdownHitbox.set(__instance, hb);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                HitboxField.dropdownHitbox.set(__instance, null);
-            }
+        public static void setWidth(DropdownMenu __instance, DropdownMenuListener listener, ArrayList<String> options, BitmapFont font, Color textColor, int maxRows) {
+            float cachedMaxWidth = ReflectionHacks.getPrivate(__instance, DropdownMenu.class, "cachedMaxWidth");
+            CachedWidth.cachedMaxWidth.set(__instance, cachedMaxWidth);
         }
     }
 
@@ -40,7 +32,19 @@ public class DropdownMenuPatch {
             clz = DropdownMenu.class,
             method=SpirePatch.CLASS
     )
-    public static class HitboxField {
-        public static SpireField<Hitbox> dropdownHitbox = new SpireField<>(() -> null);
+    public static class CachedWidth {
+        public static SpireField<Float> cachedMaxWidth = new SpireField<>(() -> 0.0F);
+    }
+
+    // This should be called in an override for render
+    public static void renderTip(DropdownMenu dropdownMenu, float x, float y, String header, String message) {
+        Hitbox hb = dropdownMenu.getHitbox();
+        if (hb != null && hb.hovered) {
+            float width = DropdownMenuPatch.CachedWidth.cachedMaxWidth.get(dropdownMenu);
+            TipHelper.renderGenericTip(
+                    (x + width + 10.0F) * Settings.xScale, (y - 20.0F) * Settings.yScale,
+                    header,
+                    message);
+        }
     }
 }

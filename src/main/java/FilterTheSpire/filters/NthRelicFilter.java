@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.RelicRngSimulator;
+import FilterTheSpire.utils.FilterType;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class NthRelicFilter extends AbstractFilter {
     private int encounterIndex;
 
     public NthRelicFilter(List<String> relicNames, int encounterIndex) {
+        type = FilterType.NthRelic;
         this.relicNames = relicNames;
         this.encounterIndex = encounterIndex;
     }

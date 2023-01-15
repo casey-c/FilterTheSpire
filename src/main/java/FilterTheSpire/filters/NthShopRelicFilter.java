@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.RelicRngSimulator;
+import FilterTheSpire.utils.FilterType;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.Collections;
@@ -11,6 +12,7 @@ public class NthShopRelicFilter extends AbstractFilter {
     private int encounterIndex;
 
     public NthShopRelicFilter(List<String> shopRelicNames) {
+        type = FilterType.NthShopRelic;
         this.shopRelicNames = shopRelicNames;
         this.encounterIndex = 0; // Get the first shop relic if no index is specified.
     }

@@ -2,6 +2,7 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.factory.MonsterListHelperFactory;
 import FilterTheSpire.simulators.MonsterRngSimulator;
+import FilterTheSpire.utils.FilterType;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class NthEliteFilter extends AbstractFilter {
     private int actNumber = 1;
 
     public NthEliteFilter(List<String> eliteNames) {
+        type = FilterType.NthElite;
         this.eliteNames = eliteNames;
         this.encounterIndex = 0; // Get the first elite if no index is specified.
     }

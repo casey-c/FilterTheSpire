@@ -81,8 +81,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-        FilterManager.setNthCardReward(LimitBreak.ID, 2);
-
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
             return;

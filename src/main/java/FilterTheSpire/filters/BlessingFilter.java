@@ -1,18 +1,20 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.BlessingSimulator;
+import FilterTheSpire.utils.FilterType;
 import com.megacrit.cardcrawl.neow.NeowReward;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class BlessingFilter extends AbstractFilter {
-    private NeowReward.NeowRewardType rewardType;
+    public NeowReward.NeowRewardType rewardType;
     private HashMap<String, Integer> searchCards;
     private NeowReward.NeowRewardDrawback drawback = null;
     private String relicId = null;
 
     public BlessingFilter(List<String> rewardType, List<String> drawback, HashMap<String, Integer> searchCards) {
+        type = FilterType.NeowBonus;
         if (rewardType != null && rewardType.size() > 0){
             this.rewardType = NeowReward.NeowRewardType.valueOf(rewardType.get(0));
         }

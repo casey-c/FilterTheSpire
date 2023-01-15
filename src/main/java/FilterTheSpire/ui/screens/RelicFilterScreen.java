@@ -143,6 +143,7 @@ public abstract class RelicFilterScreen extends FilterScreen {
         return list;
     }
 
+    @Override
     public void refreshFilters() {
         filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.updateFilter(filterObject);

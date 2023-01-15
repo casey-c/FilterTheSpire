@@ -58,7 +58,6 @@ public class RelicRngSimulator {
 
     /**
      * Tries to find the Nth relic drop by simulating the rarities and generates the relic pool for that rarity
-     * If you pass in a list of relics and list of encounterIndices, the logic is that
      * @param searchRelics: Relic Ids to search for
      * @param seed: Seed to search
      * @param encounterIndex: Which number (zero-indexed) relic we want to find (as in 1st relic or 2nd relic)

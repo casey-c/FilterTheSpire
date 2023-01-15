@@ -48,13 +48,26 @@ public class Config {
     }
 
     public FilterObject getFilter(FilterType filterType, List<Integer> indices){
-        return currentFilters.activeFilters.getOrDefault(generateHashKey(filterType, indices), new FilterObject(filterType));
+        return currentFilters.activeFilters.getOrDefault(filterType, new FilterObject(filterType));
     }
 
     public void updateFilter(FilterObject filterObject){
-        currentFilters.activeFilters.put(generateHashKey(filterObject), filterObject);
+        currentFilters.activeFilters.put(filterObject.filterType, filterObject);
 
         // update settings
+        Gson gson = new Gson();
+        spireConfig.setString(filterKey, gson.toJson(currentFilters));
+
+        try {
+            spireConfig.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeFilter(FilterType key) {
+        currentFilters.activeFilters.remove(key);
+
         Gson gson = new Gson();
         spireConfig.setString(filterKey, gson.toJson(currentFilters));
 
@@ -130,12 +143,9 @@ public class Config {
         }
     }
 
+    // for eventual multiple of same filter but different indices
     private String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
         String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
         return filterType.toString() + indices;
-    }
-
-    private String generateHashKey(FilterObject filterObject){
-        return generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices);
     }
 }

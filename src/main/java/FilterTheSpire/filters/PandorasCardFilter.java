@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardTransformSimulator;
+import FilterTheSpire.utils.FilterType;
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -28,6 +29,7 @@ public class PandorasCardFilter extends AbstractFilter {
     }
 
     private PandorasCardFilter(){
+        type = FilterType.PandorasCard;
         this.sortOrder = 2;
         this.totalTransformCount = AbstractDungeon.player.getStartingDeck().size() -
                 ((AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.IRONCLAD) ? 1 : 2);

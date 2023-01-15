@@ -1,6 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.RelicRngSimulator;
+import FilterTheSpire.utils.FilterType;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class NthBossRelicFilter extends AbstractFilter {
 
     // Since you get shown 3 Boss relics at once, this gives a wider window if you want it from a specific boss
     public NthBossRelicFilter(List<String> bossRelicNames, List<Integer> possibleEncounterIndices) {
+        type = FilterType.NthBossRelic;
         this.bossRelicNames = bossRelicNames;
         this.possibleEncounterIndices = possibleEncounterIndices;
     }

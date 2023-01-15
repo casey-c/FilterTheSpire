@@ -5,9 +5,12 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class CardPoolHelper {
+    public static HashMap<String, String> cardNameToId = new HashMap<>();
+
     public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
         ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
         cardRarities.add(AbstractCard.CardRarity.COMMON);

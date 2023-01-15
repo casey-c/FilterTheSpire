@@ -43,19 +43,24 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
 
         final float xPosition = 400.0F;
         float yPosition = FilterScreen.INFO_TOP_MAIN;
+        final float yIncrement = 90.0F;
+        final float xIncrement = 330.0F;
 
         BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
-        yPosition -= 90.0F;
+        NthCardRewardFilterScreen nthCardRewardFilterScreen = new NthCardRewardFilterScreen();
+        filterButtons.add(createFilterScreenButton("Choose Card Reward", (xPosition + xIncrement), yPosition,  nthCardRewardFilterScreen));
+
+        yPosition -= yIncrement;
         ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
-        yPosition -= 90.0F;
+        yPosition -= yIncrement;
         NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
 
-        yPosition -= 90.0F;
+        yPosition -= yIncrement;
         NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
@@ -63,6 +68,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         filterScreens.add(shopRelicScreen);
         filterScreens.add(neowBonusScreen);
         filterScreens.add(nthRelicFilterScreen);
+        filterScreens.add(nthCardRewardFilterScreen);
         clearButton = new ModLabeledButton("Clear All Filters", FilterScreen.INFO_LEFT + 50.0F, 805.0f,
                 Settings.CREAM_COLOR, Color.RED, FontHelper.tipHeaderFont, this,
                 (self) -> {
@@ -107,17 +113,11 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         String[] threadCounts = IntStream.range(2, 9).mapToObj(String::valueOf).toArray(String[]::new);
         threadCountDropdown = new DropdownMenu(this, threadCounts, FontHelper.cardDescFont_N, Settings.CREAM_COLOR) {
             // Override the update of the toggle button to add an informational tool tip when hovered
-            public void update() {
-                super.update();
-                Hitbox hb = DropdownMenuPatch.HitboxField.dropdownHitbox.get(threadCountDropdown);
-                if (hb != null && hb.hovered) {
-                    TipHelper.renderGenericTip(
-                            (FilterScreen.INFO_LEFT + 310.0F) * Settings.xScale,
-                            (FilterScreen.INFO_TOP_CONTROLS - 25.0F) * Settings.yScale,
-                            "Info",
-                            "A higher number will search for seeds faster but will be more CPU intensive. " +
-                                    "The default is 2, none of these will make the game crash, but may affect background processes.");
-                }
+            public void render(SpriteBatch sb, float x, float y) {
+                super.render(sb, x, y);
+                DropdownMenuPatch.renderTip(this, x, y, "Info",
+                        "A higher number will search for seeds faster but will be more CPU intensive. " +
+                        "The default is 2, none of these will make the game crash, but may affect background processes.");
             }
         };
         int index = ArrayUtils.indexOf(threadCounts, String.valueOf(FilterTheSpire.config.getIntKeyOrSetDefault(FilterTheSpire.config.threadCountKey, 2)));

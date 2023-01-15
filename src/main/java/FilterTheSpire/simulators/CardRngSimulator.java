@@ -45,15 +45,17 @@ public class CardRngSimulator {
      * @param searchCards: which cards to search in the card reward
      * @return true if the search cards were found in the combat rewards
      */
-    public boolean getNthCardReward(long seed, int combatIndex, List<String> searchCards) {
+    public boolean isNthCardRewardValid(long seed, int combatIndex, List<String> searchCards) {
+        if (searchCards.isEmpty()) {
+            return true;
+        }
+
         int numCardsInReward = 3;
 
         CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
 
-        for (int i = 0; i < FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0); i++) {
-            cardRng.randomLong();
-        }
+        cardRng.setCounter(FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0));
 
         boolean containsDupe = true;
         CardRewardInfo cardReward = null;

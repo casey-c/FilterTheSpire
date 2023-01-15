@@ -9,5 +9,6 @@ public enum FilterType {
     NthShopRelic,
     PandorasCard,
     NeowBonus,
-    NthRelic
+    NthRelic,
+    NthCardReward
 }

@@ -1,6 +1,9 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.utils.FilterType;
+
 public abstract class AbstractFilter {
+    public FilterType type;
     protected int sortOrder = 0;
     public int getSortOrder() {
         return sortOrder;

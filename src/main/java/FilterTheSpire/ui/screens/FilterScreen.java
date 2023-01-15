@@ -1,5 +1,7 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterManager;
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.ActionButton;
 import com.badlogic.gdx.graphics.Color;
@@ -40,9 +42,13 @@ public abstract class FilterScreen {
         resetUI();
     }
 
+    public void refreshFilters() {
+        FilterTheSpire.config.updateFilter(filterObject);
+        FilterManager.setFilter(filterObject);
+    }
+
     abstract void renderForeground(SpriteBatch sb);
     abstract void update();
-    abstract void refreshFilters();
     abstract void resetUI();
 }
 
