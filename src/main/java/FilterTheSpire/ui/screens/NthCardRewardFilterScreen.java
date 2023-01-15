@@ -156,7 +156,9 @@ public class NthCardRewardFilterScreen extends FilterScreen implements DropdownM
             setCardDropdownValues();
         } else if (dropdownMenu == this.cardDropdown) {
             filterObject.possibleValues.clear();
-            filterObject.possibleValues.add(CardPoolHelper.cardNameToId.get(s));
+            if (i > 0){
+                filterObject.possibleValues.add(CardPoolHelper.cardNameToId.get(s));
+            }
         } else if (dropdownMenu == this.combatDropdown) {
             filterObject.possibleEncounterIndices.clear();
             filterObject.possibleEncounterIndices.add(Integer.parseInt(s) - 1);
