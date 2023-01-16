@@ -62,6 +62,11 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
+    public static void clearFilters(){
+        filters.clear();
+        preRngCounters.clear();
+    }
+
     public static void setFilter(FilterObject filterObject){
         if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0){
             AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);

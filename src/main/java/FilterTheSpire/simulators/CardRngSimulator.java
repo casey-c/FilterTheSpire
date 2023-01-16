@@ -55,7 +55,9 @@ public class CardRngSimulator {
         CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
 
-        cardRng.setCounter(FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0));
+        if (FilterManager.preRngCounters.containsKey(SeedHelper.RNGType.CARD)){
+            cardRng.setCounter(FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0));
+        }
 
         boolean containsDupe = true;
         CardRewardInfo cardReward = null;

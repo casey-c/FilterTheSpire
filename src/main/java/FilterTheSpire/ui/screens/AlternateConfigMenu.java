@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.patches.DropdownMenuPatch;
 import FilterTheSpire.utils.ExtraColors;
@@ -73,6 +74,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
                 Settings.CREAM_COLOR, Color.RED, FontHelper.tipHeaderFont, this,
                 (self) -> {
                     FilterTheSpire.config.clearFilters();
+                    FilterManager.clearFilters();
                     for (FilterScreen screen : filterScreens) {
                         screen.clearFilter();
                     }
