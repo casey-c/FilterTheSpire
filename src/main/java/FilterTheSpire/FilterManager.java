@@ -82,7 +82,8 @@ public class FilterManager {
             AbstractFilter filter = filters.get(key);
             if (filter.type == FilterType.NeowBonus) {
                 BlessingFilter f = (BlessingFilter) filter;
-                if (f.rewardType == NeowReward.NeowRewardType.RANDOM_COLORLESS_2) {
+                if (f.rewardType == NeowReward.NeowRewardType.RANDOM_COLORLESS_2 ||
+                        f.rewardType == NeowReward.NeowRewardType.RANDOM_COLORLESS) {
                     preRngCounters.put(SeedHelper.RNGType.CARD, 3);
                 } else if (f.rewardType == NeowReward.NeowRewardType.THREE_SMALL_POTIONS) {
                     preRngCounters.put(SeedHelper.RNGType.CARD, 9);

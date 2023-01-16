@@ -250,10 +250,10 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
 
-        float extraTextY = INFO_TOP_MAIN;
+        float extraTextY = INFO_TOP_MAIN - 160.0F;
         if (currentBonusValue == NeowReward.NeowRewardType.THREE_SMALL_POTIONS ||
-                currentBonusValue == NeowReward.NeowRewardType.RANDOM_COLORLESS_2) {
-            extraTextY -= 160.0F;
+                currentBonusValue == NeowReward.NeowRewardType.RANDOM_COLORLESS_2 ||
+                currentBonusValue == NeowReward.NeowRewardType.RANDOM_COLORLESS) {
             FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
                     "WARNING: Unexpected results may occur if you use this Neow Bonus with the Card Reward Filter.",
                     INFO_LEFT * Settings.xScale,
@@ -261,9 +261,9 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                     INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.LIGHT_YELLOW_COLOR);
+            extraTextY -= 100.0F;
         } else if (currentBonusValue == NeowReward.NeowRewardType.RANDOM_COMMON_RELIC ||
                 currentBonusValue == NeowReward.NeowRewardType.ONE_RARE_RELIC) {
-            extraTextY -= 160.0F;
             FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
                     "You can combine the Relic filter with the Relic Neow Bonuses to get a specific relic from Neow.",
                     INFO_LEFT * Settings.xScale,
@@ -274,7 +274,6 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         }
 
         if (!filterObject.searchCards.keySet().isEmpty()){
-            extraTextY -= 100.0F;
             FontHelper.renderSmartText(sb, FontHelper.tipBodyFont,
                     "WARNING: If you filter on cards that are on a different character than the one you're " +
                             "playing, a seed will never be found.",
