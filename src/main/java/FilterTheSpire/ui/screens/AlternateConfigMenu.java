@@ -116,7 +116,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         threadCountDropdown = new DropdownMenu(this, threadCounts, FontHelper.cardDescFont_N, Settings.CREAM_COLOR) {
             // Override the update of the toggle button to add an informational tool tip when hovered
             public void render(SpriteBatch sb, float x, float y) {
-                super.render(sb, x, y);
+                super.render(sb, x * Settings.xScale, y * Settings.yScale);
                 DropdownMenuPatch.renderTip(this, x, y, "Info",
                         "A higher number will search for seeds faster but will be more CPU intensive. " +
                         "The default is 2, none of these will make the game crash, but may affect background processes.");
@@ -166,25 +166,28 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
 
             FontHelper.renderSmartText(sb,
                     FontHelper.tipBodyFont,
-                    "This mod assumes that all cards and relics have been unlocked by leveling each character. If you have not unlocked everything, the filters will not work consistently.",
+                    "This mod assumes vanilla runs and that all cards and relics have been unlocked by leveling " +
+                            "each character. If you have not unlocked everything or are doing Custom Mode, the " +
+                            "filters may not work consistently.",
                     FilterScreen.INFO_LEFT * Settings.xScale,
                     FilterScreen.INFO_TOP_MAIN * Settings.yScale,
                     FilterScreen.INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.CREAM_COLOR);
 
+            float threadDropdownY = FilterScreen.INFO_TOP_CONTROLS - 20.0F;
             FontHelper.renderSmartText(sb,
                     FontHelper.tipBodyFont,
                     "Search thread count:",
                     FilterScreen.INFO_LEFT * Settings.xScale,
-                    FilterScreen.INFO_TOP_CONTROLS * Settings.yScale,
+                    threadDropdownY * Settings.yScale,
                     FilterScreen.INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.CREAM_COLOR);
 
             threadCountDropdown.render(sb,
-                    (FilterScreen.INFO_LEFT + 210.0F) * Settings.xScale,
-                    FilterScreen.INFO_TOP_CONTROLS * Settings.yScale);
+                    FilterScreen.INFO_LEFT + 210.0F ,
+                    threadDropdownY);
             if (clearMessage != null && !clearMessage.isDone) {
                 clearMessage.render(sb);
             }
