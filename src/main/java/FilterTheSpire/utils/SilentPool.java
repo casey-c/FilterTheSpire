@@ -6,6 +6,7 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 
 public class SilentPool extends CharacterPool {
     private static SilentPool singleton = null;
@@ -119,7 +120,7 @@ public class SilentPool extends CharacterPool {
         shopRelicPool.add("TwistedFunnel");
     }
 
-    public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
+    public List<String> getCardPool(TreeMap<AbstractCard.CardRarity, Boolean> cardRarities) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -133,6 +134,6 @@ public class SilentPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(SilentPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities);
     }
 }

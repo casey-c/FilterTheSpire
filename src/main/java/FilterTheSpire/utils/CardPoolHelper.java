@@ -3,53 +3,44 @@ package FilterTheSpire.utils;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.helpers.ModHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CardPoolHelper {
     public static HashMap<String, String> cardNameToId = new HashMap<>();
 
-    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, boolean shouldReverseCommonCardPool){
-        ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
-        cardRarities.add(AbstractCard.CardRarity.COMMON);
-        cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
-        cardRarities.add(AbstractCard.CardRarity.RARE);
-        return getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
-    }
-
-    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool){
+    public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, TreeMap<AbstractCard.CardRarity, Boolean> cardRaritiesAndShouldReverse){
         ArrayList<String> cardPool = new ArrayList<>();
+        ArrayList<String> rarityCardPool = new ArrayList<>();
 
         boolean hasColorlessEnabled = ModHelper.isModEnabled("Colorless Cards");
-        for (AbstractCard.CardRarity rarity: cardRarities) {
+        for (AbstractCard.CardRarity rarity: cardRaritiesAndShouldReverse.keySet()) {
             for (int i = 0; i < colors.size(); i++) {
                 CharacterPool color = colors.get(i);
                 switch (rarity){
                     case COMMON:
-                        if (shouldReverseCommonCardPool){
-                            cardPool.addAll(color.getReversedCommonCardPool());
-                        } else {
-                            cardPool.addAll(color.commonCardPool);
-                        }
+                        rarityCardPool.addAll(color.commonCardPool);
                         break;
                     case UNCOMMON:
-                        cardPool.addAll(color.uncommonCardPool);
+                        rarityCardPool.addAll(color.uncommonCardPool);
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
-                            cardPool.addAll(getUncommonColorlessCards());
+                            rarityCardPool.addAll(getUncommonColorlessCards());
                         }
                         break;
                     case RARE:
-                        cardPool.addAll(color.rareCardPool);
+                        rarityCardPool.addAll(color.rareCardPool);
 
                         if (i == (colors.size() - 1) && hasColorlessEnabled) {
-                            cardPool.addAll(getRareColorlessCards());
+                            rarityCardPool.addAll(getRareColorlessCards());
                         }
                         break;
                 }
             }
+            if (cardRaritiesAndShouldReverse.get(rarity)){
+                Collections.reverse(rarityCardPool);
+            }
+            cardPool.addAll(rarityCardPool);
+            rarityCardPool.clear();
         }
         return cardPool;
     }

@@ -10,10 +10,12 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 // This logic can be found in NeowReward.class
 public class BlessingSimulator {
     private static BlessingSimulator singleton = null;
+    private TreeMap<AbstractCard.CardRarity, Boolean> cardRaritiesShouldReverse;
 
     public static BlessingSimulator getInstance(){
         if (singleton == null){
@@ -23,7 +25,11 @@ public class BlessingSimulator {
     }
 
     private BlessingSimulator(){
-
+        // Whenever we choose a transform bonus, generate all card rarities and reverse the common cards
+        cardRaritiesShouldReverse = new TreeMap<>();
+        cardRaritiesShouldReverse.put(AbstractCard.CardRarity.COMMON, true);
+        cardRaritiesShouldReverse.put(AbstractCard.CardRarity.UNCOMMON, false);
+        cardRaritiesShouldReverse.put(AbstractCard.CardRarity.RARE, false);
     }
 
     public boolean isBlessingValid(long seed, NeowReward.NeowRewardType rewardType, HashMap<String, Integer> searchCards, String relicId, NeowReward.NeowRewardDrawback drawback){
@@ -80,7 +86,7 @@ public class BlessingSimulator {
             switch (rewardType){
                 case TRANSFORM_CARD:
                     blessingRng.random();
-                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, true);
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 1, cardRaritiesShouldReverse);
                     break;
                 case THREE_CARDS:
                     blessingRng.random();
@@ -150,7 +156,7 @@ public class BlessingSimulator {
                     break;
                 case TRANSFORM_TWO_CARDS:
                     blessingRng.random();
-                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, true);
+                    isValid = isValid && CardTransformSimulator.getInstance().isValid(blessingRng, searchCards, 2, cardRaritiesShouldReverse);
                     break;
                 case RANDOM_COLORLESS_2:
                     isValid = isValid && CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, new ArrayList<>(searchCards.keySet()), AbstractCard.CardRarity.RARE);

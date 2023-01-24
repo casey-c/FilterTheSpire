@@ -6,6 +6,7 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 
 public class DefectPool extends CharacterPool {
     private static DefectPool singleton = null;
@@ -117,7 +118,7 @@ public class DefectPool extends CharacterPool {
         shopRelicPool.add("Runic Capacitor");
     }
 
-    public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
+    public List<String> getCardPool(TreeMap<AbstractCard.CardRarity, Boolean> cardRarities) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -131,6 +132,6 @@ public class DefectPool extends CharacterPool {
             colors.add(IroncladPool.getInstance());
         }
         colors.add(DefectPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities);
     }
 }

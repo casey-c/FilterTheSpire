@@ -148,19 +148,10 @@ public class CardRngSimulator {
     }
 
     private String neowGetCard(Random rng, CharacterPool pool, AbstractCard.CardRarity rarity){
-        String card = null;
-        switch(rarity) {
-            case RARE:
-                card = pool.getReversedRareCardPool().get(rng.random(pool.getReversedRareCardPool().size() - 1));
-                break;
-            case UNCOMMON:
-                card = pool.getReversedUncommonCardPool().get(rng.random(pool.getReversedUncommonCardPool().size() - 1));
-                break;
-            case COMMON:
-                card = pool.getReversedCommonCardPool().get(rng.random(pool.getReversedCommonCardPool().size() - 1));
-                break;
-        }
-        return card;
+        TreeMap<AbstractCard.CardRarity, Boolean> rarityMap = new TreeMap<>();
+        rarityMap.put(rarity, true);
+        List<String> cardPool = CharacterPoolFactory.getCardPool(AbstractDungeon.player.chosenClass, rarityMap);
+        return cardPool.get(rng.random(cardPool.size() - 1));
     }
 }
 

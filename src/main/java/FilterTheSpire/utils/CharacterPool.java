@@ -3,10 +3,7 @@ package FilterTheSpire.utils;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class CharacterPool {
     public List<String> commonCardPool;
@@ -167,14 +164,14 @@ public abstract class CharacterPool {
     }
 
     public List<String> getCardPool(boolean shouldReverseCommonCardPool) {
-        ArrayList<AbstractCard.CardRarity> cardRarities = new ArrayList<>();
-        cardRarities.add(AbstractCard.CardRarity.COMMON);
-        cardRarities.add(AbstractCard.CardRarity.UNCOMMON);
-        cardRarities.add(AbstractCard.CardRarity.RARE);
-        return getCardPool(cardRarities, shouldReverseCommonCardPool);
+        TreeMap<AbstractCard.CardRarity, Boolean> cardRarities = new TreeMap<>();
+        cardRarities.put(AbstractCard.CardRarity.COMMON, shouldReverseCommonCardPool);
+        cardRarities.put(AbstractCard.CardRarity.UNCOMMON, false);
+        cardRarities.put(AbstractCard.CardRarity.RARE, false);
+        return getCardPool(cardRarities);
     }
 
-    public abstract List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool);
+    public abstract List<String> getCardPool(TreeMap<AbstractCard.CardRarity, Boolean> cardRarities);
 
     public String getCard(AbstractCard.CardRarity rarity, Random rng){
         switch(rarity) {
@@ -191,7 +188,7 @@ public abstract class CharacterPool {
 
     public List<String> getReversedCommonCardPool() {
         if (reversedCommonCardPool == null){
-            reversedCommonCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.COMMON), false));
+            reversedCommonCardPool = new ArrayList<>(commonCardPool);
             Collections.reverse(reversedCommonCardPool);
         }
         return reversedCommonCardPool;
@@ -199,7 +196,7 @@ public abstract class CharacterPool {
 
     public List<String> getReversedUncommonCardPool() {
         if (reversedUncommonCardPool == null){
-            reversedUncommonCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.UNCOMMON), false));
+            reversedUncommonCardPool = new ArrayList<>(uncommonCardPool);
             Collections.reverse(reversedUncommonCardPool);
         }
         return reversedUncommonCardPool;
@@ -207,7 +204,7 @@ public abstract class CharacterPool {
 
     public List<String> getReversedRareCardPool() {
         if (reversedRareCardPool == null){
-            reversedRareCardPool = new ArrayList<>(getCardPool(Collections.singletonList(AbstractCard.CardRarity.RARE), false));
+            reversedRareCardPool = new ArrayList<>(rareCardPool);
             Collections.reverse(reversedRareCardPool);
         }
 

@@ -6,6 +6,7 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 
 public class IroncladPool extends CharacterPool {
     private static IroncladPool singleton = null;
@@ -120,7 +121,7 @@ public class IroncladPool extends CharacterPool {
         shopRelicPool.add("Brimstone");
     }
 
-    public List<String> getCardPool(List<AbstractCard.CardRarity> cardRarities, boolean shouldReverseCommonCardPool) {
+    public List<String> getCardPool(TreeMap<AbstractCard.CardRarity, Boolean> cardRarities) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
         if (ModHelper.isModEnabled("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
@@ -134,6 +135,6 @@ public class IroncladPool extends CharacterPool {
             colors.add(SilentPool.getInstance());
         }
         colors.add(IroncladPool.getInstance());
-        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities, shouldReverseCommonCardPool);
+        return CardPoolHelper.getOrderedCardPoolForColors(colors, cardRarities);
     }
 }

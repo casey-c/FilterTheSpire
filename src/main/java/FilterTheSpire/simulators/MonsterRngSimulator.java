@@ -26,16 +26,13 @@ public class MonsterRngSimulator {
 
     }
 
-//    public void print() {
-//        System.out.println("The seed is: " + SeedHelper.getString(seed));
-//        System.out.println("Monster List: " + monsterList.toString());
-//        System.out.println("Elite List: " + eliteMonsterList.toString());
-//        System.out.println("Bosses: " + bossList.toString());
-//    }
-
     public String firstBoss(long seed, MonsterListHelper monsterListHelper) {
-        ArrayList<String> monsterList = new ArrayList<>();
         Random monsterRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MONSTER);;
+        return firstBoss(monsterRng, monsterListHelper);
+    }
+
+    public String firstBoss(Random monsterRng, MonsterListHelper monsterListHelper) {
+        ArrayList<String> monsterList = new ArrayList<>();
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);
         generateStrongEnemies(monsterList, monsterRng, monsterListHelper);
