@@ -1,13 +1,10 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.filters.NthBossRelicFilter;
-import FilterTheSpire.simulators.RelicRngSimulator;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TestBossRelic {

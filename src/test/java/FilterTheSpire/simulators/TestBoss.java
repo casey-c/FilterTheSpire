@@ -1,7 +1,6 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.factory.MonsterListHelperFactory;
-import FilterTheSpire.simulators.MonsterRngSimulator;
 import com.megacrit.cardcrawl.random.Random;
 import org.junit.jupiter.api.Test;
 
