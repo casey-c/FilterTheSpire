@@ -71,7 +71,15 @@ public class RelicRngSimulator {
      */
     public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng);
+        return isNthRelicValid(searchRelics, relicRng, encounterIndex);
+    }
+
+    public boolean isNthRelicValid(List<String> searchRelics, Random relicRng, int encounterIndex){
+        return isNthRelicValid(searchRelics, relicRng, encounterIndex, AbstractDungeon.player.chosenClass);
+    }
+
+    public boolean isNthRelicValid(List<String> searchRelics, Random relicRng, int encounterIndex, AbstractPlayer.PlayerClass playerClass){
+        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng, playerClass);
 
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         for (int i = 0; i < encounterIndex; i++){

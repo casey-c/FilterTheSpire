@@ -71,8 +71,8 @@ public class Act2MonsterListHelper extends MonsterListHelper {
     }
 
     protected void initializeBosses() {
-        bossPool.add("Automaton");
-        bossPool.add("Collector");
+        bossPool.add("BronzeAutomaton");
+        bossPool.add("TheCollector");
         bossPool.add("Champ");
     }
 }
