@@ -25,8 +25,6 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
-import java.util.ArrayList;
-
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
     private static final String version = "0.1.7";
@@ -46,8 +44,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostInitialize() {
-        RunInfoCache.modList = new ArrayList<>();
-
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
