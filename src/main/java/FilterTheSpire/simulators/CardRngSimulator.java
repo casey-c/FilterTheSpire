@@ -1,8 +1,8 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.FilterManager;
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import FilterTheSpire.utils.helpers.CardPoolHelper;
 import FilterTheSpire.utils.helpers.CharacterPool;
 import FilterTheSpire.utils.helpers.SeedHelper;
@@ -61,7 +61,7 @@ public class CardRngSimulator {
 
         int numCardsInReward = 3;
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
-        CharacterPool pool = CharacterPoolFactory.getCharacterPool(FilterTheSpire.currentCharacter);
+        CharacterPool pool = CharacterPoolFactory.getCharacterPool(RunInfoCache.currentCharacter);
         if (FilterManager.preRngCounters.containsKey(SeedHelper.RNGType.CARD)){
             cardRng.setCounter(FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0));
         }
@@ -122,7 +122,7 @@ public class CardRngSimulator {
 
     public boolean isValidCardRewardFromNeow(Random rng, boolean isRareOnly, List<String> searchCards) {
         final int numCardsInReward = 3;
-        CharacterPool pool = CharacterPoolFactory.getCharacterPool(FilterTheSpire.currentCharacter);
+        CharacterPool pool = CharacterPoolFactory.getCharacterPool(RunInfoCache.currentCharacter);
 
         ArrayList<String> rewardCards = new ArrayList<>();
         for(int i = 0; i < numCardsInReward; ++i) {
@@ -156,7 +156,7 @@ public class CardRngSimulator {
     private String neowGetCard(Random rng, CharacterPool pool, AbstractCard.CardRarity rarity){
         TreeMap<AbstractCard.CardRarity, Boolean> rarityMap = new TreeMap<>();
         rarityMap.put(rarity, true);
-        List<String> cardPool = CharacterPoolFactory.getCardPool(FilterTheSpire.currentCharacter, rarityMap);
+        List<String> cardPool = CharacterPoolFactory.getCardPool(RunInfoCache.currentCharacter, rarityMap);
         return cardPool.get(rng.random(cardPool.size() - 1));
     }
 

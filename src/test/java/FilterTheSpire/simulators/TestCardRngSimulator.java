@@ -1,9 +1,9 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.filters.BlessingFilter;
 import FilterTheSpire.filters.NthCardRewardFilter;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class TestCardRngSimulator {
     @BeforeEach
     public void setup(){
-        FilterTheSpire.currentCharacter = AbstractPlayer.PlayerClass.THE_SILENT;
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.THE_SILENT;
     }
 
     @Test

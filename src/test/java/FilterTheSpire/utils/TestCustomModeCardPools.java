@@ -1,10 +1,9 @@
 package FilterTheSpire.utils;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.filters.BlessingFilter;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import org.junit.jupiter.api.Test;
 
@@ -39,30 +38,42 @@ public class TestCustomModeCardPools {
         seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 4997652588297773320L, Collections.singletonList("Battle Trance")));
         seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 3950493551078825252L, Collections.singletonList("Barricade")));
 
-        ModHelper.initialize();
-        ModHelper.setMods(Collections.singletonList("Diverse"));
+        RunInfoCache.modList = Collections.singletonList("Diverse");
         for (SeededCharacterTransform test: seededCharacterTransforms) {
-            FilterTheSpire.currentCharacter = test.character;
+            RunInfoCache.currentCharacter = test.character;
             AbstractFilter filter = new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, null, test.searchCards);
             assert(filter.isSeedValid(test.seed));
         }
     }
 
-    // TODO: do Defect and Watcher cards for IC
-    // TODO: do Silent, defect, and watcher cards as Silent
-    // TODO: retest the IC cards with these mods
     @Test
     public void testColorComboCardPool_TransformOne(){
         ArrayList<SeededCharacterTransform> seededCharacterTransforms = new ArrayList<>();
-        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 5202596435497175146L, Collections.singletonList("Anger")));
-        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 4997652588297773320L, Collections.singletonList("Battle Trance")));
-        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 3950493551078825252L, Collections.singletonList("Barricade")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -8268583500235188578L, Collections.singletonList("Body Slam")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -400157497897147904L, Collections.singletonList("Battle Trance")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -6650950712660469086L, Collections.singletonList("Barricade")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 7692193227307040963L, Collections.singletonList("Ball Lightning")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 3884344816506100305L, Collections.singletonList("Blizzard")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -809640624072603161L, Collections.singletonList("Seek")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 7983022889559420055L, Collections.singletonList("CutThroughFate")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -7572092901274521722L, Collections.singletonList("Wallop")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 7632246877775832614L, Collections.singletonList("Alpha")));
 
-        ModHelper.setMods(Arrays.asList("Blue Cards", "Purple Cards"));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 8266179968509807235L, Collections.singletonList("Backflip")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 2641291110936824436L, Collections.singletonList("All Out Attack")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 8337709442112374460L, Collections.singletonList("Venomology")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, -1240839941842358392L, Collections.singletonList("Beam Cell")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 6440355012388430578L, Collections.singletonList("Defragment")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 6299972594868712636L, Collections.singletonList("Multi-Cast")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, -235714968482285686L, Collections.singletonList("PathToVictory")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 5848464572777142619L, Collections.singletonList("Wireheading")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 4457535042856711863L, Collections.singletonList("Omniscience")));
+
+        RunInfoCache.modList = Arrays.asList("Blue Cards", "Purple Cards");
         for (SeededCharacterTransform test: seededCharacterTransforms) {
-            FilterTheSpire.currentCharacter = test.character;
+            RunInfoCache.currentCharacter = test.character;
             AbstractFilter filter = new BlessingFilter(NeowReward.NeowRewardType.TRANSFORM_CARD, null, test.searchCards);
-            filter.isSeedValid(test.seed);
+            assert(filter.isSeedValid(test.seed));
         }
     }
 

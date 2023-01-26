@@ -1,7 +1,7 @@
 package FilterTheSpire.utils.helpers;
 
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ public class CardPoolHelper {
         ArrayList<String> cardPool = new ArrayList<>();
         ArrayList<String> rarityCardPool = new ArrayList<>();
 
-        boolean hasColorlessEnabled = ModHelper.isModEnabled("Colorless Cards");
+        boolean hasColorlessEnabled = RunInfoCache.modList.contains("Colorless Cards");
         for (AbstractCard.CardRarity rarity: cardRaritiesAndShouldReverse.keySet()) {
             for (int i = 0; i < colors.size(); i++) {
                 CharacterPool color = colors.get(i);

@@ -1,7 +1,7 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;
 
@@ -22,7 +22,7 @@ public class CardTransformSimulator {
 
     public boolean isValid(Random cardRng, HashMap<String, Integer> searchCards, int transformCount,
                            TreeMap<AbstractCard.CardRarity, Boolean> cardRaritiesShouldReverse) {
-        List<String> cardPool = CharacterPoolFactory.getCardPool(FilterTheSpire.currentCharacter, cardRaritiesShouldReverse);
+        List<String> cardPool = CharacterPoolFactory.getCardPool(RunInfoCache.currentCharacter, cardRaritiesShouldReverse);
         ArrayList<String> results = new ArrayList<>();
 
         Set<String> cardList = searchCards.keySet();

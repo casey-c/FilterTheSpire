@@ -1,9 +1,9 @@
 package FilterTheSpire.factory;
 
+import FilterTheSpire.utils.cache.RunInfoCache;
 import FilterTheSpire.utils.helpers.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class CharacterPoolFactory {
     public static List<String> getCardPool(AbstractPlayer.PlayerClass chosenClass, TreeMap<AbstractCard.CardRarity, Boolean> cardRarities){
         CharacterPool pool;
         ArrayList<String> cardPool = new ArrayList<>();
-        if (ModHelper.isModEnabled("Diverse")){
+        if (RunInfoCache.modList.contains("Diverse")){
             ArrayList<CharacterPool> colors = new ArrayList<>();
             colors.add(WatcherPool.getInstance());
             colors.add(DefectPool.getInstance());

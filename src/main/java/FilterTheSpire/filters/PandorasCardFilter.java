@@ -1,7 +1,7 @@
 package FilterTheSpire.filters;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.CardTransformSimulator;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import FilterTheSpire.utils.config.FilterType;
 import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -39,7 +39,7 @@ public class PandorasCardFilter extends AbstractFilter {
         starterCardCounts.put(AbstractPlayer.PlayerClass.DEFECT, 8);
         starterCardCounts.put(AbstractPlayer.PlayerClass.WATCHER, 8);
         this.sortOrder = 2;
-        this.totalTransformCount = starterCardCounts.get(FilterTheSpire.currentCharacter);
+        this.totalTransformCount = starterCardCounts.get(RunInfoCache.currentCharacter);
 
         // Generate all card rarities and don't reverse any of them
         cardRaritiesShouldReverse = new TreeMap<>();

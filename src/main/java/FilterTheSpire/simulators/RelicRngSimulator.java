@@ -1,8 +1,8 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.FilterManager;
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -41,7 +41,7 @@ public class RelicRngSimulator {
         if (this.seed != seed){
             HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
             for (AbstractRelic.RelicTier rarity: rarities) {
-                List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(FilterTheSpire.currentCharacter, rarity));
+                List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(RunInfoCache.currentCharacter, rarity));
                 Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
                 map.put(rarity, relicPool);
             }

@@ -1,10 +1,10 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.filters.AstrolabeCardFilter;
 import FilterTheSpire.filters.BlessingFilter;
 import FilterTheSpire.filters.PandorasCardFilter;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.neow.NeowReward;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ public class TestCardTransformSimulator {
 
     @BeforeEach
     public void setup(){
-        FilterTheSpire.currentCharacter = AbstractPlayer.PlayerClass.DEFECT;
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.DEFECT;
     }
 
     @Test

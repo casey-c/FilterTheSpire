@@ -1,9 +1,9 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.filters.NthRelicFilter;
 import FilterTheSpire.filters.RelicsInEncountersFilter;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class TestRelicRngSimulator {
 
     @BeforeEach
     private void setUp(){
-        FilterTheSpire.currentCharacter = AbstractPlayer.PlayerClass.IRONCLAD;
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.IRONCLAD;
         relicPools = RelicRngSimulator.getInstance().getRelicPools(seed);
     }
 

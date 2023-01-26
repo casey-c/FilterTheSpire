@@ -1,6 +1,7 @@
 package FilterTheSpire;
 
 import FilterTheSpire.multithreading.SeedSearcher;
+import FilterTheSpire.utils.cache.RunInfoCache;
 import FilterTheSpire.utils.config.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
@@ -16,13 +17,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
+
+import java.util.ArrayList;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
@@ -32,8 +35,6 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     // Used by the patches to not double up VFX and SFX
     public static boolean SEARCHING_FOR_SEEDS;
     public static Config config;
-
-    public static AbstractPlayer.PlayerClass currentCharacter;
 
     private static Texture BG;
 
@@ -45,6 +46,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostInitialize() {
+        RunInfoCache.modList = new ArrayList<>();
+
         // Textures can't be loaded until the post init or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
@@ -83,13 +86,14 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-        currentCharacter = AbstractDungeon.player.chosenClass;
+        RunInfoCache.currentCharacter = AbstractDungeon.player.chosenClass;
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
             return;
         }
 
         if (firstTimeThrough && !Settings.seedSet) {
+            RunInfoCache.modList = ModHelper.getEnabledModIDs();
             CardPoolHelper.resetCharacterCardPoolsForSettings();
             FilterManager.sortFilters();
             SEARCHING_FOR_SEEDS = true;

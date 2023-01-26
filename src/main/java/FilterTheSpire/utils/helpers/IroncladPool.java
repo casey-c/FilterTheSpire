@@ -1,7 +1,7 @@
 package FilterTheSpire.utils.helpers;
 
+import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.helpers.ModHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,15 +123,15 @@ public class IroncladPool extends CharacterPool {
 
     public List<String> getCardPool(TreeMap<AbstractCard.CardRarity, Boolean> cardRarities) {
         ArrayList<CharacterPool> colors = new ArrayList<>();
-        if (ModHelper.isModEnabled("Purple Cards")) {
+        if (RunInfoCache.modList.contains("Purple Cards")) {
             colors.add(WatcherPool.getInstance());
         }
 
-        if (ModHelper.isModEnabled("Blue Cards")) {
+        if (RunInfoCache.modList.contains("Blue Cards")) {
             colors.add(DefectPool.getInstance());
         }
 
-        if (ModHelper.isModEnabled("Green Cards")) {
+        if (RunInfoCache.modList.contains("Green Cards")) {
             colors.add(SilentPool.getInstance());
         }
         colors.add(IroncladPool.getInstance());
