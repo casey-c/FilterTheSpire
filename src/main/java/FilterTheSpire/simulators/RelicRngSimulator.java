@@ -1,10 +1,9 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.FilterManager;
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import FilterTheSpire.utils.SeedHelper;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
@@ -39,15 +38,10 @@ public class RelicRngSimulator {
     }
 
     private HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed, Random relicRng) {
-        return getRelicPools(seed, relicRng, AbstractDungeon.player.chosenClass);
-    }
-
-    // This is the main logic, built to be testable
-    public HashMap<AbstractRelic.RelicTier, List<String>> getRelicPools(long seed, Random relicRng, AbstractPlayer.PlayerClass playerClass) {
         if (this.seed != seed){
             HashMap<AbstractRelic.RelicTier, List<String>> map = new HashMap<>();
             for (AbstractRelic.RelicTier rarity: rarities) {
-                List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(playerClass, rarity));
+                List<String> relicPool = new ArrayList<>(CharacterPoolFactory.getRelicPool(FilterTheSpire.currentCharacter, rarity));
                 Collections.shuffle(relicPool, new java.util.Random(relicRng.randomLong()));
                 map.put(rarity, relicPool);
             }
@@ -71,15 +65,7 @@ public class RelicRngSimulator {
      */
     public boolean isNthRelicValid(List<String> searchRelics, long seed, int encounterIndex){
         Random relicRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.RELIC);
-        return isNthRelicValid(searchRelics, relicRng, encounterIndex);
-    }
-
-    public boolean isNthRelicValid(List<String> searchRelics, Random relicRng, int encounterIndex){
-        return isNthRelicValid(searchRelics, relicRng, encounterIndex, AbstractDungeon.player.chosenClass);
-    }
-
-    public boolean isNthRelicValid(List<String> searchRelics, Random relicRng, int encounterIndex, AbstractPlayer.PlayerClass playerClass){
-        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng, playerClass);
+        HashMap<AbstractRelic.RelicTier, List<String>> relicList = getRelicPools(seed, relicRng);
 
         ArrayList<AbstractRelic.RelicTier> relicRngRarities = new ArrayList<>();
         for (int i = 0; i < encounterIndex; i++){

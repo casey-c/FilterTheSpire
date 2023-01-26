@@ -1,26 +1,28 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.filters.AbstractFilter;
+import FilterTheSpire.filters.NthRelicFilter;
+import FilterTheSpire.filters.RelicsInEncountersFilter;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class TestRelicRngSimulator {
-    private Random rng;
+    private final long seed = 3271423080934870601L;
     private HashMap<AbstractRelic.RelicTier, List<String>> relicPools;
-    private final AbstractPlayer.PlayerClass character = AbstractPlayer.PlayerClass.IRONCLAD;
 
     @BeforeEach
-    public void setUp(){
-        long seed = 3271423080934870601L;
-        rng = new Random(seed);
-        relicPools = RelicRngSimulator.getInstance().getRelicPools(seed, rng, character);
+    private void setUp(){
+        FilterTheSpire.currentCharacter = AbstractPlayer.PlayerClass.IRONCLAD;
+        relicPools = RelicRngSimulator.getInstance().getRelicPools(seed);
     }
 
     @Test
@@ -61,8 +63,14 @@ public class TestRelicRngSimulator {
     }
 
     @Test
-    public void testFirstRelic() {
-        boolean isNthRelicValid = RelicRngSimulator.getInstance().isNthRelicValid(Collections.singletonList("Vajra"), rng, 3, character);
-        assert(isNthRelicValid);
+    public void testNthRelic() {
+        AbstractFilter filter = new NthRelicFilter(Collections.singletonList("Vajra"), 3);
+        assert(filter.isSeedValid(seed));
+    }
+
+    @Test
+    public void testNthRelicInEncounters() {
+        AbstractFilter filter = new RelicsInEncountersFilter(Arrays.asList("Matryoshka", "Bag of Preparation", "Happy Flower", "Vajra"), Arrays.asList(0, 1, 2, 3));
+        assert(filter.isSeedValid(seed));
     }
 }

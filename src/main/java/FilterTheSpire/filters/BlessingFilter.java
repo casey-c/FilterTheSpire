@@ -24,6 +24,13 @@ public class BlessingFilter extends AbstractFilter {
         this.searchCards = searchCards;
     }
 
+    public BlessingFilter(NeowReward.NeowRewardType rewardType, NeowReward.NeowRewardDrawback drawback, HashMap<String, Integer> searchCards) {
+        type = FilterType.NeowBonus;
+        this.rewardType = rewardType;
+        this.drawback = drawback;
+        this.searchCards = searchCards;
+    }
+
     public boolean isSeedValid(long seed) {
         if (this.rewardType == null && this.drawback == null){
             return true;

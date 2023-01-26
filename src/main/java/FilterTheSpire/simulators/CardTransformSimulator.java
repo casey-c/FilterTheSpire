@@ -1,8 +1,8 @@
 package FilterTheSpire.simulators;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 
 import java.util.*;
@@ -22,7 +22,7 @@ public class CardTransformSimulator {
 
     public boolean isValid(Random cardRng, HashMap<String, Integer> searchCards, int transformCount,
                            TreeMap<AbstractCard.CardRarity, Boolean> cardRaritiesShouldReverse) {
-        List<String> cardPool = CharacterPoolFactory.getCardPool(AbstractDungeon.player.chosenClass, cardRaritiesShouldReverse);
+        List<String> cardPool = CharacterPoolFactory.getCardPool(FilterTheSpire.currentCharacter, cardRaritiesShouldReverse);
         ArrayList<String> results = new ArrayList<>();
 
         Set<String> cardList = searchCards.keySet();

@@ -28,10 +28,6 @@ public class MonsterRngSimulator {
 
     public String firstBoss(long seed, MonsterListHelper monsterListHelper) {
         Random monsterRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.MONSTER);;
-        return firstBoss(monsterRng, monsterListHelper);
-    }
-
-    public String firstBoss(Random monsterRng, MonsterListHelper monsterListHelper) {
         ArrayList<String> monsterList = new ArrayList<>();
 
         generateWeakEnemies(monsterList, monsterRng, monsterListHelper);

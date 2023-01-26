@@ -1,28 +1,26 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.factory.MonsterListHelperFactory;
-import com.megacrit.cardcrawl.random.Random;
+import FilterTheSpire.filters.AbstractFilter;
+import FilterTheSpire.filters.BossFilter;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
 
 
 public class TestMonsterRngSimulator {
+    private final long seed = 3271423080934870601L;
+
     @Test
     public void testKnownHexaghostSeed() {
         // This seed is known to have hexaghost as the act 1 boss
-        long seed = 3271423080934870601L;
-        Random rng = new Random(seed);
-
-        String boss = MonsterRngSimulator.getInstance().firstBoss(rng, MonsterListHelperFactory.getMonsterListHelperFromActNumber(1));
-        assert(boss.equals("Hexaghost"));
+        AbstractFilter boss = new BossFilter(Collections.singletonList("Hexaghost"), 1);
+        assert(boss.isSeedValid(seed));
     }
 
     @Test
     public void testKnownCollectorSeed() {
         // This seed is known to have Collector as the act 2 boss
-        long seed = 3271423080934870601L;
-        Random rng = new Random(seed);
-
-        String boss = MonsterRngSimulator.getInstance().firstBoss(rng, MonsterListHelperFactory.getMonsterListHelperFromActNumber(2));
-        assert(boss.equals("TheCollector"));
+        AbstractFilter boss = new BossFilter(Collections.singletonList("TheCollector"), 2);
+        assert(boss.isSeedValid(seed));
     }
 }

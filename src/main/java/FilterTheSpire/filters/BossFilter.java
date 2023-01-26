@@ -10,10 +10,14 @@ public class BossFilter extends AbstractFilter {
     private List<String> bossNames;
     private int actNumber = 1;
 
-    public BossFilter(List<String> bossNames)
-    {
+    public BossFilter(List<String> bossNames) {
+        this(bossNames, 1);
+    }
+
+    public BossFilter(List<String> bossNames, int actNumber){
         type = FilterType.Boss;
         this.bossNames = bossNames;
+        this.actNumber = actNumber;
     }
 
     public boolean isSeedValid(long seed) {

@@ -1,13 +1,13 @@
 package FilterTheSpire.simulators;
 
 import FilterTheSpire.FilterManager;
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.utils.CardPoolHelper;
 import FilterTheSpire.utils.CharacterPool;
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.rooms.MonsterRoom;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,14 +27,23 @@ public class CardRngSimulator {
     }
 
     public boolean isValidColorlessCardFromNeow(long seed, List<String> searchCards, AbstractCard.CardRarity rarity) {
-        int numCardsInReward = 3;
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
+        int numCardsInReward = 3;
         List<String> cardRewards = new ArrayList<>();
-        for(int i = 0; i < numCardsInReward; ++i) {
-            cardRewards.add(AbstractDungeon.colorlessCardPool.getRandomCard(cardRng, rarity).cardID);
+        List<String> pool;
+        if (rarity == AbstractCard.CardRarity.UNCOMMON) {
+            pool = CardPoolHelper.getUncommonColorlessCards();
+        } else if (rarity == AbstractCard.CardRarity.RARE) {
+            pool = CardPoolHelper.getRareColorlessCards();
+        } else {
+            throw new IllegalArgumentException();
         }
-        cardRewards.retainAll(searchCards);
-        return cardRewards.size() > 0;
+        ArrayList<String> cards = new ArrayList<>(pool);
+        Collections.sort(cards);
+        for(int i = 0; i < numCardsInReward; ++i) {
+            cardRewards.add(cards.get(cardRng.random(cards.size() - 1)));
+        }
+        return cardRewards.containsAll(searchCards);
     }
 
     /**
@@ -51,10 +60,8 @@ public class CardRngSimulator {
         }
 
         int numCardsInReward = 3;
-
-        CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARD);
-
+        CharacterPool pool = CharacterPoolFactory.getCharacterPool(FilterTheSpire.currentCharacter);
         if (FilterManager.preRngCounters.containsKey(SeedHelper.RNGType.CARD)){
             cardRng.setCounter(FilterManager.preRngCounters.getOrDefault(SeedHelper.RNGType.CARD, 0));
         }
@@ -62,24 +69,23 @@ public class CardRngSimulator {
         boolean containsDupe = true;
         CardRewardInfo cardReward = null;
 
-        int cardBlizzRandomizer = AbstractDungeon.cardBlizzRandomizer;
-        MonsterRoom room = new MonsterRoom();
+        int cardBlizzRandomizer = 5;
         for (int i = 0; i <= combatIndex; i++) {
             ArrayList<CardRewardInfo> rewards = new ArrayList<>();
             for (int j = 0; j < numCardsInReward; j++) {
-                int random = cardRng.random(99);
-                random += cardBlizzRandomizer;
-                AbstractCard.CardRarity rarity = room.getCardRarity(random);
+                int randomRoll = cardRng.random(99);
+                randomRoll += cardBlizzRandomizer;
+                AbstractCard.CardRarity rarity = getCardRarity(randomRoll);
 
                 switch (rarity){
                     case COMMON:
-                        cardBlizzRandomizer -= AbstractDungeon.cardBlizzGrowth;
-                        if (cardBlizzRandomizer <= AbstractDungeon.cardBlizzMaxOffset) {
-                            cardBlizzRandomizer = AbstractDungeon.cardBlizzMaxOffset;
+                        cardBlizzRandomizer -= 1;
+                        if (cardBlizzRandomizer <= -40) {
+                            cardBlizzRandomizer = -40;
                         }
                         break;
                     case RARE:
-                        cardBlizzRandomizer = AbstractDungeon.cardBlizzStartOffset;
+                        cardBlizzRandomizer = 5;
                         break;
                 }
 
@@ -116,7 +122,7 @@ public class CardRngSimulator {
 
     public boolean isValidCardRewardFromNeow(Random rng, boolean isRareOnly, List<String> searchCards) {
         final int numCardsInReward = 3;
-        CharacterPool pool = CharacterPoolFactory.getCharacterPool(AbstractDungeon.player.chosenClass);
+        CharacterPool pool = CharacterPoolFactory.getCharacterPool(FilterTheSpire.currentCharacter);
 
         ArrayList<String> rewardCards = new ArrayList<>();
         for(int i = 0; i < numCardsInReward; ++i) {
@@ -150,8 +156,21 @@ public class CardRngSimulator {
     private String neowGetCard(Random rng, CharacterPool pool, AbstractCard.CardRarity rarity){
         TreeMap<AbstractCard.CardRarity, Boolean> rarityMap = new TreeMap<>();
         rarityMap.put(rarity, true);
-        List<String> cardPool = CharacterPoolFactory.getCardPool(AbstractDungeon.player.chosenClass, rarityMap);
+        List<String> cardPool = CharacterPoolFactory.getCardPool(FilterTheSpire.currentCharacter, rarityMap);
         return cardPool.get(rng.random(cardPool.size() - 1));
+    }
+
+    private AbstractCard.CardRarity getCardRarity(int roll) {
+        int rareCardChance = 3;
+        int uncommonCardChance = 37;
+
+        if (roll < rareCardChance) {
+            return AbstractCard.CardRarity.RARE;
+        } else if (roll >= rareCardChance + uncommonCardChance) {
+            return AbstractCard.CardRarity.COMMON;
+        } else {
+            return AbstractCard.CardRarity.UNCOMMON;
+        }
     }
 }
 

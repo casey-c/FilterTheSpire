@@ -1,11 +1,11 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.CardTransformSimulator;
 import FilterTheSpire.utils.FilterType;
 import FilterTheSpire.utils.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.random.Random;
 
 import java.util.HashMap;
@@ -33,9 +33,13 @@ public class PandorasCardFilter extends AbstractFilter {
 
     private PandorasCardFilter(){
         type = FilterType.PandorasCard;
+        HashMap<AbstractPlayer.PlayerClass, Integer> starterCardCounts = new HashMap<>();
+        starterCardCounts.put(AbstractPlayer.PlayerClass.IRONCLAD, 9);
+        starterCardCounts.put(AbstractPlayer.PlayerClass.THE_SILENT, 10);
+        starterCardCounts.put(AbstractPlayer.PlayerClass.DEFECT, 8);
+        starterCardCounts.put(AbstractPlayer.PlayerClass.WATCHER, 8);
         this.sortOrder = 2;
-        this.totalTransformCount = AbstractDungeon.player.getStartingDeck().size() -
-                ((AbstractDungeon.player.chosenClass == AbstractPlayer.PlayerClass.IRONCLAD) ? 1 : 2);
+        this.totalTransformCount = starterCardCounts.get(FilterTheSpire.currentCharacter);
 
         // Generate all card rarities and don't reverse any of them
         cardRaritiesShouldReverse = new TreeMap<>();
