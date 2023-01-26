@@ -1,7 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardTransformSimulator;
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;
 

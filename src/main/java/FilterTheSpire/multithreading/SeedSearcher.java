@@ -1,7 +1,7 @@
 package FilterTheSpire.multithreading;
 
 import FilterTheSpire.FilterTheSpire;
-import FilterTheSpire.utils.RestartHelper;
+import FilterTheSpire.utils.helpers.RestartHelper;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.random.Random;

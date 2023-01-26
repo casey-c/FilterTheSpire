@@ -1,6 +1,6 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.neow.NeowReward;

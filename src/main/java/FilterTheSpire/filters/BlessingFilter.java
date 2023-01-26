@@ -1,7 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.BlessingSimulator;
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.neow.NeowReward;
 
 import java.util.HashMap;

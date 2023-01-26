@@ -1,4 +1,4 @@
-package FilterTheSpire.utils;
+package FilterTheSpire.utils.config;
 
 public enum FilterType {
     Boss,

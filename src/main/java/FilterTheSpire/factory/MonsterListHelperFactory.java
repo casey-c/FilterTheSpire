@@ -1,9 +1,9 @@
 package FilterTheSpire.factory;
 
-import FilterTheSpire.utils.Act1MonsterListHelper;
-import FilterTheSpire.utils.Act2MonsterListHelper;
-import FilterTheSpire.utils.Act3MonsterListHelper;
-import FilterTheSpire.utils.MonsterListHelper;
+import FilterTheSpire.utils.helpers.Act1MonsterListHelper;
+import FilterTheSpire.utils.helpers.Act2MonsterListHelper;
+import FilterTheSpire.utils.helpers.Act3MonsterListHelper;
+import FilterTheSpire.utils.helpers.MonsterListHelper;
 import org.apache.commons.lang3.NotImplementedException;
 
 public class MonsterListHelperFactory {

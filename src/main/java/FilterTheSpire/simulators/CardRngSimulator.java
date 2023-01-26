@@ -3,9 +3,9 @@ package FilterTheSpire.simulators;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
-import FilterTheSpire.utils.CardPoolHelper;
-import FilterTheSpire.utils.CharacterPool;
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.CardPoolHelper;
+import FilterTheSpire.utils.helpers.CharacterPool;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;
 

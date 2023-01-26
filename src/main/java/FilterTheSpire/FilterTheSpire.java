@@ -1,10 +1,10 @@
 package FilterTheSpire;
 
 import FilterTheSpire.multithreading.SeedSearcher;
-import FilterTheSpire.utils.*;
-import FilterTheSpire.utils.Config;
+import FilterTheSpire.utils.config.Config;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.ExtraFonts;
+import FilterTheSpire.utils.helpers.CardPoolHelper;
 import basemod.BaseMod;
 import basemod.ModLabeledButton;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
@@ -16,7 +16,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.cards.red.LimitBreak;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -24,8 +23,6 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
-
-import java.util.HashMap;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {

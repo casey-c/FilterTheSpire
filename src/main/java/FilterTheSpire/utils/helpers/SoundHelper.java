@@ -1,4 +1,4 @@
-package FilterTheSpire.utils;
+package FilterTheSpire.utils.helpers;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.CardCrawlGame;

@@ -1,6 +1,6 @@
 package FilterTheSpire.filters;
 
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 
 public abstract class AbstractFilter {
     public FilterType type;

@@ -1,7 +1,7 @@
 package FilterTheSpire.simulators;
 
-import FilterTheSpire.utils.MonsterListHelper;
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.MonsterListHelper;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import com.megacrit.cardcrawl.random.Random;
 

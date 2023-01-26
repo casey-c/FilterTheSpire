@@ -1,7 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.CardRngSimulator;
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package FilterTheSpire.factory;
 
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
 import java.util.*;

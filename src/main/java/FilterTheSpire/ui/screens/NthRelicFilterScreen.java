@@ -2,7 +2,7 @@ package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;

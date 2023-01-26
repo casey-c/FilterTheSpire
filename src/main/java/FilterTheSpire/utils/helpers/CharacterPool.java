@@ -1,4 +1,4 @@
-package FilterTheSpire.utils;
+package FilterTheSpire.utils.helpers;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.random.Random;

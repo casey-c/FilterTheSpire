@@ -2,7 +2,7 @@ package FilterTheSpire.filters;
 
 import FilterTheSpire.factory.MonsterListHelperFactory;
 import FilterTheSpire.simulators.MonsterRngSimulator;
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.ui.components.RelicUIObject;
-import FilterTheSpire.utils.FilterType;
+import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;

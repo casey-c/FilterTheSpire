@@ -1,4 +1,4 @@
-package FilterTheSpire.utils;
+package FilterTheSpire.utils.config;
 
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.screens.AlternateConfigMenu;

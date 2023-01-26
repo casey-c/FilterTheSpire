@@ -3,7 +3,7 @@ package FilterTheSpire.simulators;
 import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 

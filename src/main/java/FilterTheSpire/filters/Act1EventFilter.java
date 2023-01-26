@@ -1,7 +1,7 @@
 package FilterTheSpire.filters;
 
 import FilterTheSpire.simulators.EventSimulator;
-import FilterTheSpire.utils.SeedHelper;
+import FilterTheSpire.utils.helpers.SeedHelper;
 import com.megacrit.cardcrawl.random.Random;
 
 // This should not really be used, there are too many factors in events

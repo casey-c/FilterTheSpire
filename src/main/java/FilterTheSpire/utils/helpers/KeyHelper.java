@@ -1,4 +1,4 @@
-package FilterTheSpire.utils;
+package FilterTheSpire.utils.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
