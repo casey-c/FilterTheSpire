@@ -2,6 +2,7 @@ package FilterTheSpire.utils;
 
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.filters.BlessingFilter;
+import FilterTheSpire.filters.PandorasCardFilter;
 import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.neow.NeowReward;
@@ -77,5 +78,42 @@ public class TestCustomModeCardPools {
         }
     }
 
-    // TODO: Test pandoras diverse and color combos
+    @Test
+    public void testDiverseCardPool_Pandoras(){
+        ArrayList<SeededCharacterTransform> seededCharacterTransforms = new ArrayList<>();
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -7825557313266931991L,
+                Arrays.asList("Adrenaline", "Conclude", "Brilliance", "Well Laid Plans", "Feed", "After Image", "Electrodynamics", "BowlingBash", "Creative AI")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, 7212345179691260157L,
+                Arrays.asList("Outmaneuver", "Dagger Spray", "Endless Agony", "Dagger Throw", "WheelKick", "Force Field", "Demon Form", "Flame Barrier", "Phantasmal Killer")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -4840622081793768909L,
+                Arrays.asList("LikeWater", "Dark Embrace", "Doppelganger", "Footwork", "Chill", "Sword Boomerang", "Fasting2", "Barrage", "Recycle")));
+
+        RunInfoCache.modList = Collections.singletonList("Diverse");
+        for (SeededCharacterTransform test: seededCharacterTransforms) {
+            RunInfoCache.currentCharacter = test.character;
+            AbstractFilter filter = new PandorasCardFilter(test.searchCards);
+            assert(filter.isSeedValid(test.seed));
+        }
+    }
+
+    @Test
+    public void testColorComboCardPool_Pandoras(){
+        ArrayList<SeededCharacterTransform> seededCharacterTransforms = new ArrayList<>();
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -9173227664313642475L,
+                Arrays.asList("Double Tap", "Seeing Red", "Iron Wave", "Auto Shields", "Brilliance", "Battle Trance", "LikeWater", "Biased Cognition", "Sweeping Beam")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.IRONCLAD, -3150534459797038717L,
+                Arrays.asList("Shockwave", "Sweeping Beam", "LessonLearned", "Vengeance", "Core Surge", "EmptyFist", "Sanctity", "Flex", "Meditate")));
+
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 7487988066512192058L,
+                Arrays.asList("Darkness", "Wish", "Doom and Gloom", "Distraction", "Masterful Stab", "Meditate", "Study", "Compile Driver", "CutThroughFate", "SpiritShield")));
+        seededCharacterTransforms.add(new SeededCharacterTransform(AbstractPlayer.PlayerClass.THE_SILENT, 1502838640664874076L,
+                Arrays.asList("Core Surge", "Nirvana", "Dagger Throw", "Grand Finale", "Chill", "Biased Cognition", "Alpha", "Force Field", "Dagger Spray", "Prepared")));
+
+        RunInfoCache.modList = Arrays.asList("Blue Cards", "Purple Cards");
+        for (SeededCharacterTransform test: seededCharacterTransforms) {
+            RunInfoCache.currentCharacter = test.character;
+            AbstractFilter filter = new PandorasCardFilter(test.searchCards);
+            assert(filter.isSeedValid(test.seed));
+        }
+    }
 }
