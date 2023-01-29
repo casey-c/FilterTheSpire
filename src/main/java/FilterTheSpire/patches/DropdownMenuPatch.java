@@ -37,12 +37,12 @@ public class DropdownMenuPatch {
     }
 
     // This should be called in an override for render
-    public static void renderTip(DropdownMenu dropdownMenu, float unscaledX, float unscaledY, String header, String message) {
+    public static void renderTip(DropdownMenu dropdownMenu, float scaledX, float unscaledY, String header, String message) {
         Hitbox hb = dropdownMenu.getHitbox();
         if (hb != null && hb.hovered) {
-            float width = DropdownMenuPatch.CachedWidth.cachedMaxWidth.get(dropdownMenu);
+            float scaledWidth = DropdownMenuPatch.CachedWidth.cachedMaxWidth.get(dropdownMenu);
             TipHelper.renderGenericTip(
-                    (unscaledX + width - 15.0F) * Settings.xScale, (unscaledY - 20.0F) * Settings.yScale,
+                    scaledX + scaledWidth + (10.0F * Settings.xScale), (unscaledY - 20.0F) * Settings.yScale,
                     header,
                     message);
         }

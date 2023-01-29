@@ -39,7 +39,7 @@ public class NthCardRewardFilterScreen extends FilterScreen implements DropdownM
         this.combatDropdown = new DropdownMenu(this, combats, FontHelper.cardDescFont_N, Settings.CREAM_COLOR){
             // Override the update of the toggle button to add an informational tool tip when hovered
             public void render(SpriteBatch sb, float x, float y) {
-                super.render(sb, x * Settings.xScale, y * Settings.yScale);
+                super.render(sb, x, y * Settings.yScale);
                 DropdownMenuPatch.renderTip(this, x, y, "Info",
                         "This is the latest combat which will drop the searched card reward. " +
                         "It's possible a seed is found where the card is found in an earlier combat as well.");
@@ -103,7 +103,7 @@ public class NthCardRewardFilterScreen extends FilterScreen implements DropdownM
             this.cardDropdown.render(sb, (xPosition * Settings.xScale), yPosition * Settings.yScale);
         }
         this.characterDropdown.render(sb, xPosition * Settings.xScale, (yPosition  + spacingIncrement) * Settings.yScale);
-        this.combatDropdown.render(sb, xPosition + 100.0F, yPosition + (spacingIncrement * 2));
+        this.combatDropdown.render(sb, (xPosition + 100.0F) * Settings.xScale, yPosition + (spacingIncrement * 2));
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
                 "Combat:",

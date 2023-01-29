@@ -116,7 +116,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         threadCountDropdown = new DropdownMenu(this, threadCounts, FontHelper.cardDescFont_N, Settings.CREAM_COLOR) {
             // Override the update of the toggle button to add an informational tool tip when hovered
             public void render(SpriteBatch sb, float x, float y) {
-                super.render(sb, x * Settings.xScale, y * Settings.yScale);
+                super.render(sb, x, y * Settings.yScale);
                 DropdownMenuPatch.renderTip(this, x, y, "Info",
                         "A higher number will search for seeds faster but will be more CPU intensive. " +
                         "The default is 2, none of these will make the game crash, but may affect background processes.");
@@ -186,7 +186,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
                     Settings.CREAM_COLOR);
 
             threadCountDropdown.render(sb,
-                    FilterScreen.INFO_LEFT + 210.0F ,
+                    (FilterScreen.INFO_LEFT + 210.0F) * Settings.xScale,
                     threadDropdownY);
             if (clearMessage != null && !clearMessage.isDone) {
                 clearMessage.render(sb);
