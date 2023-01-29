@@ -122,8 +122,6 @@ public class CardRngSimulator {
 
     public boolean isValidCardRewardFromNeow(Random rng, boolean isRareOnly, List<String> searchCards) {
         final int numCardsInReward = 3;
-        CharacterPool pool = CharacterPoolFactory.getCharacterPool(RunInfoCache.currentCharacter);
-
         ArrayList<String> rewardCards = new ArrayList<>();
         for(int i = 0; i < numCardsInReward; ++i) {
             AbstractCard.CardRarity rarity = rng.randomBoolean(0.33F) ? AbstractCard.CardRarity.UNCOMMON : AbstractCard.CardRarity.COMMON;
@@ -131,10 +129,10 @@ public class CardRngSimulator {
                 rarity = AbstractCard.CardRarity.RARE;
             }
 
-            String card = neowGetCard(rng, pool, rarity);
+            String card = neowGetCard(rng, rarity);
 
             while(rewardCards.contains(card)) {
-                card = neowGetCard(rng, pool, rarity);
+                card = neowGetCard(rng, rarity);
             }
 
             rewardCards.add(card);
@@ -153,7 +151,7 @@ public class CardRngSimulator {
         }
     }
 
-    private String neowGetCard(Random rng, CharacterPool pool, AbstractCard.CardRarity rarity){
+    private String neowGetCard(Random rng, AbstractCard.CardRarity rarity){
         TreeMap<AbstractCard.CardRarity, Boolean> rarityMap = new TreeMap<>();
         rarityMap.put(rarity, true);
         List<String> cardPool = CharacterPoolFactory.getCardPool(RunInfoCache.currentCharacter, rarityMap);

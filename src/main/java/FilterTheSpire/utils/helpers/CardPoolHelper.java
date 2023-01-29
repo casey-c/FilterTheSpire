@@ -9,6 +9,10 @@ public class CardPoolHelper {
     public static HashMap<String, String> cardNameToId = new HashMap<>();
 
     public static ArrayList<String> getOrderedCardPoolForColors(ArrayList<CharacterPool> colors, TreeMap<AbstractCard.CardRarity, Boolean> cardRaritiesAndShouldReverse){
+        int hashKey = cardRaritiesAndShouldReverse.hashCode() + colors.hashCode();
+        if (RunInfoCache.rarityMapCardPool.containsKey(hashKey)) {
+            return RunInfoCache.rarityMapCardPool.get(hashKey);
+        }
         ArrayList<String> cardPool = new ArrayList<>();
         ArrayList<String> rarityCardPool = new ArrayList<>();
 
@@ -42,6 +46,7 @@ public class CardPoolHelper {
             cardPool.addAll(rarityCardPool);
             rarityCardPool.clear();
         }
+        RunInfoCache.rarityMapCardPool.put(hashKey, cardPool);
         return cardPool;
     }
 

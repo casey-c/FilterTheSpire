@@ -82,13 +82,14 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostDungeonInitialize() {
-        RunInfoCache.currentCharacter = AbstractDungeon.player.chosenClass;
+        RunInfoCache.clear();
         if (!FilterManager.hasFilters()) {
             // Nothing to do (no need for refreshing)
             return;
         }
 
         if (firstTimeThrough && !Settings.seedSet) {
+            RunInfoCache.currentCharacter = AbstractDungeon.player.chosenClass;
             RunInfoCache.modList = ModHelper.getEnabledModIDs();
             CardPoolHelper.resetCharacterCardPoolsForSettings();
             FilterManager.sortFilters();

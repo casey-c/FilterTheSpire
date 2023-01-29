@@ -1,6 +1,5 @@
 package FilterTheSpire.utils.helpers;
 
-import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -38,7 +37,6 @@ public class RestartHelper {
         CardHelper.clear();
         TipTracker.refresh();
         System.gc();
-        RunInfoCache.clear();
 
         if (CardCrawlGame.chosenCharacter == null) {
             CardCrawlGame.chosenCharacter = AbstractDungeon.player.chosenClass;
