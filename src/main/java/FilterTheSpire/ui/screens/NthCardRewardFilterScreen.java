@@ -87,10 +87,20 @@ public class NthCardRewardFilterScreen extends FilterScreen implements DropdownM
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
+                "WARNING: Using this in combination with some Neow Bonuses may occasionally cause " +
+                        "inconsistencies, specifically 3 Potions, or either of the Colorless card rewards.",
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN - 115.0F) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.LIGHT_YELLOW_COLOR);
+
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipBodyFont,
                 "WARNING: Rare cards will not appear from the first combat rewards unless there are very specific " +
                         "conditions. If you want to search for a rare card, you should start at the second combat.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN - 150.0F) * Settings.yScale,
+                (INFO_TOP_CONTROLS - 80.0F) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.RED_TEXT_COLOR);

@@ -47,7 +47,7 @@ public class ShopRelicFilterScreen extends RelicFilterScreen {
                 FontHelper.tipBodyFont,
                 "Before Ascension 16: 143-157 gold NL Ascension 16+: 157-172 gold",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN - 75F) * Settings.yScale,
+                (INFO_TOP_MAIN - 40F) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);

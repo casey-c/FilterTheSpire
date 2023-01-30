@@ -245,7 +245,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
                 "If you use this in conjunction with the Boss Swap filter, you can either Boss Swap or your chosen " +
                         "Boss relic will appear after the Act 1 boss.",
                 INFO_LEFT * Settings.xScale,
-                (INFO_TOP_MAIN - 30F)  * Settings.yScale,
+                (INFO_TOP_MAIN - 20F)  * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);

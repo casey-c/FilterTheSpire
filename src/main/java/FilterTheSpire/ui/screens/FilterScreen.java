@@ -17,7 +17,7 @@ public abstract class FilterScreen {
     public static final float INFO_BOTTOM_CHECK = 670.0f;
     public static final float INFO_TOP_MAIN = INFO_BOTTOM_CHECK - 40.0f;
     public static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
-    public static final float INFO_WIDTH = 371.0f;
+    public static final float INFO_WIDTH = 420.0f;
 
     private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
 
