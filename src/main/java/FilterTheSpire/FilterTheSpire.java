@@ -69,6 +69,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
                         firstTimeThrough = true;
                         searcherActive = false;
                     }
+                    RunInfoCache.clear();
         });
 
         config = new Config();
