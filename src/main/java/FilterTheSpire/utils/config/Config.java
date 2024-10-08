@@ -48,11 +48,15 @@ public class Config {
     }
 
     public FilterObject getFilter(FilterType filterType, List<Integer> indices){
-        return currentFilters.activeFilters.getOrDefault(filterType, new FilterObject(filterType));
+        return currentFilters.activeFilters.getOrDefault(generateHashKey(filterType, indices), new FilterObject(filterType));
+    }
+
+    public List<FilterObject> getActiveFilters(){
+        return new ArrayList<>(currentFilters.activeFilters.values());
     }
 
     public void updateFilter(FilterObject filterObject){
-        currentFilters.activeFilters.put(filterObject.filterType, filterObject);
+        currentFilters.activeFilters.put(generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices), filterObject);
 
         // update settings
         Gson gson = new Gson();
@@ -65,8 +69,8 @@ public class Config {
         }
     }
 
-    private void removeFilter(FilterType key) {
-        currentFilters.activeFilters.remove(key);
+    private void removeFilter(FilterObject filterObject) {
+        currentFilters.activeFilters.remove(generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices));
 
         Gson gson = new Gson();
         spireConfig.setString(filterKey, gson.toJson(currentFilters));

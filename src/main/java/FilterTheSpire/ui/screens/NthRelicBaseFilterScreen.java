@@ -15,7 +15,7 @@ import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
 
 import java.util.Arrays;
 
-public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBarListener {
+public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements ScrollBarListener {
     private static final int RELICS_PER_ROW = 6;
     private static final float SPACING = 84.0f;
     private static final int VIEW_WINDOW = 400;
@@ -33,7 +33,7 @@ public class NthRelicFilterScreen extends RelicFilterScreen implements ScrollBar
     public float x;
     public float y;
 
-    public NthRelicFilterScreen(){
+    public NthRelicBaseFilterScreen(){
         super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic);
 
         // Setup scrollbar

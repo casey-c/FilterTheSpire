@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 public class AlternateConfigMenu extends ModPanel implements DropdownMenuListener {
-    private static Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
-    private ModLabeledToggleButton neowBonusToggle;
-    private DropdownMenu threadCountDropdown;
+    private static final Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
+    private final ModLabeledToggleButton neowBonusToggle;
+    private final DropdownMenu threadCountDropdown;
 
-    private ArrayList<ModLabeledButton> filterButtons = new ArrayList<>();
-    private ArrayList<FilterScreen> filterScreens = new ArrayList<>();
+    private final ArrayList<ModLabeledButton> filterButtons = new ArrayList<>();
+    private final ArrayList<BaseFilterScreen> baseFilterScreens = new ArrayList<>();
     private ModLabeledButton clearButton;
     SpeechTextEffect clearMessage;
 
@@ -43,47 +43,54 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         super();
 
         final float xPosition = 400.0F;
-        float yPosition = FilterScreen.INFO_TOP_MAIN;
+        float yPosition = BaseFilterScreen.INFO_TOP_MAIN;
         final float yIncrement = 90.0F;
         final float xIncrement = 330.0F;
 
-        BossSwapFilterScreen bossRelicScreen = new BossSwapFilterScreen();
+        BossSwapBaseFilterScreen bossRelicScreen = new BossSwapBaseFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
-        NthCardRewardFilterScreen nthCardRewardFilterScreen = new NthCardRewardFilterScreen();
+        NthCardRewardBaseFilterScreen nthCardRewardFilterScreen = new NthCardRewardBaseFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Card Reward", (xPosition + xIncrement), yPosition,  nthCardRewardFilterScreen));
 
         yPosition -= yIncrement;
-        ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen();
+        ShopRelicBaseFilterScreen shopRelicScreen = new ShopRelicBaseFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
         yPosition -= yIncrement;
-        NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen();
+        NeowBonusBaseFilterScreen neowBonusScreen = new NeowBonusBaseFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
 
         yPosition -= yIncrement;
-        NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen();
+        NthRelicBaseFilterScreen nthRelicFilterScreen = new NthRelicBaseFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
-        filterScreens.add(bossRelicScreen);
-        filterScreens.add(shopRelicScreen);
-        filterScreens.add(neowBonusScreen);
-        filterScreens.add(nthRelicFilterScreen);
-        filterScreens.add(nthCardRewardFilterScreen);
-        clearButton = new ModLabeledButton("Clear All Filters", FilterScreen.INFO_LEFT + 50.0F, 805.0f,
+        FilterListScreen filterListScreen = new FilterListScreen();
+        filterButtons.add(createFilterScreenButton("View All Filters",
+                BaseFilterScreen.INFO_LEFT + 50.0F,
+                BaseFilterScreen.INFO_TOP_CONTROLS - 50.0F,
+                filterListScreen));
+
+        baseFilterScreens.add(bossRelicScreen);
+        baseFilterScreens.add(shopRelicScreen);
+        baseFilterScreens.add(neowBonusScreen);
+        baseFilterScreens.add(nthRelicFilterScreen);
+        baseFilterScreens.add(nthCardRewardFilterScreen);
+        baseFilterScreens.add(filterListScreen);
+        clearButton = new ModLabeledButton("Clear All Filters", BaseFilterScreen.INFO_LEFT + 50.0F, 805.0f,
                 Settings.CREAM_COLOR, Color.RED, FontHelper.tipHeaderFont, this,
                 (self) -> {
                     FilterTheSpire.config.clearFilters();
                     FilterManager.clearFilters();
-                    for (FilterScreen screen : filterScreens) {
+                    for (BaseFilterScreen screen : baseFilterScreens) {
                         screen.clearFilter();
                     }
                     clearMessage = new SpeechTextEffect((clearButton.getX() - 125.0F) * Settings.xScale, 850.0f * Settings.yScale, 2.0F, "Filters Cleared", DialogWord.AppearEffect.BUMP_IN);
                 });
 
         neowBonusToggle = new ModLabeledToggleButton("Enable all Neow Bonuses",
-                FilterScreen.INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
-                FilterScreen.INFO_BOTTOM_CHECK, // same as above
+                BaseFilterScreen.INFO_LEFT,         // NOTE: no scaling! (ModLabeledToggleButton scales later)
+                BaseFilterScreen.INFO_BOTTOM_CHECK, // same as above
                 Settings.CREAM_COLOR,
                 FontHelper.charDescFont,
                 FilterTheSpire.config.getBooleanKeyOrSetDefault(FilterTheSpire.config.allNeowBonusesKey, true),
@@ -101,8 +108,8 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
 
                 if (hb != null && hb.hovered) {
                     TipHelper.renderGenericTip(
-                            FilterScreen.INFO_LEFT * Settings.xScale,
-                            (FilterScreen.INFO_BOTTOM_CHECK - 40.0f) * Settings.yScale,
+                            BaseFilterScreen.INFO_LEFT * Settings.xScale,
+                            (BaseFilterScreen.INFO_BOTTOM_CHECK - 40.0f) * Settings.yScale,
                             "Info",
                             "If checked, you will be guaranteed to see all four Neow options regardless of " +
                                     "whether or not the previous run made it to the act one boss. NL NL Disabling this " +
@@ -153,7 +160,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         }
 
         boolean isShowingFilterScreen = false;
-        for (FilterScreen screen : filterScreens) {
+        for (BaseFilterScreen screen : baseFilterScreens) {
             if (screen.isShowing) {
                 screen.render(sb);
                 isShowingFilterScreen = true;
@@ -169,24 +176,24 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
                     "This mod assumes vanilla runs and that all cards and relics have been unlocked by leveling " +
                             "each character. If you have not unlocked everything or are doing Custom Mode, the " +
                             "filters may not work consistently.",
-                    FilterScreen.INFO_LEFT * Settings.xScale,
-                    FilterScreen.INFO_TOP_MAIN * Settings.yScale,
-                    FilterScreen.INFO_WIDTH * Settings.xScale,
+                    BaseFilterScreen.INFO_LEFT * Settings.xScale,
+                    BaseFilterScreen.INFO_TOP_MAIN * Settings.yScale,
+                    BaseFilterScreen.INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.CREAM_COLOR);
 
-            float threadDropdownY = FilterScreen.INFO_TOP_CONTROLS - 20.0F;
+            float threadDropdownY = BaseFilterScreen.INFO_TOP_CONTROLS - 20.0F;
             FontHelper.renderSmartText(sb,
                     FontHelper.tipBodyFont,
                     "Search thread count:",
-                    FilterScreen.INFO_LEFT * Settings.xScale,
+                    BaseFilterScreen.INFO_LEFT * Settings.xScale,
                     threadDropdownY * Settings.yScale,
-                    FilterScreen.INFO_WIDTH * Settings.xScale,
+                    BaseFilterScreen.INFO_WIDTH * Settings.xScale,
                     30.0f * Settings.yScale,
                     Settings.CREAM_COLOR);
 
             threadCountDropdown.render(sb,
-                    (FilterScreen.INFO_LEFT + 210.0F) * Settings.xScale,
+                    (BaseFilterScreen.INFO_LEFT + 210.0F) * Settings.xScale,
                     threadDropdownY);
             if (clearMessage != null && !clearMessage.isDone) {
                 clearMessage.render(sb);
@@ -197,7 +204,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
     @Override
     public void update() {
         boolean isShowingFilterScreen = false;
-        for (FilterScreen screen : filterScreens) {
+        for (BaseFilterScreen screen : baseFilterScreens) {
             if (screen.isShowing) {
                 screen.update();
                 isShowingFilterScreen = true;
@@ -238,7 +245,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         }
     }
 
-    private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, FilterScreen screen) {
+    private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, BaseFilterScreen screen) {
         return new ModLabeledButton(buttonText, xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
                 (self) -> screen.isShowing = true);

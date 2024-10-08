@@ -6,8 +6,8 @@ import FilterTheSpire.utils.config.FilterType;
 import java.util.List;
 
 public class NthCardRewardFilter extends AbstractFilter {
-    private List<String> searchCards;
-    private int combatIndex;
+    private final List<String> searchCards;
+    private final int combatIndex;
 
     public NthCardRewardFilter(List<String> searchCards, int combatIndex){
         type = FilterType.NthCardReward;
@@ -17,5 +17,12 @@ public class NthCardRewardFilter extends AbstractFilter {
 
     public boolean isSeedValid(long seed) {
         return CardRngSimulator.getInstance().isNthCardRewardValid(seed, this.combatIndex, this.searchCards);
+    }
+
+    @Override
+    public String toString() {
+        return "Card Reward Filter: " +
+                "searchCards=" + searchCards +
+                ", combat Index=" + combatIndex;
     }
 }

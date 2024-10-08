@@ -9,9 +9,8 @@ import java.util.List;
 
 public class BlessingFilter extends AbstractFilter {
     public NeowReward.NeowRewardType rewardType;
-    private HashMap<String, Integer> searchCards;
+    private final HashMap<String, Integer> searchCards;
     private NeowReward.NeowRewardDrawback drawback = null;
-    private String relicId = null;
 
     public BlessingFilter(List<String> rewardType, List<String> drawback, HashMap<String, Integer> searchCards) {
         type = FilterType.NeowBonus;
@@ -35,6 +34,13 @@ public class BlessingFilter extends AbstractFilter {
         if (this.rewardType == null && this.drawback == null){
             return true;
         }
-        return BlessingSimulator.getInstance().isBlessingValid(seed, this.rewardType, searchCards, relicId, this.drawback);
+        return BlessingSimulator.getInstance().isBlessingValid(seed, this.rewardType, searchCards, this.drawback);
+    }
+
+    @Override
+    public String toString() {
+        return "Neow Blessing Filter: " + rewardType +
+                ", searchCards=" + searchCards +
+                ", drawback=" + drawback;
     }
 }

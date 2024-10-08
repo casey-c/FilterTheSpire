@@ -10,14 +10,14 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 import java.util.*;
 
-public abstract class RelicFilterScreen extends FilterScreen {
+public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     public TreeSet<AbstractRelic> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
     private List<AbstractRelic.RelicTier> relicScreenTiers;
     private FilterType filterType;
 
-    public RelicFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
+    public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
         this.relicScreenTiers = relicScreenTiers;
         this.filterType = filterType;
         setup();

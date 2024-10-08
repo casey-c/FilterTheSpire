@@ -21,7 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class NthCardRewardFilterScreen extends FilterScreen implements DropdownMenuListener {
+public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements DropdownMenuListener {
     private DropdownMenu combatDropdown;
     private CharacterDropdown characterDropdown;
     private CardDropdown cardDropdown;
@@ -29,7 +29,7 @@ public class NthCardRewardFilterScreen extends FilterScreen implements DropdownM
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NthCardRewardFilterScreen() {
+    public NthCardRewardBaseFilterScreen() {
         isInitialLoad = true;
 
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NthCardReward);

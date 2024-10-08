@@ -14,8 +14,8 @@ import java.util.Collections;
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
-public class ShopRelicFilterScreen extends RelicFilterScreen {
-    public ShopRelicFilterScreen() {
+public class ShopRelicBaseFilterScreen extends RelicBaseFilterScreen {
+    public ShopRelicBaseFilterScreen() {
         super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic);
     }
 

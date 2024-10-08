@@ -1,6 +1,6 @@
 package FilterTheSpire.ui.components;
 
-import FilterTheSpire.ui.screens.RelicFilterScreen;
+import FilterTheSpire.ui.screens.RelicBaseFilterScreen;
 import FilterTheSpire.utils.ExtraColors;
 import FilterTheSpire.utils.helpers.KeyHelper;
 import com.badlogic.gdx.graphics.Color;
@@ -24,9 +24,9 @@ public class RelicUIObject {
     private static final Texture TEX_SELECTED_BG = new Texture("FilterTheSpire/images/relic_bg.png");
 
     public boolean isEnabled = false;
-    private RelicFilterScreen parent;
+    private RelicBaseFilterScreen parent;
 
-    public RelicUIObject(RelicFilterScreen parent, AbstractRelic relic, float x, float y) {
+    public RelicUIObject(RelicBaseFilterScreen parent, AbstractRelic relic, float x, float y) {
         this.relicID = relic.relicId;
         this.tex = ImageMaster.getRelicImg(relicID);
         this.x = x;

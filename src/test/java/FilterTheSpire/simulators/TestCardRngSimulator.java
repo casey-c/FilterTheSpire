@@ -6,8 +6,8 @@ import FilterTheSpire.filters.NthCardRewardFilter;
 import FilterTheSpire.utils.cache.RunInfoCache;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.neow.NeowReward;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +23,7 @@ public class TestCardRngSimulator {
         // First card reward as Silent is Backstab, Blade dance, and Prepared
         long seed = 3271423080934870601L;
         AbstractFilter filter = new NthCardRewardFilter(Arrays.asList("Blade Dance", "Prepared", "Backstab"), 0);
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.THE_SILENT;
         assert(filter.isSeedValid(seed));
     }
 
@@ -35,6 +36,7 @@ public class TestCardRngSimulator {
         searchCards.put("Outmaneuver", 1);
         searchCards.put("Dodge and Roll", 1);
         AbstractFilter filter = new BlessingFilter(NeowReward.NeowRewardType.THREE_CARDS, null, searchCards);
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.THE_SILENT;
         assert(filter.isSeedValid(seed));
     }
 
@@ -47,6 +49,7 @@ public class TestCardRngSimulator {
         searchCards.put("Burst", 1);
         searchCards.put("Phantasmal Killer", 1);
         AbstractFilter filter = new BlessingFilter(NeowReward.NeowRewardType.THREE_RARE_CARDS, null, searchCards);
+        RunInfoCache.currentCharacter = AbstractPlayer.PlayerClass.THE_SILENT;
         assert(filter.isSeedValid(seed));
     }
 

@@ -21,7 +21,7 @@ import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuListener  {
+public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements DropdownMenuListener  {
     private DropdownMenu neowBonusDropdown;
     private DropdownMenu drawbackDropdown;
     private CharacterDropdown characterDropdown;
@@ -70,7 +70,7 @@ public class NeowBonusFilterScreen extends FilterScreen implements DropdownMenuL
         }
     }
 
-    public NeowBonusFilterScreen(){
+    public NeowBonusBaseFilterScreen(){
         isInitialLoad = true;
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NeowBonus);
 

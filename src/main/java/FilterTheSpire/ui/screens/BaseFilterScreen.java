@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
 
-public abstract class FilterScreen {
+public abstract class BaseFilterScreen {
     public FilterObject filterObject;
     public boolean isShowing = false;
     public final ActionButton returnButton = new ActionButton(256, 450, "Back");
@@ -19,7 +19,7 @@ public abstract class FilterScreen {
     public static final float INFO_TOP_CONTROLS = INFO_TOP_MAIN - 144.0f - 40.0f;
     public static final float INFO_WIDTH = 420.0f;
 
-    private Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
+    private final Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
 
     private void renderBg(SpriteBatch sb) {
         // Draw our screen texture in the center

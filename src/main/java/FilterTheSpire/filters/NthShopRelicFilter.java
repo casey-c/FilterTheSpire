@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class NthShopRelicFilter extends AbstractFilter {
-    private List<String> shopRelicNames;
-    private int encounterIndex;
+    private final List<String> shopRelicNames;
+    private final int encounterIndex;
 
     public NthShopRelicFilter(List<String> shopRelicNames) {
         type = FilterType.NthShopRelic;
@@ -26,5 +26,12 @@ public class NthShopRelicFilter extends AbstractFilter {
         List<String> shopRelicPool = RelicRngSimulator.getInstance().getRelicPools(seed, AbstractRelic.RelicTier.SHOP);
         Collections.reverse(shopRelicPool); // Shop relics are done in reverse order
         return shopRelicNames.contains(shopRelicPool.get(this.encounterIndex));
+    }
+
+    @Override
+    public String toString() {
+        return "Shop Relic Filter: " +
+                "shopRelicNames=" + shopRelicNames +
+                ", encounterIndex=" + encounterIndex;
     }
 }

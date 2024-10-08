@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class NthBossRelicFilter extends AbstractFilter {
-    private List<String> bossRelicNames;
-    private List<Integer> possibleEncounterIndices;
+    private final List<String> bossRelicNames;
+    private final List<Integer> possibleEncounterIndices;
 
     public NthBossRelicFilter(List<String> bossRelicNames) {
         this.bossRelicNames = bossRelicNames;
