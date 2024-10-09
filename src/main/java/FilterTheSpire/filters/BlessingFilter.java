@@ -13,7 +13,7 @@ public class BlessingFilter extends AbstractFilter {
     private NeowReward.NeowRewardDrawback drawback = null;
 
     public BlessingFilter(List<String> rewardType, List<String> drawback, HashMap<String, Integer> searchCards) {
-        type = FilterType.NeowBonus;
+        initialize();
         if (rewardType != null && rewardType.size() > 0){
             this.rewardType = NeowReward.NeowRewardType.valueOf(rewardType.get(0));
         }
@@ -24,10 +24,15 @@ public class BlessingFilter extends AbstractFilter {
     }
 
     public BlessingFilter(NeowReward.NeowRewardType rewardType, NeowReward.NeowRewardDrawback drawback, HashMap<String, Integer> searchCards) {
-        type = FilterType.NeowBonus;
+        initialize();
         this.rewardType = rewardType;
         this.drawback = drawback;
         this.searchCards = searchCards;
+    }
+
+    private void initialize(){
+        type = FilterType.NeowBonus;
+        displayName = "Neow Bonus Filter";
     }
 
     public boolean isSeedValid(long seed) {
@@ -37,10 +42,13 @@ public class BlessingFilter extends AbstractFilter {
         return BlessingSimulator.getInstance().isBlessingValid(seed, this.rewardType, searchCards, this.drawback);
     }
 
-    @Override
+    public boolean shouldDisplay() {
+        return rewardType != null;
+    }
+
     public String toString() {
-        return "Neow Blessing Filter: " + rewardType +
-                ", searchCards=" + searchCards +
-                ", drawback=" + drawback;
+        return "reward type = " + rewardType +
+                ", searchCards = " + searchCards +
+                ", drawback = " + drawback;
     }
 }

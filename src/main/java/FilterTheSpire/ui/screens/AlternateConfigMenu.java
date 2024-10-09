@@ -66,10 +66,15 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
         FilterListScreen filterListScreen = new FilterListScreen();
-        filterButtons.add(createFilterScreenButton("View All Filters",
-                BaseFilterScreen.INFO_LEFT + 50.0F,
-                BaseFilterScreen.INFO_TOP_CONTROLS - 50.0F,
-                filterListScreen));
+        ModLabeledButton filterListButton = new ModLabeledButton("View All Filters",
+                BaseFilterScreen.INFO_LEFT,
+                BaseFilterScreen.INFO_TOP_CONTROLS - 150.0F,
+                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
+                (self) -> {
+                    filterListScreen.open();
+                    filterListScreen.isShowing = true;
+                });
+        filterButtons.add(filterListButton);
 
         baseFilterScreens.add(bossRelicScreen);
         baseFilterScreens.add(shopRelicScreen);

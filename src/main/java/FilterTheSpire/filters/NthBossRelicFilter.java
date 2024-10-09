@@ -12,20 +12,28 @@ public class NthBossRelicFilter extends AbstractFilter {
     private final List<Integer> possibleEncounterIndices;
 
     public NthBossRelicFilter(List<String> bossRelicNames) {
+        initialize();
         this.bossRelicNames = bossRelicNames;
         this.possibleEncounterIndices = Collections.singletonList(0); // Get the first Boss Relic if no index is specified.
     }
 
     public NthBossRelicFilter(List<String> bossRelicNames, int encounterIndex) {
+        initialize();
         this.bossRelicNames = bossRelicNames;
         this.possibleEncounterIndices = Collections.singletonList(encounterIndex);
     }
 
     // Since you get shown 3 Boss relics at once, this gives a wider window if you want it from a specific boss
     public NthBossRelicFilter(List<String> bossRelicNames, List<Integer> possibleEncounterIndices) {
+        initialize();
         type = FilterType.NthBossRelic;
         this.bossRelicNames = bossRelicNames;
         this.possibleEncounterIndices = possibleEncounterIndices;
+    }
+
+    private void initialize(){
+        type = FilterType.NthBossRelic;
+        displayName = "Boss Relic Filter";
     }
 
     public boolean isSeedValid(long seed) {
@@ -36,5 +44,16 @@ public class NthBossRelicFilter extends AbstractFilter {
             }
         }
         return false;
+    }
+
+    public boolean shouldDisplay() {
+        return bossRelicNames.size() > 0;
+    }
+
+    public String toString() {
+        if (shouldDisplay()){
+            return bossRelicNames.toString();
+        }
+        return "";
     }
 }

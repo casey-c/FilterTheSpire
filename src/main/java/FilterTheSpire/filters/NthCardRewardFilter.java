@@ -10,19 +10,25 @@ public class NthCardRewardFilter extends AbstractFilter {
     private final int combatIndex;
 
     public NthCardRewardFilter(List<String> searchCards, int combatIndex){
-        type = FilterType.NthCardReward;
+        initialize();
         this.searchCards = searchCards;
         this.combatIndex = combatIndex;
+    }
+
+    private void initialize(){
+        type = FilterType.NthCardReward;
+        displayName = "Card Reward Filter";
     }
 
     public boolean isSeedValid(long seed) {
         return CardRngSimulator.getInstance().isNthCardRewardValid(seed, this.combatIndex, this.searchCards);
     }
 
-    @Override
+    public boolean shouldDisplay() {
+        return searchCards.size() > 0;
+    }
+
     public String toString() {
-        return "Card Reward Filter: " +
-                "searchCards=" + searchCards +
-                ", combat Index=" + combatIndex;
+        return "Cards: " + searchCards + ", combat Index: " + combatIndex;
     }
 }

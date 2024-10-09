@@ -6,16 +6,32 @@ import FilterTheSpire.utils.config.FilterType;
 import java.util.List;
 
 public class NthRelicFilter extends AbstractFilter {
-    private List<String> relicNames;
-    private int encounterIndex;
+    private final List<String> relicNames;
+    private final int encounterIndex;
 
     public NthRelicFilter(List<String> relicNames, int encounterIndex) {
-        type = FilterType.NthRelic;
+        initialize();
         this.relicNames = relicNames;
         this.encounterIndex = encounterIndex;
     }
 
+    private void initialize(){
+        type = FilterType.NthRelic;
+        displayName = "Relic Filter";
+    }
+
     public boolean isSeedValid(long seed) {
         return RelicRngSimulator.getInstance().isNthRelicValid(this.relicNames, seed, this.encounterIndex);
+    }
+
+    public boolean shouldDisplay() {
+        return relicNames.size() > 0;
+    }
+
+    public String toString() {
+        if (shouldDisplay()){
+            return "Relic options " + relicNames + " at index " + encounterIndex;
+        }
+        return "";
     }
 }

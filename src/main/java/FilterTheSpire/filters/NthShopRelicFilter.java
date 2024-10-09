@@ -12,14 +12,20 @@ public class NthShopRelicFilter extends AbstractFilter {
     private final int encounterIndex;
 
     public NthShopRelicFilter(List<String> shopRelicNames) {
-        type = FilterType.NthShopRelic;
+        initialize();
         this.shopRelicNames = shopRelicNames;
         this.encounterIndex = 0; // Get the first shop relic if no index is specified.
     }
 
     public NthShopRelicFilter(List<String> shopRelicNames, int encounterIndex) {
+        initialize();
         this.shopRelicNames = shopRelicNames;
         this.encounterIndex = encounterIndex;
+    }
+
+    private void initialize(){
+        type = FilterType.NthShopRelic;
+        displayName = "Shop Relic Filter";
     }
 
     public boolean isSeedValid(long seed) {
@@ -28,10 +34,15 @@ public class NthShopRelicFilter extends AbstractFilter {
         return shopRelicNames.contains(shopRelicPool.get(this.encounterIndex));
     }
 
-    @Override
+    public boolean shouldDisplay() {
+        return shopRelicNames.size() > 0;
+    }
+
     public String toString() {
-        return "Shop Relic Filter: " +
-                "shopRelicNames=" + shopRelicNames +
-                ", encounterIndex=" + encounterIndex;
+        if (shopRelicNames.size()> 0){
+            return "Relic options = " + shopRelicNames +
+                    ", encounter Index = " + encounterIndex;
+        }
+        return "";
     }
 }
