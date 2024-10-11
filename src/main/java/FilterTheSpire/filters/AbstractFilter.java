@@ -13,4 +13,5 @@ public abstract class AbstractFilter {
     public boolean shouldDisplay(){
         return false;
     }
+    public abstract String generateHashKey();
 }

@@ -7,8 +7,8 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import java.util.List;
 
 public class NthColorlessRareCardFilter extends AbstractFilter{
-    private List<String> cardNames;
-    private int encounterNumber;
+    private final List<String> cardNames;
+    private final int encounterNumber;
 
     public NthColorlessRareCardFilter(List<String> cardNames) {
         type = FilterType.NthColorlessRareCard;
@@ -23,5 +23,9 @@ public class NthColorlessRareCardFilter extends AbstractFilter{
 
     public boolean isSeedValid(long seed) {
         return CardRngSimulator.getInstance().isValidColorlessCardFromNeow(seed, cardNames, AbstractCard.CardRarity.RARE);
+    }
+
+    public String generateHashKey() {
+        return null;
     }
 }

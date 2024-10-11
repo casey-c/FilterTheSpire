@@ -1,8 +1,10 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.CardRngSimulator;
 import FilterTheSpire.utils.config.FilterType;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NthCardRewardFilter extends AbstractFilter {
@@ -30,5 +32,9 @@ public class NthCardRewardFilter extends AbstractFilter {
 
     public String toString() {
         return "Cards: " + searchCards + ", combat Index: " + combatIndex;
+    }
+
+    public String generateHashKey() {
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(combatIndex));
     }
 }

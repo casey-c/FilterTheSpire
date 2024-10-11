@@ -1,9 +1,11 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.BlessingSimulator;
 import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.neow.NeowReward;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,5 +52,9 @@ public class BlessingFilter extends AbstractFilter {
         return "reward type = " + rewardType +
                 ", searchCards = " + searchCards +
                 ", drawback = " + drawback;
+    }
+
+    public String generateHashKey() {
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(0));
     }
 }

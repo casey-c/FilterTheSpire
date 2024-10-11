@@ -29,9 +29,8 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NthCardRewardBaseFilterScreen() {
+    public void open() {
         isInitialLoad = true;
-
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NthCardReward);
         this.characterDropdown = new CharacterDropdown(this, filterObject.character);
 
@@ -42,7 +41,7 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
                 super.render(sb, x, y * Settings.yScale);
                 DropdownMenuPatch.renderTip(this, x, y, "Info",
                         "This is the latest combat which will drop the searched card reward. " +
-                        "It's possible a seed is found where the card is found in an earlier combat as well.");
+                                "It's possible a seed is found where the card is found in an earlier combat as well.");
             }
         };
 
@@ -62,6 +61,7 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
 
         FilterManager.setFilter(filterObject);
         isInitialLoad = false;
+        isShowing = true;
     }
 
     void renderForeground(SpriteBatch sb) {

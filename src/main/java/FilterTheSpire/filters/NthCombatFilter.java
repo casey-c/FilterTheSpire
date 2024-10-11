@@ -7,9 +7,9 @@ import FilterTheSpire.utils.config.FilterType;
 import java.util.List;
 
 public class NthCombatFilter extends AbstractFilter {
-    private List<String> enemyNames;
-    private int encounterNumber;
-    private int actNumber = 1;
+    private final List<String> enemyNames;
+    private final int encounterNumber;
+    private final int actNumber = 1;
 
     public NthCombatFilter(List<String> enemyNames) {
         type = FilterType.NthCombat;
@@ -25,5 +25,9 @@ public class NthCombatFilter extends AbstractFilter {
     public boolean isSeedValid(long seed) {
         String enemyId = MonsterRngSimulator.getInstance().nthCombat(seed, encounterNumber, MonsterListHelperFactory.getMonsterListHelperFromActNumber(this.actNumber));
         return enemyNames.contains(enemyId);
+    }
+
+    public String generateHashKey() {
+        return null;
     }
 }

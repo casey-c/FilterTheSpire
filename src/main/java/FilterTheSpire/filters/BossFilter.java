@@ -7,7 +7,7 @@ import FilterTheSpire.utils.config.FilterType;
 import java.util.List;
 
 public class BossFilter extends AbstractFilter {
-    private List<String> bossNames;
+    private final List<String> bossNames;
     private int actNumber = 1;
 
     public BossFilter(List<String> bossNames) {
@@ -23,5 +23,9 @@ public class BossFilter extends AbstractFilter {
     public boolean isSeedValid(long seed) {
         String boss = MonsterRngSimulator.getInstance().firstBoss(seed, MonsterListHelperFactory.getMonsterListHelperFromActNumber(this.actNumber));
         return bossNames.contains(boss);
+    }
+
+    public String generateHashKey() {
+        return null;
     }
 }

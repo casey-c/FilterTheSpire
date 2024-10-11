@@ -1,8 +1,10 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.RelicRngSimulator;
 import FilterTheSpire.utils.config.FilterType;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NthRelicFilter extends AbstractFilter {
@@ -33,5 +35,9 @@ public class NthRelicFilter extends AbstractFilter {
             return "Relic options " + relicNames + " at index " + encounterIndex;
         }
         return "";
+    }
+
+    public String generateHashKey() {
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(encounterIndex));
     }
 }

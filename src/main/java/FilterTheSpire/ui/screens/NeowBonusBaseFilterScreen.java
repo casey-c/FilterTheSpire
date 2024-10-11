@@ -33,7 +33,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
 
     private NeowReward.NeowRewardType currentBonusValue;
     private NeowReward.NeowRewardDrawback currentDrawbackValue;
-    private String[] cards = new String[2];
+    private final String[] cards = new String[2];
 
     private final List<NeowReward.NeowRewardType> characterCardBonuses = Arrays.asList(
             NeowReward.NeowRewardType.ONE_RANDOM_RARE_CARD,
@@ -43,7 +43,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
             NeowReward.NeowRewardType.THREE_RARE_CARDS
     );
 
-    private HashMap<NeowReward.NeowRewardType, NeowReward.NeowRewardDrawback> illegalCombinations = new HashMap<>();
+    private final HashMap<NeowReward.NeowRewardType, NeowReward.NeowRewardDrawback> illegalCombinations = new HashMap<>();
 
     private final ArrayList<NeowReward.NeowRewardType> cardRewardBonuses = new ArrayList<>();
 
@@ -70,7 +70,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
         }
     }
 
-    public NeowBonusBaseFilterScreen(){
+    public void open() {
         isInitialLoad = true;
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NeowBonus);
 
@@ -151,6 +151,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
         this.drawbackDropdown.setSelectedIndex(defaultDrawbackIndex);
         FilterManager.setFilter(filterObject);
         isInitialLoad = false;
+        isShowing = true;
     }
 
     public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
@@ -344,6 +345,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
         cardDropdown.setSelectedIndex(0);
         cardDropdown2.setSelectedIndex(0);
     }
+
 
     private void setCardDropdownValues() {
         CharacterPool characterPool = filterObject.character != null ? CharacterPoolFactory.getCharacterPool(filterObject.character) : null;

@@ -30,4 +30,8 @@ public class AstrolabeCardFilter extends AbstractFilter {
         cardRng.random();
         return CardTransformSimulator.getInstance().isValid(cardRng, searchCards, totalTransformCount, cardRaritiesShouldReverse);
     }
+
+    public String generateHashKey() {
+        return null;
+    }
 }

@@ -21,6 +21,7 @@ public abstract class BaseFilterScreen {
 
     private final Texture TEX_BG = new Texture("FilterTheSpire/images/config_screen_bg.png");
 
+    abstract void open();
     private void renderBg(SpriteBatch sb) {
         // Draw our screen texture in the center
         sb.setColor(Color.WHITE);

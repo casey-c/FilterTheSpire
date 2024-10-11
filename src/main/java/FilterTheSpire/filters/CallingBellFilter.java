@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CallingBellFilter extends AbstractFilter {
-    private String commonRelic;
-    private String uncommonRelic;
-    private String rareRelic;
+    private final String commonRelic;
+    private final String uncommonRelic;
+    private final String rareRelic;
 
     public CallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic) {
         this.commonRelic = commonRelic;
@@ -23,5 +23,9 @@ public class CallingBellFilter extends AbstractFilter {
         boolean hasUncommonRelic = relicPools.get(AbstractRelic.RelicTier.UNCOMMON).get(0).equals(uncommonRelic);
         boolean hasRareRelic = relicPools.get(AbstractRelic.RelicTier.RARE).get(0).equals(rareRelic);
         return hasCommonRelic && hasUncommonRelic && hasRareRelic;
+    }
+
+    public String generateHashKey() {
+        return null;
     }
 }

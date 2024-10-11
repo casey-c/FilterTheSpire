@@ -1,5 +1,6 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.RelicRngSimulator;
 import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -44,5 +45,9 @@ public class NthShopRelicFilter extends AbstractFilter {
                     ", encounter Index = " + encounterIndex;
         }
         return "";
+    }
+
+    public String generateHashKey() {
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(encounterIndex));
     }
 }

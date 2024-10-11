@@ -1,5 +1,6 @@
 package FilterTheSpire.filters;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.simulators.RelicRngSimulator;
 import FilterTheSpire.utils.config.FilterType;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -48,6 +49,10 @@ public class NthBossRelicFilter extends AbstractFilter {
 
     public boolean shouldDisplay() {
         return bossRelicNames.size() > 0;
+    }
+
+    public String generateHashKey() {
+        return FilterTheSpire.config.generateHashKey(type, possibleEncounterIndices);
     }
 
     public String toString() {

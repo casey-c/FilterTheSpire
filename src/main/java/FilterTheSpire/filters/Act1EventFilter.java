@@ -19,4 +19,8 @@ public class Act1EventFilter extends AbstractFilter {
         String eventKey = EventSimulator.getInstance().generateEvent(rng, 0);
         return eventKey.equals(this.event);
     }
+
+    public String generateHashKey() {
+        return null;
+    }
 }

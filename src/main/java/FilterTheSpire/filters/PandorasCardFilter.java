@@ -52,4 +52,8 @@ public class PandorasCardFilter extends AbstractFilter {
         Random cardRng = SeedHelper.getNewRNG(seed, SeedHelper.RNGType.CARDRANDOM);
         return CardTransformSimulator.getInstance().isValid(cardRng, searchCards, totalTransformCount, cardRaritiesShouldReverse);
     }
+
+    public String generateHashKey() {
+        return null;
+    }
 }

@@ -16,8 +16,8 @@ import java.util.List;
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
-public class BossSwapBaseFilterScreen extends RelicBaseFilterScreen {
-    public BossSwapBaseFilterScreen() {
+public class BossRelicFilterScreen extends RelicBaseFilterScreen {
+    public BossRelicFilterScreen() {
         super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic);
     }
 

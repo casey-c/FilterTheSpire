@@ -14,13 +14,18 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     public TreeSet<AbstractRelic> relics = new TreeSet<>();
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
-    private List<AbstractRelic.RelicTier> relicScreenTiers;
-    private FilterType filterType;
+    private final List<AbstractRelic.RelicTier> relicScreenTiers;
+    private final FilterType filterType;
 
     public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
         this.relicScreenTiers = relicScreenTiers;
         this.filterType = filterType;
         setup();
+    }
+
+    public void open(){
+        setup();
+        isShowing = true;
     }
 
     private void setup() {
@@ -74,7 +79,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         }
     }
 
-    private void loadFromConfig() {
+    public void loadFromConfig() {
         this.filterObject = FilterTheSpire.config.getFilter(this.filterType);
         for (String relic : filterObject.possibleValues) {
             if (relicUIObjects.containsKey(relic))
@@ -143,7 +148,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         return list;
     }
 
-    @Override
     public void refreshFilters() {
         filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.updateFilter(filterObject);

@@ -1,6 +1,7 @@
 package FilterTheSpire.utils.config;
 
 import FilterTheSpire.factory.FilterObject;
+import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.ui.screens.AlternateConfigMenu;
 import basemod.BaseMod;
 import com.badlogic.gdx.graphics.Texture;
@@ -69,8 +70,8 @@ public class Config {
         }
     }
 
-    private void removeFilter(FilterObject filterObject) {
-        currentFilters.activeFilters.remove(generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices));
+    public void removeFilter(AbstractFilter filter) {
+        currentFilters.activeFilters.remove(filter.generateHashKey());
 
         Gson gson = new Gson();
         spireConfig.setString(filterKey, gson.toJson(currentFilters));
@@ -147,9 +148,11 @@ public class Config {
         }
     }
 
-    // for eventual multiple of same filter but different indices
-    private String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
-        String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
-        return filterType.toString() + indices;
+    public String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
+        if (possibleEncounterIndices != null && possibleEncounterIndices.size() > 0){
+            String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
+            return filterType.toString() + indices;
+        }
+        return filterType.toString();
     }
 }

@@ -47,7 +47,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         final float yIncrement = 90.0F;
         final float xIncrement = 330.0F;
 
-        BossSwapBaseFilterScreen bossRelicScreen = new BossSwapBaseFilterScreen();
+        BossRelicFilterScreen bossRelicScreen = new BossRelicFilterScreen();
         filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
         NthCardRewardBaseFilterScreen nthCardRewardFilterScreen = new NthCardRewardBaseFilterScreen();
@@ -66,15 +66,10 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
         FilterListScreen filterListScreen = new FilterListScreen();
-        ModLabeledButton filterListButton = new ModLabeledButton("View All Filters",
+        filterButtons.add(createFilterScreenButton("View All Filters",
                 BaseFilterScreen.INFO_LEFT,
                 BaseFilterScreen.INFO_TOP_CONTROLS - 150.0F,
-                Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
-                (self) -> {
-                    filterListScreen.open();
-                    filterListScreen.isShowing = true;
-                });
-        filterButtons.add(filterListButton);
+                filterListScreen));
 
         baseFilterScreens.add(bossRelicScreen);
         baseFilterScreens.add(shopRelicScreen);
@@ -108,7 +103,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
             public void update() {
                 super.update();
 
-                // Unfortunately, the hb is private so we have to use reflection here
+                // Unfortunately, the hb is private, so we have to use reflection here
                 Hitbox hb = ReflectionHacks.getPrivate(toggle, ModToggleButton.class, "hb");
 
                 if (hb != null && hb.hovered) {
@@ -253,7 +248,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
     private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, BaseFilterScreen screen) {
         return new ModLabeledButton(buttonText, xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
-                (self) -> screen.isShowing = true);
+                (self) -> screen.open());
     }
 
     public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
