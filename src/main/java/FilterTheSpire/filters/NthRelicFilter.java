@@ -32,7 +32,7 @@ public class NthRelicFilter extends AbstractFilter {
 
     public String toString() {
         if (shouldDisplay()){
-            return "Relic options " + relicNames + " at index " + encounterIndex;
+            return relicNames + " at encounter " + (encounterIndex + 1);
         }
         return "";
     }

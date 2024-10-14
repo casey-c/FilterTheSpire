@@ -15,11 +15,10 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     public HashMap<String, RelicUIObject> relicUIObjects = new HashMap<>();
 
     private final List<AbstractRelic.RelicTier> relicScreenTiers;
-    private final FilterType filterType;
 
     public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
+        super(filterType);
         this.relicScreenTiers = relicScreenTiers;
-        this.filterType = filterType;
         setup();
     }
 
@@ -150,6 +149,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
 
     public void refreshFilters() {
         filterObject.possibleValues = getEnabledRelics();
+        setActOrEncounterIndex();
         FilterTheSpire.config.updateFilter(filterObject);
         FilterManager.setFilter(filterObject);
     }
@@ -159,4 +159,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     }
 
     abstract void postRelicSetup();
+
+    abstract void setActOrEncounterIndex();
 }

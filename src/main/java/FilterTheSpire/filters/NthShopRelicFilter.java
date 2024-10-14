@@ -41,8 +41,7 @@ public class NthShopRelicFilter extends AbstractFilter {
 
     public String toString() {
         if (shopRelicNames.size()> 0){
-            return "Relic options = " + shopRelicNames +
-                    ", encounter Index = " + encounterIndex;
+            return shopRelicNames + " at encounter " + (encounterIndex + 1);
         }
         return "";
     }

@@ -29,6 +29,10 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
+    public NthCardRewardBaseFilterScreen() {
+        super(FilterType.NthCardReward);
+    }
+
     public void open() {
         isInitialLoad = true;
         this.filterObject = FilterTheSpire.config.getFilter(FilterType.NthCardReward);

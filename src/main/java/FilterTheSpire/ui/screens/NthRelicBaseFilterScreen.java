@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.screens.mainMenu.ScrollBar;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements ScrollBarListener {
     private static final int RELICS_PER_ROW = 6;
@@ -127,7 +128,7 @@ public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements S
         scrollBar.setCenter(x + 980f * Settings.xScale, y + 465f * Settings.yScale);
     }
 
-    //  Begin scroll functions
+    //region Begin scroll functions
     private void updateScrolling() {
         int y = InputHelper.mY;
         if (!this.grabbedScreen) {
@@ -174,5 +175,9 @@ public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements S
             this.scrollTargetY = MathHelper.scrollSnapLerpSpeed(this.scrollTargetY, this.scrollUpperBound);
         }
     }
-    //  End scroll functions
+    //endregion
+
+    void setActOrEncounterIndex() {
+        filterObject.possibleEncounterIndices = Collections.singletonList(0);
+    }
 }

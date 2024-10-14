@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
+import FilterTheSpire.utils.types.RunCheckpoint;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -13,9 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*
-    Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
- */
 public class BossRelicFilterScreen extends RelicBaseFilterScreen {
     public BossRelicFilterScreen() {
         super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic);
@@ -74,5 +72,10 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
         if (this.returnButton.hb.clickStarted){
             this.enableHitboxes(false);
         }
+    }
+
+    void setActOrEncounterIndex() {
+        // Set this to a dropdown value when created
+        filterObject.runCheckpoint = RunCheckpoint.NEOW;
     }
 }

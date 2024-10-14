@@ -1,6 +1,7 @@
 package FilterTheSpire.factory;
 
 import FilterTheSpire.utils.config.FilterType;
+import FilterTheSpire.utils.types.RunCheckpoint;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
 import java.util.*;
@@ -11,7 +12,7 @@ public class FilterObject {
     public List<String> possibleValues;
     // Do we need an exclusion list? Seems like we only need the anyOf list
     public List<String> secondaryValues;
-    protected Integer actNumber; // Integer so it's a nullable reference type for serialization
+    public RunCheckpoint runCheckpoint;
     public List<Integer> possibleEncounterIndices;
     public HashMap<String, Integer> searchCards;
     public AbstractPlayer.PlayerClass character;

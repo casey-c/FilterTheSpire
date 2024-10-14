@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class FilterListScreen extends BaseFilterScreen {
+public class FilterListScreen extends BaseScreen {
     private ArrayList<FilterListItem> filterList;
 
     public FilterListScreen(){
@@ -115,10 +115,6 @@ public class FilterListScreen extends BaseFilterScreen {
         } else{
             this.returnButton.hide();
         }
-    }
-
-    void resetUI() {
-
     }
 
     private static class FilterListItem {

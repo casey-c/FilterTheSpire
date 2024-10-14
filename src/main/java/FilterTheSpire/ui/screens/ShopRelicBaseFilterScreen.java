@@ -72,4 +72,8 @@ public class ShopRelicBaseFilterScreen extends RelicBaseFilterScreen {
             this.enableHitboxes(false);
         }
     }
+
+    void setActOrEncounterIndex() {
+        filterObject.possibleEncounterIndices = Collections.singletonList(0);
+    }
 }

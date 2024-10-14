@@ -18,7 +18,7 @@ public class FilterManager {
     private static FilterManager getInstance() { return FilterManagerHolder.INSTANCE; }
     public static void initialize() { getInstance(); }
 
-    private static HashMap<String, AbstractFilter> filters = new HashMap<>();
+    private static final HashMap<String, AbstractFilter> filters = new HashMap<>();
     private static List<AbstractFilter> sortedList = null;
 
     // Returns true if all filters pass for the given seed
@@ -36,8 +36,8 @@ public class FilterManager {
         return filters.size() > 0;
     }
 
-    public static int numFilters() {
-        return filters.size();
+    public static ArrayList<AbstractFilter> getFilters() {
+        return new ArrayList<>(filters.values());
     }
 
     /**

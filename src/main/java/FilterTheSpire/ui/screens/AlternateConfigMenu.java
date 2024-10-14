@@ -34,6 +34,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
 
     private final ArrayList<ModLabeledButton> filterButtons = new ArrayList<>();
     private final ArrayList<BaseFilterScreen> baseFilterScreens = new ArrayList<>();
+    private final ArrayList<BaseScreen> allScreens = new ArrayList<>();
     private ModLabeledButton clearButton;
     SpeechTextEffect clearMessage;
 
@@ -76,7 +77,8 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         baseFilterScreens.add(neowBonusScreen);
         baseFilterScreens.add(nthRelicFilterScreen);
         baseFilterScreens.add(nthCardRewardFilterScreen);
-        baseFilterScreens.add(filterListScreen);
+        allScreens.addAll(baseFilterScreens);
+        allScreens.add(filterListScreen);
         clearButton = new ModLabeledButton("Clear All Filters", BaseFilterScreen.INFO_LEFT + 50.0F, 805.0f,
                 Settings.CREAM_COLOR, Color.RED, FontHelper.tipHeaderFont, this,
                 (self) -> {
@@ -159,15 +161,15 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
             button.render(sb);
         }
 
-        boolean isShowingFilterScreen = false;
-        for (BaseFilterScreen screen : baseFilterScreens) {
+        boolean isShowingScreen = false;
+        for (BaseScreen screen : allScreens) {
             if (screen.isShowing) {
                 screen.render(sb);
-                isShowingFilterScreen = true;
+                isShowingScreen = true;
                 break;
             }
         }
-        if (!isShowingFilterScreen) {
+        if (!isShowingScreen) {
             neowBonusToggle.render(sb);
             clearButton.render(sb);
 
@@ -204,7 +206,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
     @Override
     public void update() {
         boolean isShowingFilterScreen = false;
-        for (BaseFilterScreen screen : baseFilterScreens) {
+        for (BaseScreen screen : allScreens) {
             if (screen.isShowing) {
                 screen.update();
                 isShowingFilterScreen = true;
@@ -245,7 +247,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         }
     }
 
-    private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, BaseFilterScreen screen) {
+    private ModLabeledButton createFilterScreenButton(String buttonText, float xPosition, float yPosition, BaseScreen screen) {
         return new ModLabeledButton(buttonText, xPosition, yPosition,
                 Settings.CREAM_COLOR, Color.GOLD, FontHelper.tipHeaderFont, this,
                 (self) -> screen.open());

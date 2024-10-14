@@ -9,7 +9,7 @@ public class FilterFactory {
             case Boss:
                 return new BossFilter(filterObject.possibleValues);
             case NthBossRelic:
-                return new NthBossRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices);
+                return new NthBossRelicFilter(filterObject.possibleValues, filterObject.runCheckpoint);
             case NthColorlessRareCard:
                 return new NthColorlessRareCardFilter(filterObject.possibleValues);
             case NthCombat:

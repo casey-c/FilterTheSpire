@@ -50,6 +50,10 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
+    public NeowBonusBaseFilterScreen() {
+        super(FilterType.NeowBonus);
+    }
+
     private static class NeowBonus {
         public NeowReward.NeowRewardType value;
         public String description;
@@ -345,7 +349,6 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
         cardDropdown.setSelectedIndex(0);
         cardDropdown2.setSelectedIndex(0);
     }
-
 
     private void setCardDropdownValues() {
         CharacterPool characterPool = filterObject.character != null ? CharacterPoolFactory.getCharacterPool(filterObject.character) : null;
