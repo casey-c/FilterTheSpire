@@ -56,7 +56,7 @@ public class Config {
         return new ArrayList<>(currentFilters.activeFilters.values());
     }
 
-    public void updateFilter(FilterObject filterObject){
+    public void addOrUpdateFilter(FilterObject filterObject){
         currentFilters.activeFilters.put(generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices), filterObject);
 
         // update settings

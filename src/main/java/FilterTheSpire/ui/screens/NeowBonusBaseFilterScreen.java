@@ -9,6 +9,7 @@ import FilterTheSpire.utils.helpers.CardPoolHelper;
 import FilterTheSpire.utils.helpers.CharacterPool;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
+import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -50,8 +51,8 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NeowBonusBaseFilterScreen() {
-        super(FilterType.NeowBonus);
+    public NeowBonusBaseFilterScreen(ModPanel p) {
+        super(FilterType.NeowBonus, p);
     }
 
     private static class NeowBonus {

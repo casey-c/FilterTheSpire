@@ -4,6 +4,7 @@ import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
 import FilterTheSpire.utils.types.RunCheckpoint;
+import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -15,8 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class BossRelicFilterScreen extends RelicBaseFilterScreen {
-    public BossRelicFilterScreen() {
-        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic);
+    public BossRelicFilterScreen(ModPanel p) {
+        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic, p);
+        hasAddButton = true;
     }
 
     void postRelicSetup() {
@@ -29,6 +31,13 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
         relics.removeIf(relic -> invalidSwaps.contains(relic.relicId));
     }
 
+    public void render(SpriteBatch sb){
+        super.render(sb);
+        sb.setColor(Color.WHITE);
+        this.addButton.render(sb);
+        this.returnButton.render(sb);
+    }
+
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 
@@ -36,7 +45,7 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
             relic.render(sb);
         }
 
-        this.returnButton.render(sb);
+
 
         // Title text
         float titleLeft = 386.0f;
@@ -63,6 +72,7 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
     }
 
     public void update() {
+        this.addButton.update();
         this.returnButton.update();
         this.enableHitboxes(true);
         for (RelicUIObject relic : relicUIObjects.values()){

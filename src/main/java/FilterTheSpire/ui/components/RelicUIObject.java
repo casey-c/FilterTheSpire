@@ -94,7 +94,9 @@ public class RelicUIObject {
             else CardCrawlGame.sound.playA("UI_CLICK_1", -0.4f);
 
             isEnabled = !isEnabled;
-            parent.refreshFilters();
+            if (!parent.hasAddButton) {
+                parent.refreshFilters();
+            }
         }
     }
 

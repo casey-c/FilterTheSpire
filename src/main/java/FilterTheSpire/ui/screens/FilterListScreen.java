@@ -55,7 +55,11 @@ public class FilterListScreen extends BaseScreen {
                 );
                 FilterListItem filterListItem = new FilterListItem(abstractFilter, deleteButton);
                 filterList.add(filterListItem);
-                currentY -= 67.0F;
+                float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
+                        filterListItem.filter.toString(),
+                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                        30.0f * Settings.yScale);
+                currentY -= Math.max(Math.abs(height), 67.0F);
             }
         }
     }
@@ -71,11 +75,10 @@ public class FilterListScreen extends BaseScreen {
         FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Filter List", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         float currentY = 800.0F;
+        float yDifference = 60.0F;
         for (FilterListItem filterListItem : filterList) {
             if (filterListItem.filter.shouldDisplay()){
-                filterListItem.deleteButton.render(sb);
-                currentY -= 60.0F;
-
+                currentY -= Math.max(yDifference, 60.0F);
                 FontHelper.renderSmartText(sb,
                         FontHelper.tipBodyFont,
                         filterListItem.filter.displayName,
@@ -84,6 +87,12 @@ public class FilterListScreen extends BaseScreen {
                         Settings.WIDTH - (440.0F * Settings.xScale * 2),
                         30.0f * Settings.yScale,
                         Settings.GOLD_COLOR);
+                float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
+                        filterListItem.filter.toString(),
+                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                        30.0f * Settings.yScale);
+                yDifference = Math.abs(height) + 10.0F;
+
                 currentY -= 30.0F;
                 FontHelper.renderSmartText(sb,
                         FontHelper.tipBodyFont,
@@ -93,6 +102,8 @@ public class FilterListScreen extends BaseScreen {
                         Settings.WIDTH - (440.0F * Settings.xScale * 2),
                         30.0f * Settings.yScale,
                         Settings.CREAM_COLOR);
+                sb.setColor(Color.WHITE);
+                filterListItem.deleteButton.render(sb);
             }
         }
     }

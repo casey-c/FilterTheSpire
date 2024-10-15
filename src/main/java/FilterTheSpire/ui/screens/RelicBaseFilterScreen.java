@@ -4,6 +4,7 @@ import FilterTheSpire.FilterManager;
 import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.config.FilterType;
+import basemod.ModPanel;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -16,8 +17,8 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
 
     private final List<AbstractRelic.RelicTier> relicScreenTiers;
 
-    public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType){
-        super(filterType);
+    public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType, ModPanel p){
+        super(filterType, p);
         this.relicScreenTiers = relicScreenTiers;
         setup();
     }
@@ -31,7 +32,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         populateRelics();
         postRelicSetup();
         makeUIObjects();
-        loadFromConfig();
+        if (!hasAddButton){
+            loadFromConfig();
+        }
     }
 
     protected void populateRelics() {
@@ -108,7 +111,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         if (relicUIObjects.containsKey(id)) {
             clearAll();
             relicUIObjects.get(id).isEnabled = true;
-            refreshFilters();
+            if (!hasAddButton){
+                refreshFilters();
+            }
         }
     }
 
@@ -117,7 +122,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
             obj.isEnabled = !obj.isEnabled;
         }
 
-        refreshFilters();
+        if (!hasAddButton){
+            refreshFilters();
+        }
     }
 
     public void selectAll() {
@@ -125,7 +132,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
             obj.isEnabled = true;
         }
 
-        refreshFilters();
+        if (!hasAddButton){
+            refreshFilters();
+        }
     }
 
     public void clearAll() {
@@ -133,7 +142,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
             obj.isEnabled = false;
         }
 
-        refreshFilters();
+        if (!hasAddButton){
+            refreshFilters();
+        }
     }
 
     protected ArrayList<String> getEnabledRelics() {
@@ -150,7 +161,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     public void refreshFilters() {
         filterObject.possibleValues = getEnabledRelics();
         setActOrEncounterIndex();
-        FilterTheSpire.config.updateFilter(filterObject);
+        FilterTheSpire.config.addOrUpdateFilter(filterObject);
         FilterManager.setFilter(filterObject);
     }
 

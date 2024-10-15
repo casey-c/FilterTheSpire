@@ -48,22 +48,22 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         final float yIncrement = 90.0F;
         final float xIncrement = 330.0F;
 
-        BossRelicFilterScreen bossRelicScreen = new BossRelicFilterScreen();
+        BossRelicFilterScreen bossRelicScreen = new BossRelicFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
-        NthCardRewardBaseFilterScreen nthCardRewardFilterScreen = new NthCardRewardBaseFilterScreen();
+        NthCardRewardBaseFilterScreen nthCardRewardFilterScreen = new NthCardRewardBaseFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Card Reward", (xPosition + xIncrement), yPosition,  nthCardRewardFilterScreen));
 
         yPosition -= yIncrement;
-        ShopRelicBaseFilterScreen shopRelicScreen = new ShopRelicBaseFilterScreen();
+        ShopRelicBaseFilterScreen shopRelicScreen = new ShopRelicBaseFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
         yPosition -= yIncrement;
-        NeowBonusBaseFilterScreen neowBonusScreen = new NeowBonusBaseFilterScreen();
+        NeowBonusBaseFilterScreen neowBonusScreen = new NeowBonusBaseFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
 
         yPosition -= yIncrement;
-        NthRelicBaseFilterScreen nthRelicFilterScreen = new NthRelicBaseFilterScreen();
+        NthRelicBaseFilterScreen nthRelicFilterScreen = new NthRelicBaseFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
         FilterListScreen filterListScreen = new FilterListScreen();

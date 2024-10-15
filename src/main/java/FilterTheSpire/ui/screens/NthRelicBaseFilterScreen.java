@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
+import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -34,8 +35,8 @@ public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements S
     public float x;
     public float y;
 
-    public NthRelicBaseFilterScreen(){
-        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic);
+    public NthRelicBaseFilterScreen(ModPanel p){
+        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic, p);
 
         // Setup scrollbar
         if (this.scrollBar == null) {

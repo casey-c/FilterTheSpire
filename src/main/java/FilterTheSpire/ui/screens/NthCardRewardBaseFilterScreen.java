@@ -10,6 +10,7 @@ import FilterTheSpire.utils.helpers.CardPoolHelper;
 import FilterTheSpire.utils.helpers.CharacterPool;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
+import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -29,8 +30,8 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NthCardRewardBaseFilterScreen() {
-        super(FilterType.NthCardReward);
+    public NthCardRewardBaseFilterScreen(ModPanel p) {
+        super(FilterType.NthCardReward, p);
     }
 
     public void open() {

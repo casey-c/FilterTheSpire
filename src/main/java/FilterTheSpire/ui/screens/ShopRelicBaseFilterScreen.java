@@ -3,6 +3,7 @@ package FilterTheSpire.ui.screens;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
+import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
@@ -15,8 +16,8 @@ import java.util.Collections;
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
 public class ShopRelicBaseFilterScreen extends RelicBaseFilterScreen {
-    public ShopRelicBaseFilterScreen() {
-        super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic);
+    public ShopRelicBaseFilterScreen(ModPanel p) {
+        super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic, p);
     }
 
     void postRelicSetup() {}
