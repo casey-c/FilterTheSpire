@@ -1,11 +1,11 @@
 package FilterTheSpire.factory;
 
+import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.utils.config.FilterType;
 import FilterTheSpire.utils.types.RunCheckpoint;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class FilterObject {
     public FilterType filterType;
@@ -20,6 +20,7 @@ public class FilterObject {
 
     public FilterObject(FilterType filterType) {
         this.filterType = filterType;
+        this.runCheckpoint = RunCheckpoint.NEOW;
         this.possibleValues = new ArrayList<>();
         this.secondaryValues = new ArrayList<>();
         this.possibleEncounterIndices =  new ArrayList<>(Collections.singletonList(0));
@@ -34,8 +35,8 @@ public class FilterObject {
     }
 
     public String getHashKey(){
-        String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));
-        return filterType.toString() + indices;
+        AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(this);
+        return filter.generateHashKey();
     }
 
     public boolean isKeyUpdated(){

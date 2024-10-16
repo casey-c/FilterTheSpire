@@ -1,5 +1,6 @@
 package FilterTheSpire.utils.config;
 
+import FilterTheSpire.factory.FilterFactory;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.filters.AbstractFilter;
 import FilterTheSpire.ui.screens.AlternateConfigMenu;
@@ -57,7 +58,8 @@ public class Config {
     }
 
     public void addOrUpdateFilter(FilterObject filterObject){
-        currentFilters.activeFilters.put(generateHashKey(filterObject.filterType, filterObject.possibleEncounterIndices), filterObject);
+        AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);
+        currentFilters.activeFilters.put(filter.generateHashKey(), filterObject);
 
         // update settings
         Gson gson = new Gson();
@@ -148,6 +150,7 @@ public class Config {
         }
     }
 
+    // Remove this once we have all the filter screens having Add buttons and use the Abstract filter generateHashKey
     public String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
         if (possibleEncounterIndices != null && possibleEncounterIndices.size() > 0){
             String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));

@@ -22,7 +22,7 @@ import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements DropdownMenuListener  {
+public class NeowBonusFilterScreen extends BaseFilterScreen implements DropdownMenuListener  {
     private DropdownMenu neowBonusDropdown;
     private DropdownMenu drawbackDropdown;
     private CharacterDropdown characterDropdown;
@@ -51,8 +51,8 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NeowBonusBaseFilterScreen(ModPanel p) {
-        super(FilterType.NeowBonus, p);
+    public NeowBonusFilterScreen(ModPanel p) {
+        super(FilterType.NeowBonus, p, false);
     }
 
     private static class NeowBonus {
@@ -223,7 +223,7 @@ public class NeowBonusBaseFilterScreen extends BaseFilterScreen implements Dropd
             }
         }
 
-        refreshFilters();
+        updateFilters();
     }
 
     void renderForeground(SpriteBatch sb) {

@@ -17,7 +17,7 @@ import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements ScrollBarListener {
+public class NthRelicFilterScreen extends RelicBaseFilterScreen implements ScrollBarListener {
     private static final int RELICS_PER_ROW = 6;
     private static final float SPACING = 84.0f;
     private static final int VIEW_WINDOW = 400;
@@ -35,8 +35,8 @@ public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements S
     public float x;
     public float y;
 
-    public NthRelicBaseFilterScreen(ModPanel p){
-        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic, p);
+    public NthRelicFilterScreen(ModPanel p){
+        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic, p, false);
 
         // Setup scrollbar
         if (this.scrollBar == null) {
@@ -178,7 +178,7 @@ public class NthRelicBaseFilterScreen extends RelicBaseFilterScreen implements S
     }
     //endregion
 
-    void setActOrEncounterIndex() {
+    public void setFilterObjectForAddOrUpdate() {
         filterObject.possibleEncounterIndices = Collections.singletonList(0);
     }
 }

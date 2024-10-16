@@ -15,9 +15,9 @@ import java.util.Collections;
 /*
     Shown when the user goes to Main Menu -> Mods -> Filter the Spire -> Config
  */
-public class ShopRelicBaseFilterScreen extends RelicBaseFilterScreen {
-    public ShopRelicBaseFilterScreen(ModPanel p) {
-        super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic, p);
+public class ShopRelicFilterScreen extends RelicBaseFilterScreen {
+    public ShopRelicFilterScreen(ModPanel p) {
+        super(Collections.singletonList(AbstractRelic.RelicTier.SHOP), FilterType.NthShopRelic, p, false);
     }
 
     void postRelicSetup() {}
@@ -74,7 +74,7 @@ public class ShopRelicBaseFilterScreen extends RelicBaseFilterScreen {
         }
     }
 
-    void setActOrEncounterIndex() {
+    public void setFilterObjectForAddOrUpdate() {
         filterObject.possibleEncounterIndices = Collections.singletonList(0);
     }
 }

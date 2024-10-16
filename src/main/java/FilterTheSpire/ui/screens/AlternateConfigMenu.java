@@ -51,19 +51,19 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         BossRelicFilterScreen bossRelicScreen = new BossRelicFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Boss Relics", xPosition, yPosition, bossRelicScreen));
 
-        NthCardRewardBaseFilterScreen nthCardRewardFilterScreen = new NthCardRewardBaseFilterScreen(this);
+        NthCardRewardFilterScreen nthCardRewardFilterScreen = new NthCardRewardFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Card Reward", (xPosition + xIncrement), yPosition,  nthCardRewardFilterScreen));
 
         yPosition -= yIncrement;
-        ShopRelicBaseFilterScreen shopRelicScreen = new ShopRelicBaseFilterScreen(this);
+        ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
         yPosition -= yIncrement;
-        NeowBonusBaseFilterScreen neowBonusScreen = new NeowBonusBaseFilterScreen(this);
+        NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
 
         yPosition -= yIncrement;
-        NthRelicBaseFilterScreen nthRelicFilterScreen = new NthRelicBaseFilterScreen(this);
+        NthRelicFilterScreen nthRelicFilterScreen = new NthRelicFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Relic Filter", xPosition, yPosition, nthRelicFilterScreen));
 
         FilterListScreen filterListScreen = new FilterListScreen();

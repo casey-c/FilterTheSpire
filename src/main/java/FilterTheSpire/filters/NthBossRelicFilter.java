@@ -54,7 +54,7 @@ public class NthBossRelicFilter extends AbstractFilter {
     }
 
     public String generateHashKey() {
-        return FilterTheSpire.config.generateHashKey(type, getEncounterIndicesFromPickup());
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(pickupCheckpoint.ordinal()));
     }
 
     public String toString() {

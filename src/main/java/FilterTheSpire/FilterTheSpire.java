@@ -74,6 +74,8 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
         config = new Config();
         Config.setupConfigMenu();
+
+        FilterManager.loadInitialFilters();
     }
 
     // --------------------------------------------------------------------------------
@@ -114,12 +116,12 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     private float fadeTime;
     private static final float maxFadeTime = 2.0f;
 
-    private Color blackColor = Color.BLACK.cpy();
-    private Color whiteColor = Color.WHITE.cpy();
-    private Color pinkTextColor = ExtraColors.PINK_COLOR.cpy();
+    private final Color blackColor = Color.BLACK.cpy();
+    private final Color whiteColor = Color.WHITE.cpy();
+    private final Color pinkTextColor = ExtraColors.PINK_COLOR.cpy();
 
-    private Color creamTextColor = Settings.CREAM_COLOR.cpy();
-    private Color grayTextColor = Color.GRAY.cpy();
+    private final Color creamTextColor = Settings.CREAM_COLOR.cpy();
+    private final Color grayTextColor = Color.GRAY.cpy();
 
     private String totalSearched = "";
 

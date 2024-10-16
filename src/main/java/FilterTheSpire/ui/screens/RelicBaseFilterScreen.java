@@ -17,8 +17,9 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
 
     private final List<AbstractRelic.RelicTier> relicScreenTiers;
 
-    public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType, ModPanel p){
-        super(filterType, p);
+    public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType, ModPanel p,
+                                 boolean hasAddButon){
+        super(filterType, p, hasAddButon);
         this.relicScreenTiers = relicScreenTiers;
         setup();
     }
@@ -88,7 +89,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
                 relicUIObjects.get(relic).isEnabled = true;
         }
 
-        refreshFilters();
+        updateFilters();
     }
 
     public void enableHitboxes(boolean enabled) {
@@ -112,7 +113,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
             clearAll();
             relicUIObjects.get(id).isEnabled = true;
             if (!hasAddButton){
-                refreshFilters();
+                updateFilters();
             }
         }
     }
@@ -123,7 +124,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         }
 
         if (!hasAddButton){
-            refreshFilters();
+            updateFilters();
         }
     }
 
@@ -133,7 +134,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         }
 
         if (!hasAddButton){
-            refreshFilters();
+            updateFilters();
         }
     }
 
@@ -143,7 +144,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         }
 
         if (!hasAddButton){
-            refreshFilters();
+            updateFilters();
         }
     }
 
@@ -158,11 +159,15 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         return list;
     }
 
-    public void refreshFilters() {
+    public void updateFilters() {
+        setFilterObjectForAddOrUpdate();
         filterObject.possibleValues = getEnabledRelics();
-        setActOrEncounterIndex();
         FilterTheSpire.config.addOrUpdateFilter(filterObject);
-        FilterManager.setFilter(filterObject);
+        if (hasAddButton){
+            FilterManager.addFilter(filterObject);
+        } else {
+            FilterManager.setFilter(filterObject);
+        }
     }
 
     public void resetUI(){
@@ -171,5 +176,4 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
 
     abstract void postRelicSetup();
 
-    abstract void setActOrEncounterIndex();
 }

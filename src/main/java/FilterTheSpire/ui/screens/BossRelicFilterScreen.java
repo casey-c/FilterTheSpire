@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
@@ -10,18 +11,44 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.screens.options.DropdownMenu;
+import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BossRelicFilterScreen extends RelicBaseFilterScreen {
+public class BossRelicFilterScreen extends RelicBaseFilterScreen implements DropdownMenuListener {
+    private final DropdownMenu checkpointDropdown;
+
     public BossRelicFilterScreen(ModPanel p) {
-        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic, p);
-        hasAddButton = true;
+        super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic, p, true);
+        checkpointDropdown = new DropdownMenu(this,
+                new ArrayList<>(Arrays.asList("Neow Boss Swap", "Act 1 Boss", "Act 2 Boss")),
+                FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
     }
 
-    void postRelicSetup() {
+    public void open(){
+        super.open();
+    }
+
+    private RunCheckpoint getCheckpointFromDropdownIndex(){
+        if (checkpointDropdown != null){
+            int index = checkpointDropdown.getSelectedIndex();
+            switch (index){
+                case 0:
+                    return RunCheckpoint.NEOW;
+                case 1:
+                    return RunCheckpoint.ACT1_BOSS;
+                case 2:
+                    return RunCheckpoint.ACT2_BOSS;
+            }
+        }
+        return RunCheckpoint.NEOW;
+    }
+
+    public void postRelicSetup() {
         removeClassUpgradedRelics();
     }
 
@@ -45,8 +72,6 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
             relic.render(sb);
         }
 
-
-
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
@@ -69,11 +94,26 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Color.GRAY);
+
+        // top bar controls
+        float xPosition = BaseFilterScreen.INFO_LEFT - 90.0f;
+        float yPosition = 850.0f;
+        this.checkpointDropdown.render(sb, xPosition * Settings.xScale, yPosition * Settings.yScale);
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipHeaderFont,
+                "Encounter:",
+                (xPosition - 140.0f) * Settings.xScale,
+                (yPosition - 5.0f) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.CREAM_COLOR);
+
     }
 
     public void update() {
         this.addButton.update();
         this.returnButton.update();
+        this.checkpointDropdown.update();
         this.enableHitboxes(true);
         for (RelicUIObject relic : relicUIObjects.values()){
             relic.update();
@@ -84,8 +124,11 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
         }
     }
 
-    void setActOrEncounterIndex() {
-        // Set this to a dropdown value when created
-        filterObject.runCheckpoint = RunCheckpoint.NEOW;
+    public void setFilterObjectForAddOrUpdate(){
+        filterObject = new FilterObject(FilterType.NthBossRelic);
+        filterObject.runCheckpoint = getCheckpointFromDropdownIndex();
+    }
+
+    public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
     }
 }

@@ -12,17 +12,18 @@ import com.megacrit.cardcrawl.helpers.FontHelper;
 
 public abstract class BaseFilterScreen extends BaseScreen {
     public FilterObject filterObject;
-    public boolean hasAddButton = false;
+    public boolean hasAddButton;
     public final ModLabeledButton addButton;
     public final FilterType filterType;
 
-    public BaseFilterScreen( FilterType filterType, ModPanel p) {
+    public BaseFilterScreen( FilterType filterType, ModPanel p, boolean hasAddButton) {
+        this.hasAddButton = hasAddButton;
         this.filterType = filterType;
         addButton = new ModLabeledButton("Add",
-                BaseFilterScreen.INFO_LEFT + 170.0F, 805.0f,
+                BaseFilterScreen.INFO_LEFT + 190.0F, 805.0f,
                 Settings.CREAM_COLOR, Color.GREEN, FontHelper.tipHeaderFont, p,
                 (self) -> {
-                    refreshFilters();
+                    updateFilters();
                     resetUI();
                 });
     }
@@ -31,9 +32,18 @@ public abstract class BaseFilterScreen extends BaseScreen {
         filterObject = new FilterObject(filterType);
     }
 
-    public void refreshFilters() {
+    public void updateFilters() {
+        setFilterObjectForAddOrUpdate();
         FilterTheSpire.config.addOrUpdateFilter(filterObject);
-        FilterManager.setFilter(filterObject);
+        if (hasAddButton){
+            FilterManager.addFilter(filterObject);
+        } else {
+            FilterManager.setFilter(filterObject);
+        }
+    }
+
+    public void setFilterObjectForAddOrUpdate(){
+
     }
 
     abstract void resetUI();

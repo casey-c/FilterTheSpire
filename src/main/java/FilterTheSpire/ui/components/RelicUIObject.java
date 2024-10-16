@@ -15,16 +15,17 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 public class RelicUIObject {
 
-    private Hitbox hb;
+    private final Hitbox hb;
 
     public String relicID;
-    private float x, y;
+    private final float x;
+    private final float y;
     private float scroll;
-    private Texture tex;
+    private final Texture tex;
     private static final Texture TEX_SELECTED_BG = new Texture("FilterTheSpire/images/relic_bg.png");
 
     public boolean isEnabled = false;
-    private RelicBaseFilterScreen parent;
+    private final RelicBaseFilterScreen parent;
 
     public RelicUIObject(RelicBaseFilterScreen parent, AbstractRelic relic, float x, float y) {
         this.relicID = relic.relicId;
@@ -95,7 +96,7 @@ public class RelicUIObject {
 
             isEnabled = !isEnabled;
             if (!parent.hasAddButton) {
-                parent.refreshFilters();
+                parent.updateFilters();
             }
         }
     }

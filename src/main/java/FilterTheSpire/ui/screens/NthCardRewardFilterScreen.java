@@ -22,7 +22,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements DropdownMenuListener {
+public class NthCardRewardFilterScreen extends BaseFilterScreen implements DropdownMenuListener {
     private DropdownMenu combatDropdown;
     private CharacterDropdown characterDropdown;
     private CardDropdown cardDropdown;
@@ -30,8 +30,8 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
     // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
     private boolean isInitialLoad;
 
-    public NthCardRewardBaseFilterScreen(ModPanel p) {
-        super(FilterType.NthCardReward, p);
+    public NthCardRewardFilterScreen(ModPanel p) {
+        super(FilterType.NthCardReward, p, false);
     }
 
     public void open() {
@@ -179,7 +179,7 @@ public class NthCardRewardBaseFilterScreen extends BaseFilterScreen implements D
             filterObject.possibleEncounterIndices.add(Integer.parseInt(s) - 1);
         }
 
-        this.refreshFilters();
+        this.updateFilters();
     }
 
     private void setCardDropdownValues() {

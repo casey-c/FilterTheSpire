@@ -81,6 +81,15 @@ public class FilterManager {
         setPreRunCounters();
     }
 
+    // REMOVE setFilter when all filters are Adding and not updating real time
+    public static void addFilter(FilterObject filterObject){
+        if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0){
+            AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);
+            filters.put(filterObject.getHashKey(), filter);
+        }
+        setPreRunCounters();
+    }
+
     private static void setPreRunCounters(){
         preRngCounters.clear();
         for (String key: filters.keySet()) {
@@ -113,6 +122,14 @@ public class FilterManager {
         neowBonusRelicsCount.put(AbstractRelic.RelicTier.UNCOMMON, 1);
         neowBonusRelicsCount.put(AbstractRelic.RelicTier.RARE, 1);
         filters.put("callingBellFilter", filter);
+    }
+
+    public static void loadInitialFilters(){
+        for (FilterObject filterObject : FilterTheSpire.config.getActiveFilters()) {
+            if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0) {
+                filters.put(filterObject.getHashKey(), FilterFactory.getAbstractFilterFromFilterObject(filterObject));
+            }
+        }
     }
 
     public static void print() {
