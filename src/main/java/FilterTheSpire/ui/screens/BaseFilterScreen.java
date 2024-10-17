@@ -7,6 +7,7 @@ import FilterTheSpire.utils.config.FilterType;
 import basemod.ModLabeledButton;
 import basemod.ModPanel;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 
@@ -40,6 +41,15 @@ public abstract class BaseFilterScreen extends BaseScreen {
         } else {
             FilterManager.setFilter(filterObject);
         }
+    }
+
+    public void render(SpriteBatch sb){
+        super.render(sb);
+        sb.setColor(Color.WHITE);
+        if (hasAddButton){
+            this.addButton.render(sb);
+        }
+        this.returnButton.render(sb);
     }
 
     public void setFilterObjectForAddOrUpdate(){

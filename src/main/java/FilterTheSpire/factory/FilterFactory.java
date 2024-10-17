@@ -17,7 +17,7 @@ public class FilterFactory {
             case NthElite:
                 return new NthEliteFilter(filterObject.possibleValues);
             case NthShopRelic:
-                return new NthShopRelicFilter(filterObject.possibleValues);
+                return new NthShopRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices.get(0));
             case PandorasCard:
                 return new PandorasCardFilter(filterObject.possibleValues);
             case NeowBonus:

@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.RelicUIObject;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
@@ -13,11 +14,14 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBar;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
+import com.megacrit.cardcrawl.screens.options.DropdownMenu;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.IntStream;
 
 public class NthRelicFilterScreen extends RelicBaseFilterScreen implements ScrollBarListener {
+    private final DropdownMenu encounterDropdown;
     private static final int RELICS_PER_ROW = 6;
     private static final float SPACING = 84.0f;
     private static final int VIEW_WINDOW = 400;
@@ -36,7 +40,12 @@ public class NthRelicFilterScreen extends RelicBaseFilterScreen implements Scrol
     public float y;
 
     public NthRelicFilterScreen(ModPanel p){
-        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic, p, false);
+        super(Arrays.asList(AbstractRelic.RelicTier.COMMON, AbstractRelic.RelicTier.UNCOMMON, AbstractRelic.RelicTier.RARE), FilterType.NthRelic, p, true);
+
+        String[] relicEncounters = IntStream.range(1, 9).mapToObj(String::valueOf).toArray(String[]::new);
+        encounterDropdown = new DropdownMenu(null,
+                relicEncounters,
+                FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
 
         // Setup scrollbar
         if (this.scrollBar == null) {
@@ -62,7 +71,6 @@ public class NthRelicFilterScreen extends RelicBaseFilterScreen implements Scrol
             }
         }
 
-        this.returnButton.render(sb);
         this.scrollBar.render(sb);
 
         // Title text
@@ -101,10 +109,25 @@ public class NthRelicFilterScreen extends RelicBaseFilterScreen implements Scrol
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Color.GRAY);
+
+        // top bar controls
+        float xPosition = BaseFilterScreen.INFO_LEFT + 50.0f;
+        float yPosition = 850.0f;
+        this.encounterDropdown.render(sb, xPosition * Settings.xScale, yPosition * Settings.yScale);
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipHeaderFont,
+                "Relic Encounter:",
+                (xPosition - 210.0f) * Settings.xScale,
+                (yPosition - 5.0f) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.CREAM_COLOR);
     }
 
     void update() {
+        this.addButton.update();
         this.returnButton.update();
+        this.encounterDropdown.update();
         this.enableHitboxes(true);
 
         for (RelicUIObject relic : relicUIObjects.values()){
@@ -179,6 +202,7 @@ public class NthRelicFilterScreen extends RelicBaseFilterScreen implements Scrol
     //endregion
 
     public void setFilterObjectForAddOrUpdate() {
-        filterObject.possibleEncounterIndices = Collections.singletonList(0);
+        filterObject = new FilterObject(FilterType.NthRelic);
+        filterObject.possibleEncounterIndices = Collections.singletonList(encounterDropdown.getSelectedIndex());
     }
 }

@@ -5,8 +5,8 @@ import com.megacrit.cardcrawl.helpers.SeedHelper;
 import com.megacrit.cardcrawl.random.Random;
 
 public class SeedSearcherThread extends Thread {
-    private SeedSearcher.MainSeedRunnable parent;
-    private long offset;
+    private final SeedSearcher.MainSeedRunnable parent;
+    private final long offset;
 
     protected long seedsExamined;
 
@@ -39,16 +39,18 @@ public class SeedSearcherThread extends Thread {
             // split second
 
             // TODO: put this behind a config option. (I'm leaving it now because I can and you can't stop me)
-//            try {
-//                sleep(20);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            if (seedsExamined < 2000){
+                try {
+                    sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     private boolean tryRandomSeed() {
-        Long sTime = System.nanoTime() + offset;
+        long sTime = System.nanoTime() + offset;
         Random rng = new Random(sTime);
 
         seedSourceTimestamp = sTime + offset;

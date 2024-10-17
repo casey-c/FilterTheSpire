@@ -12,25 +12,20 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.options.DropdownMenu;
-import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BossRelicFilterScreen extends RelicBaseFilterScreen implements DropdownMenuListener {
+public class BossRelicFilterScreen extends RelicBaseFilterScreen {
     private final DropdownMenu checkpointDropdown;
 
     public BossRelicFilterScreen(ModPanel p) {
         super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic, p, true);
-        checkpointDropdown = new DropdownMenu(this,
+        checkpointDropdown = new DropdownMenu(null,
                 new ArrayList<>(Arrays.asList("Neow Boss Swap", "Act 1 Boss", "Act 2 Boss")),
                 FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
-    }
-
-    public void open(){
-        super.open();
     }
 
     private RunCheckpoint getCheckpointFromDropdownIndex(){
@@ -56,13 +51,6 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen implements Drop
     private void removeClassUpgradedRelics() {
         List<String> invalidSwaps = Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater");
         relics.removeIf(relic -> invalidSwaps.contains(relic.relicId));
-    }
-
-    public void render(SpriteBatch sb){
-        super.render(sb);
-        sb.setColor(Color.WHITE);
-        this.addButton.render(sb);
-        this.returnButton.render(sb);
     }
 
     public void renderForeground(SpriteBatch sb) {
@@ -127,8 +115,5 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen implements Drop
     public void setFilterObjectForAddOrUpdate(){
         filterObject = new FilterObject(FilterType.NthBossRelic);
         filterObject.runCheckpoint = getCheckpointFromDropdownIndex();
-    }
-
-    public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
     }
 }

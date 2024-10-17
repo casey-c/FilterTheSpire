@@ -18,8 +18,8 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     private final List<AbstractRelic.RelicTier> relicScreenTiers;
 
     public RelicBaseFilterScreen(List<AbstractRelic.RelicTier> relicScreenTiers, FilterType filterType, ModPanel p,
-                                 boolean hasAddButon){
-        super(filterType, p, hasAddButon);
+                                 boolean hasAddButton){
+        super(filterType, p, hasAddButton);
         this.relicScreenTiers = relicScreenTiers;
         setup();
     }
