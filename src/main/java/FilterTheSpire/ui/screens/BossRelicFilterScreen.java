@@ -75,7 +75,7 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen implements Drop
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;
-        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Neow Boss Swaps", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
+        FontHelper.renderFontLeftDownAligned(sb, ExtraFonts.configTitleFont(), "Boss Relic Filter", titleLeft * Settings.xScale, titleBottom * Settings.yScale, Settings.GOLD_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
