@@ -26,7 +26,7 @@ public class FilterManager {
         return sortedList.stream().allMatch(v -> v.isSeedValid(seed));
     }
 
-    // Sort the filters so we short circuit on the least intensive filters first
+    // Sort the filters, so we short circuit on the least intensive filters first
     public static void sortFilters(){
         sortedList = new ArrayList<>(filters.values());
         sortedList.sort(Comparator.comparingInt(AbstractFilter::getSortOrder));
@@ -125,6 +125,7 @@ public class FilterManager {
     }
 
     public static void loadInitialFilters(){
+        filters.clear();
         for (FilterObject filterObject : FilterTheSpire.config.getActiveFilters()) {
             if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0) {
                 filters.put(filterObject.getHashKey(), FilterFactory.getAbstractFilterFromFilterObject(filterObject));

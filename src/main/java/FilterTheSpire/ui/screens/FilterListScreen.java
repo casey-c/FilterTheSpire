@@ -1,6 +1,7 @@
 package FilterTheSpire.ui.screens;
 
 import FilterTheSpire.FilterTheSpire;
+import FilterTheSpire.FilterManager;
 import FilterTheSpire.factory.FilterFactory;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.filters.AbstractFilter;
@@ -37,18 +38,19 @@ public class FilterListScreen extends BaseScreen {
             abstractFilters.add(abstractFilter);
         }
         abstractFilters.sort(Comparator.comparing(f -> f.displayName));
-        float currentY = 510.0F;
+        float currentY = 680.0f;
         for (AbstractFilter abstractFilter : abstractFilters) {
             if (abstractFilter.shouldDisplay()){
                 ModLabeledButton deleteButton = new ModLabeledButton("X",
-                        270.0F * Settings.xScale,
-                        currentY * Settings.yScale,
+                        360.0f,
+                        currentY,
                         Settings.TWO_THIRDS_TRANSPARENT_BLACK_COLOR,
                         Color.RED,
                         FontHelper.tipBodyFont,
                         null,
                         (self) -> {
                             FilterTheSpire.config.removeFilter(abstractFilter);
+                            FilterManager.loadInitialFilters();
                             this.filterList.removeIf((f) -> Objects.equals(f.filter.generateHashKey(), abstractFilter.generateHashKey()));
                             initialize();
                         }
@@ -59,7 +61,7 @@ public class FilterListScreen extends BaseScreen {
                         filterListItem.filter.toString(),
                         Settings.WIDTH - (440.0F * Settings.xScale * 2),
                         30.0f * Settings.yScale);
-                currentY -= Math.max(Math.abs(height), 67.0F);
+                currentY -= Math.max(Math.abs(height), 90.0F);
             }
         }
     }

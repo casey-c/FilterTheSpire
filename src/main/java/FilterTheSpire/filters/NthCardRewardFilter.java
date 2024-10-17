@@ -31,10 +31,11 @@ public class NthCardRewardFilter extends AbstractFilter {
     }
 
     public String toString() {
-        return "Cards: " + searchCards + ", combat Index: " + combatIndex;
+        return "Cards: " + searchCards + " at combat " + (combatIndex + 1);
     }
 
     public String generateHashKey() {
-        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(combatIndex));
+        // Change the 0 to the combat index when it has an Add button
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(0));
     }
 }
