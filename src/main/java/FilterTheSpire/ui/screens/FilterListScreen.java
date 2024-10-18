@@ -20,8 +20,12 @@ import java.util.Objects;
 public class FilterListScreen extends BaseScreen {
     private ArrayList<FilterListItem> filterList;
 
+    private final float filterTextLineWidth;
+    private final float filterTextStartPositionX = 440.0f;
+
     public FilterListScreen(){
         filterList = new ArrayList<>();
+        filterTextLineWidth = Settings.WIDTH - (filterTextStartPositionX * Settings.xScale * 2);
     }
 
     public void open(){
@@ -65,7 +69,7 @@ public class FilterListScreen extends BaseScreen {
     private float getFilterStringHeight(AbstractFilter filter){
         float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
                 filter.toString(),
-                Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                filterTextLineWidth,
                 30.0f * Settings.yScale);
         return Math.abs(height) + 10.0f;
     }
@@ -88,9 +92,9 @@ public class FilterListScreen extends BaseScreen {
                 FontHelper.renderSmartText(sb,
                         FontHelper.tipBodyFont,
                         filterListItem.filter.displayName,
-                        440.0F * Settings.xScale,
+                        filterTextStartPositionX * Settings.xScale,
                         currentY * Settings.yScale,
-                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                        filterTextLineWidth,
                         30.0f * Settings.yScale,
                         Settings.GOLD_COLOR);
                 yDifference = getFilterStringHeight(filterListItem.filter);
@@ -99,9 +103,9 @@ public class FilterListScreen extends BaseScreen {
                 FontHelper.renderSmartText(sb,
                         FontHelper.tipBodyFont,
                         filterListItem.filter.toString(),
-                        440.0F * Settings.xScale,
+                        filterTextStartPositionX * Settings.xScale,
                         currentY * Settings.yScale,
-                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                        filterTextLineWidth,
                         30.0f * Settings.yScale,
                         Settings.CREAM_COLOR);
                 sb.setColor(Color.WHITE);
