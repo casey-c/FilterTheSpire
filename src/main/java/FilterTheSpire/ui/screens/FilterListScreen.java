@@ -57,13 +57,17 @@ public class FilterListScreen extends BaseScreen {
                 );
                 FilterListItem filterListItem = new FilterListItem(abstractFilter, deleteButton);
                 filterList.add(filterListItem);
-                float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
-                        filterListItem.filter.toString(),
-                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
-                        30.0f * Settings.yScale);
-                currentY -= Math.max(Math.abs(height), 90.0F);
+                currentY -= (Math.max(getFilterStringHeight(filterListItem.filter), 60.0f) + 30.0f);
             }
         }
+    }
+
+    private float getFilterStringHeight(AbstractFilter filter){
+        float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
+                filter.toString(),
+                Settings.WIDTH - (440.0F * Settings.xScale * 2),
+                30.0f * Settings.yScale);
+        return Math.abs(height) + 10.0f;
     }
 
     void renderForeground(SpriteBatch sb) {
@@ -89,11 +93,7 @@ public class FilterListScreen extends BaseScreen {
                         Settings.WIDTH - (440.0F * Settings.xScale * 2),
                         30.0f * Settings.yScale,
                         Settings.GOLD_COLOR);
-                float height = FontHelper.getSmartHeight(FontHelper.tipBodyFont,
-                        filterListItem.filter.toString(),
-                        Settings.WIDTH - (440.0F * Settings.xScale * 2),
-                        30.0f * Settings.yScale);
-                yDifference = Math.abs(height) + 10.0F;
+                yDifference = getFilterStringHeight(filterListItem.filter);
 
                 currentY -= 30.0F;
                 FontHelper.renderSmartText(sb,
