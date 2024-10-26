@@ -33,9 +33,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         populateRelics();
         postRelicSetup();
         makeUIObjects();
-        if (!hasAddButton){
-            loadFromConfig();
-        }
     }
 
     protected void populateRelics() {
@@ -82,16 +79,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         }
     }
 
-    public void loadFromConfig() {
-        this.filterObject = FilterTheSpire.config.getFilter(this.filterType);
-        for (String relic : filterObject.possibleValues) {
-            if (relicUIObjects.containsKey(relic))
-                relicUIObjects.get(relic).isEnabled = true;
-        }
-
-        updateFilters();
-    }
-
     public void enableHitboxes(boolean enabled) {
         for (RelicUIObject obj : relicUIObjects.values()) {
             if (enabled)
@@ -112,9 +99,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         if (relicUIObjects.containsKey(id)) {
             clearAll();
             relicUIObjects.get(id).isEnabled = true;
-            if (!hasAddButton){
-                updateFilters();
-            }
         }
     }
 
@@ -122,29 +106,17 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = !obj.isEnabled;
         }
-
-        if (!hasAddButton){
-            updateFilters();
-        }
     }
 
     public void selectAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = true;
         }
-
-        if (!hasAddButton){
-            updateFilters();
-        }
     }
 
     public void clearAll() {
         for (RelicUIObject obj : relicUIObjects.values()) {
             obj.isEnabled = false;
-        }
-
-        if (!hasAddButton){
-            updateFilters();
         }
     }
 
@@ -163,11 +135,7 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
         setFilterObjectForAddOrUpdate();
         filterObject.possibleValues = getEnabledRelics();
         FilterTheSpire.config.addOrUpdateFilter(filterObject);
-        if (hasAddButton){
-            FilterManager.addFilter(filterObject);
-        } else {
-            FilterManager.setFilter(filterObject);
-        }
+        FilterManager.addFilter(filterObject);
     }
 
     public void resetUI(){

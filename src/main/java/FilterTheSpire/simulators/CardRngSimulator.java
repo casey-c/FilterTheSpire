@@ -43,7 +43,7 @@ public class CardRngSimulator {
         for(int i = 0; i < numCardsInReward; ++i) {
             cardRewards.add(cards.get(cardRng.random(cards.size() - 1)));
         }
-        return cardRewards.containsAll(searchCards);
+        return new HashSet<>(cardRewards).containsAll(searchCards);
     }
 
     /**
@@ -70,8 +70,9 @@ public class CardRngSimulator {
         CardRewardInfo cardReward = null;
 
         int cardBlizzRandomizer = 5;
+        ArrayList<CardRewardInfo> rewards = new ArrayList<>();
         for (int i = 0; i <= combatIndex; i++) {
-            ArrayList<CardRewardInfo> rewards = new ArrayList<>();
+            rewards.clear();
             for (int j = 0; j < numCardsInReward; j++) {
                 int randomRoll = cardRng.random(99);
                 randomRoll += cardBlizzRandomizer;
@@ -105,11 +106,6 @@ public class CardRngSimulator {
                 containsDupe = true;
             }
 
-            List<String> cardIds = rewards.stream().map(c -> c.cardId).collect(Collectors.toList());
-            if (cardIds.containsAll(searchCards)){
-                return true;
-            }
-
             for (CardRewardInfo card: rewards) {
                 if (card.rarity != AbstractCard.CardRarity.RARE){
                     cardRng.randomBoolean(0.0F);
@@ -117,7 +113,8 @@ public class CardRngSimulator {
             }
         }
 
-        return false;
+        List<String> cardIds = rewards.stream().map(c -> c.cardId).collect(Collectors.toList());
+        return new HashSet<>(cardIds).containsAll(searchCards);
     }
 
     public boolean isValidCardRewardFromNeow(Random rng, boolean isRareOnly, List<String> searchCards) {

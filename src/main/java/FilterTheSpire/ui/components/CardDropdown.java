@@ -58,4 +58,8 @@ public class CardDropdown extends DropdownMenu {
         }
         return 0; // default to "Any" option
     }
+
+    public String getSelectedCard(){
+        return this.cards.get(this.getSelectedIndex() - 1);
+    }
 }

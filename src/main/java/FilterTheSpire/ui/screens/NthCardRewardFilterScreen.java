@@ -1,12 +1,10 @@
 package FilterTheSpire.ui.screens;
 
-import FilterTheSpire.FilterManager;
-import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
+import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.patches.DropdownMenuPatch;
 import FilterTheSpire.ui.components.CardDropdown;
 import FilterTheSpire.ui.components.CharacterDropdown;
-import FilterTheSpire.utils.helpers.CardPoolHelper;
 import FilterTheSpire.utils.helpers.CharacterPool;
 import FilterTheSpire.utils.ExtraFonts;
 import FilterTheSpire.utils.config.FilterType;
@@ -17,7 +15,6 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.screens.options.DropdownMenu;
 import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -27,17 +24,12 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
     private CharacterDropdown characterDropdown;
     private CardDropdown cardDropdown;
 
-    // dropdowns don't support a default selected value, so it calls the callback when setting the config saved value
-    private boolean isInitialLoad;
-
     public NthCardRewardFilterScreen(ModPanel p) {
-        super(FilterType.NthCardReward, p, false);
+        super(FilterType.NthCardReward, p, true);
     }
 
     public void open() {
-        isInitialLoad = true;
-        this.filterObject = FilterTheSpire.config.getFilter(FilterType.NthCardReward);
-        this.characterDropdown = new CharacterDropdown(this, filterObject.character);
+        this.characterDropdown = new CharacterDropdown(this, null);
 
         String[] combats = IntStream.range(1, 6).mapToObj(String::valueOf).toArray(String[]::new);
         this.combatDropdown = new DropdownMenu(this, combats, FontHelper.cardDescFont_N, Settings.CREAM_COLOR){
@@ -45,27 +37,11 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
             public void render(SpriteBatch sb, float x, float y) {
                 super.render(sb, x, y * Settings.yScale);
                 DropdownMenuPatch.renderTip(this, x, y, "Info",
-                        "This is the latest combat which will drop the searched card reward. " +
-                                "It's possible a seed is found where the card is found in an earlier combat as well.");
+                        "This is the combat which will drop the searched card reward.");
             }
         };
 
         this.cardDropdown = CardDropdown.create(this, new ArrayList<>());
-        setCardDropdownValues();
-
-        if (filterObject.possibleValues.size() > 0){
-            String defaultSearchCardId = filterObject.possibleValues.get(0);
-            int cardIndex = cardDropdown.findIndexOfCard(defaultSearchCardId);
-            cardDropdown.setSelectedIndex(cardIndex);
-        }
-
-        int combatIndex = ArrayUtils.indexOf(combats, String.valueOf(filterObject.possibleEncounterIndices.get(0) + 1));
-        if (combatIndex != -1){
-            combatDropdown.setSelectedIndex(combatIndex);
-        }
-
-        FilterManager.setFilter(filterObject);
-        isInitialLoad = false;
         isShowing = true;
     }
 
@@ -130,6 +106,7 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
     }
 
     void update() {
+        this.addButton.update();
         this.returnButton.update();
 
         if (this.combatDropdown.isOpen) {
@@ -162,30 +139,25 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
     }
 
     public void changedSelectionTo(DropdownMenu dropdownMenu, int i, String s) {
-        if (isInitialLoad) {
-            return;
-        }
-
         if (dropdownMenu == characterDropdown){
-            filterObject.character = characterDropdown.getCharacterFromIndex(i);
             setCardDropdownValues();
-        } else if (dropdownMenu == this.cardDropdown) {
-            filterObject.possibleValues.clear();
-            if (i > 0){
-                filterObject.possibleValues.add(CardPoolHelper.cardNameToId.get(s));
-            }
-        } else if (dropdownMenu == this.combatDropdown) {
-            filterObject.possibleEncounterIndices.clear();
-            filterObject.possibleEncounterIndices.add(Integer.parseInt(s) - 1);
         }
-
-        this.updateFilters();
     }
 
     private void setCardDropdownValues() {
-        CharacterPool characterPool = filterObject.character != null ? CharacterPoolFactory.getCharacterPool(filterObject.character) : null;
+        CharacterPool characterPool = characterDropdown.getSelectedIndex() > 0 ? CharacterPoolFactory.getCharacterPool(characterDropdown.getCharacterFromIndex(characterDropdown.getSelectedIndex())) : null;
         if (characterPool != null){
             this.cardDropdown = CardDropdown.create(this, characterPool.getCardPool(false));
+        }
+    }
+
+    public void setFilterObjectForAddOrUpdate(){
+        filterObject = new FilterObject(FilterType.NthCardReward);
+        if (cardDropdown.getSelectedIndex() > 0){
+            filterObject.possibleEncounterIndices.clear();
+            filterObject.character = characterDropdown.getCharacterFromIndex(characterDropdown.getSelectedIndex());
+            filterObject.possibleValues.add(cardDropdown.getSelectedCard());
+            filterObject.possibleEncounterIndices.add(combatDropdown.getSelectedIndex());
         }
     }
 }

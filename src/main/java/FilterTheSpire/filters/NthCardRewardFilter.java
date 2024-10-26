@@ -35,7 +35,6 @@ public class NthCardRewardFilter extends AbstractFilter {
     }
 
     public String generateHashKey() {
-        // Change the 0 to the combat index when it has an Add button
-        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(0));
+        return FilterTheSpire.config.generateHashKey(type, Collections.singletonList(combatIndex));
     }
 }
