@@ -13,20 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class NthBossRelicFilter extends AbstractFilter {
-    private final List<String> bossRelicNames;
+    public final List<String> bossRelicNames;
     public RunCheckpoint pickupCheckpoint;
 
-    public NthBossRelicFilter(List<String> bossRelicNames) {
-        initialize();
-        this.bossRelicNames = bossRelicNames;
-    }
-
-    public NthBossRelicFilter(List<String> bossRelicNames, int encounterIndex) {
-        initialize();
-        this.bossRelicNames = bossRelicNames;
-    }
-
-    // Since you get shown 3 Boss relics at once, this gives a wider window if you want it from a specific boss
     public NthBossRelicFilter(List<String> bossRelicNames, RunCheckpoint checkpoint) {
         initialize();
         type = FilterType.NthBossRelic;

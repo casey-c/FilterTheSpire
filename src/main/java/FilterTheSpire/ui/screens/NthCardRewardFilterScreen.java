@@ -48,8 +48,6 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
     void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 
-        this.returnButton.render(sb);
-
         // Title text
         float titleLeft = 386.0f;
         float titleBottom = 819.0f;

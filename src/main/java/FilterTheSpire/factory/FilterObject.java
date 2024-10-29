@@ -23,7 +23,7 @@ public class FilterObject {
         this.runCheckpoint = RunCheckpoint.NEOW;
         this.possibleValues = new ArrayList<>();
         this.secondaryValues = new ArrayList<>();
-        this.possibleEncounterIndices =  new ArrayList<>(Collections.singletonList(0));
+        this.possibleEncounterIndices = new ArrayList<>(Collections.singletonList(0));
         this.searchCards = new HashMap<>();
         updateHashKey();
     }

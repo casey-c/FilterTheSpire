@@ -90,8 +90,7 @@ public class TestCustomModeCardPools {
 
         RunInfoCache.modList = Collections.singletonList("Diverse");
         for (SeededCharacterTransform test: seededCharacterTransforms) {
-            RunInfoCache.currentCharacter = test.character;
-            AbstractFilter filter = new PandorasCardFilter(test.searchCards);
+            AbstractFilter filter = new PandorasCardFilter(test.searchCards, test.character);
             assert(filter.isSeedValid(test.seed));
         }
     }
@@ -111,8 +110,7 @@ public class TestCustomModeCardPools {
 
         RunInfoCache.modList = Arrays.asList("Blue Cards", "Purple Cards");
         for (SeededCharacterTransform test: seededCharacterTransforms) {
-            RunInfoCache.currentCharacter = test.character;
-            AbstractFilter filter = new PandorasCardFilter(test.searchCards);
+            AbstractFilter filter = new PandorasCardFilter(test.searchCards, test.character);
             assert(filter.isSeedValid(test.seed));
         }
     }

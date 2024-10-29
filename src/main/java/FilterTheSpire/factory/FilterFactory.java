@@ -19,13 +19,17 @@ public class FilterFactory {
             case NthShopRelic:
                 return new NthShopRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices.get(0));
             case PandorasCard:
-                return new PandorasCardFilter(filterObject.possibleValues);
+                return new PandorasCardFilter(filterObject.searchCards, filterObject.character);
             case NeowBonus:
                 return new BlessingFilter(filterObject.possibleValues, filterObject.secondaryValues, filterObject.searchCards);
             case NthRelic:
                 return new NthRelicFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices.get(0));
             case NthCardReward:
                 return new NthCardRewardFilter(filterObject.possibleValues, filterObject.possibleEncounterIndices.get(0));
+            case AstrolabeCard:
+                return new AstrolabeCardFilter(filterObject.searchCards);
+            case CallingBellRelic:
+                return new CallingBellFilter(filterObject.possibleValues);
             default:
                 throw new NotImplementedException("Unknown filter type");
         }

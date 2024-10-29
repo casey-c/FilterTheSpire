@@ -56,12 +56,6 @@ public class FilterManager {
 
     // --------------------------------------------------------------------------------
 
-    public static void setValidatorFromString(String validatorName, AbstractFilter filter) {
-        filters.put(validatorName, filter);
-    }
-
-    // --------------------------------------------------------------------------------
-
     public static void clearFilters(){
         filters.clear();
         preRngCounters.clear();
@@ -83,7 +77,7 @@ public class FilterManager {
 
     // REMOVE setFilter when all filters are Adding and not updating real time
     public static void addFilter(FilterObject filterObject){
-        if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0){
+        if (isValidFilter(filterObject)){
             AbstractFilter filter = FilterFactory.getAbstractFilterFromFilterObject(filterObject);
             filters.put(filterObject.getHashKey(), filter);
         }
@@ -106,34 +100,18 @@ public class FilterManager {
         }
     }
 
-    public static void setPandorasCardFilter(HashMap<String, Integer> searchCards) {
-        filters.put("pandorasTmp", new PandorasCardFilter(searchCards));
-    }
-
-    public static void setAstrolabeCardFilter(HashMap<String, Integer> searchCards) {
-        filters.put("astrolabeFilter", new AstrolabeCardFilter(searchCards));
-    }
-
-    // --------------------------------------------------------------------------------
-
-    public static void setCallingBellFilter(String commonRelic, String uncommonRelic, String rareRelic){
-        CallingBellFilter filter = new CallingBellFilter(commonRelic, uncommonRelic, rareRelic);
-        neowBonusRelicsCount.put(AbstractRelic.RelicTier.COMMON, 1);
-        neowBonusRelicsCount.put(AbstractRelic.RelicTier.UNCOMMON, 1);
-        neowBonusRelicsCount.put(AbstractRelic.RelicTier.RARE, 1);
-        filters.put("callingBellFilter", filter);
-    }
-
     public static void loadInitialFilters(){
         filters.clear();
         for (FilterObject filterObject : FilterTheSpire.config.getActiveFilters()) {
-            if (filterObject.possibleValues.size() > 0 || filterObject.secondaryValues.size() > 0) {
+            if (isValidFilter(filterObject)) {
                 filters.put(filterObject.getHashKey(), FilterFactory.getAbstractFilterFromFilterObject(filterObject));
             }
         }
     }
 
-    public static void print() {
-        System.out.println("FilterManager has " + filters.size() + " filters");
+    private static boolean isValidFilter(FilterObject filterObject){
+        return filterObject.possibleValues.size() > 0 ||
+                filterObject.secondaryValues.size() > 0 ||
+                filterObject.searchCards.size() > 0;
     }
 }

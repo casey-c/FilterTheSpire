@@ -150,7 +150,6 @@ public class Config {
         }
     }
 
-    // Remove this once we have all the filter screens having Add buttons and use the Abstract filter generateHashKey
     public String generateHashKey(FilterType filterType, List<Integer> possibleEncounterIndices){
         if (possibleEncounterIndices != null && possibleEncounterIndices.size() > 0){
             String indices = possibleEncounterIndices.stream().map(String::valueOf).collect(Collectors.joining(""));

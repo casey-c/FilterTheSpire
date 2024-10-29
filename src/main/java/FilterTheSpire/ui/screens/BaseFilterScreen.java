@@ -17,7 +17,7 @@ public abstract class BaseFilterScreen extends BaseScreen {
     public final ModLabeledButton addButton;
     public final FilterType filterType;
 
-    public BaseFilterScreen( FilterType filterType, ModPanel p, boolean hasAddButton) {
+    public BaseFilterScreen(FilterType filterType, ModPanel p, boolean hasAddButton) {
         this.hasAddButton = hasAddButton;
         this.filterType = filterType;
         addButton = new ModLabeledButton("Add",

@@ -25,7 +25,7 @@ public class TestCardTransformSimulator {
         long seed = 3271423080934870601L;
         HashMap<String, Integer> searchCards = new HashMap<>();
         searchCards.put("Compile Driver", 5);
-        AbstractFilter filter = new PandorasCardFilter(searchCards);
+        AbstractFilter filter = new PandorasCardFilter(searchCards, AbstractPlayer.PlayerClass.DEFECT);
         assert(filter.isSeedValid(seed));
     }
 

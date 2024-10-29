@@ -49,4 +49,8 @@ public class CharacterDropdown extends DropdownMenu {
                 return null;
         }
     }
+
+    public AbstractPlayer.PlayerClass getSelectedCharacter(){
+        return getCharacterFromIndex(getSelectedIndex());
+    }
 }

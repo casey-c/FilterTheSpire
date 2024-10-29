@@ -10,5 +10,7 @@ public enum FilterType {
     PandorasCard,
     NeowBonus,
     NthRelic,
-    NthCardReward
+    NthCardReward,
+    AstrolabeCard,
+    CallingBellRelic
 }

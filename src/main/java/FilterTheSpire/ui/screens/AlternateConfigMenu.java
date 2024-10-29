@@ -58,6 +58,9 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         ShopRelicFilterScreen shopRelicScreen = new ShopRelicFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Shop Relics", xPosition, yPosition, shopRelicScreen));
 
+        BossSwapOutcomeFilterScreen bossSwapOutcomeFilterScreen = new BossSwapOutcomeFilterScreen(this);
+        filterButtons.add(createFilterScreenButton("Choose Boss Swap Outcome", xPosition + xIncrement, yPosition, bossSwapOutcomeFilterScreen));
+
         yPosition -= yIncrement;
         NeowBonusFilterScreen neowBonusScreen = new NeowBonusFilterScreen(this);
         filterButtons.add(createFilterScreenButton("Choose Neow Bonuses", xPosition, yPosition, neowBonusScreen));
@@ -77,6 +80,7 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
         baseFilterScreens.add(neowBonusScreen);
         baseFilterScreens.add(nthRelicFilterScreen);
         baseFilterScreens.add(nthCardRewardFilterScreen);
+        baseFilterScreens.add(bossSwapOutcomeFilterScreen);
         allScreens.addAll(baseFilterScreens);
         allScreens.add(filterListScreen);
         clearButton = new ModLabeledButton("Clear All Filters", BaseFilterScreen.INFO_LEFT + 50.0F, 805.0f,
@@ -205,15 +209,15 @@ public class AlternateConfigMenu extends ModPanel implements DropdownMenuListene
 
     @Override
     public void update() {
-        boolean isShowingFilterScreen = false;
+        boolean isShowingOtherScreen = false;
         for (BaseScreen screen : allScreens) {
             if (screen.isShowing) {
                 screen.update();
-                isShowingFilterScreen = true;
+                isShowingOtherScreen = true;
                 break;
             }
         }
-        if (!isShowingFilterScreen) {
+        if (!isShowingOtherScreen) {
             neowBonusToggle.update();
             clearButton.update();
             threadCountDropdown.update();

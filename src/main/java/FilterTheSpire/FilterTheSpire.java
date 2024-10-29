@@ -44,7 +44,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
 
     @Override
     public void receivePostInitialize() {
-        // Textures can't be loaded until the post init or it crashes
+        // Textures can't be loaded until the post init, or it crashes
         BG = new Texture("FilterTheSpire/images/fts_background.png");
 
         stopButton = new ModLabeledButton("Stop Searching",
