@@ -3,7 +3,7 @@
   "name": "Filter the Spire",
   "author_list": ["ojb", "DoctorSheananigan", "beeyee"],
   "description": "You can go to the Main Menu -> Mods -> Filter the Spire -> Config menu to configure this mod. Currently, you can filter Neow's boss swap, the first shop relic, Neow's bonuses at the start of the run, and the first relic encounter. \n\nNotes: \n* This mod includes a patch that will ALWAYS guarantee the full 4 Neow bonuses, even if you did not complete the previous run (i.e. letting you have access to the boss swap option even if you failed to reach the act 1 boss in your previous run). You can disable this patch via the config menu. \n* This mod also includes a patch to guarantee Neow rewards during custom runs (allowing you to do things like Diverse/Pandoras starts). This patch should be considered more experimental and may break daily runs (you may have to disable this mod for dailies if anything breaks - sorry!). \n\nPrevious versions, bug tracking, and source code can be found over at our github page: https://github.com/casey-c/FilterTheSpire",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "sts_version": "12-18-2022",
   "mts_version": "3.19.0",
   "dependencies": ["basemod"]
