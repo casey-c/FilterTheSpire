@@ -102,10 +102,15 @@ public class FilterManager {
 
     public static void loadInitialFilters(){
         filters.clear();
-        for (FilterObject filterObject : FilterTheSpire.config.getActiveFilters()) {
-            if (isValidFilter(filterObject)) {
-                filters.put(filterObject.getHashKey(), FilterFactory.getAbstractFilterFromFilterObject(filterObject));
+        try {
+            for (FilterObject filterObject : FilterTheSpire.config.getActiveFilters()) {
+                if (isValidFilter(filterObject)) {
+                    filters.put(filterObject.getHashKey(), FilterFactory.getAbstractFilterFromFilterObject(filterObject));
+                }
             }
+        }
+        catch (Exception e) {
+            FilterTheSpire.config.clearFilters();
         }
     }
 
