@@ -56,10 +56,6 @@ public class NthRelicFilterScreen extends RelicBaseFilterScreen implements Scrol
         this.move(0, 0);
     }
 
-    void postRelicSetup() {
-
-    }
-
     void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 

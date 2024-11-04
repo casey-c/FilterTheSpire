@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.options.DropdownMenu;
+import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class BossRelicFilterScreen extends RelicBaseFilterScreen {
     private final DropdownMenu checkpointDropdown;
+    private final List<String> invalidSwaps = Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater");
 
     public BossRelicFilterScreen(ModPanel p) {
         super(Collections.singletonList(AbstractRelic.RelicTier.BOSS), FilterType.NthBossRelic, p, true);
@@ -43,16 +45,6 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
         return RunCheckpoint.NEOW;
     }
 
-    public void postRelicSetup() {
-        removeClassUpgradedRelics();
-    }
-
-    // Don't allow unswappable relics to enter the pool
-    private void removeClassUpgradedRelics() {
-        List<String> invalidSwaps = Arrays.asList("Black Blood", "Ring of the Serpent", "FrozenCore", "HolyWater");
-        relics.removeIf(relic -> invalidSwaps.contains(relic.relicId));
-    }
-
     public void renderForeground(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
 
@@ -67,12 +59,21 @@ public class BossRelicFilterScreen extends RelicBaseFilterScreen {
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,
-                "This filter allows you to choose which Boss Relics will appear from Neow's swap option. If no relics are selected, it will choose from the entire pool.",
+                "This filter allows you to choose which Boss Relics will appear from different points in the run. If no relics are selected, it will choose from the entire pool.",
                 INFO_LEFT * Settings.xScale,
                 (INFO_TOP_MAIN + 100F) * Settings.yScale,
                 INFO_WIDTH * Settings.xScale,
                 30.0f * Settings.yScale,
                 Settings.CREAM_COLOR);
+
+        FontHelper.renderSmartText(sb,
+                FontHelper.tipBodyFont,
+                "Starter relic replacements cannot be retrieved from a Neow Boss Swap.",
+                INFO_LEFT * Settings.xScale,
+                (INFO_TOP_MAIN - 50.0F) * Settings.yScale,
+                INFO_WIDTH * Settings.xScale,
+                30.0f * Settings.yScale,
+                Settings.RED_TEXT_COLOR);
 
         FontHelper.renderSmartText(sb,
                 FontHelper.tipBodyFont,

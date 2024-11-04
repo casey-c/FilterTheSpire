@@ -4,6 +4,7 @@ import FilterTheSpire.utils.helpers.CardPoolHelper;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
@@ -43,8 +44,9 @@ public class CardDropdown extends DropdownMenu {
         ArrayList<String> friendlyNames = new ArrayList<>();
         for (String key: cardKeys) {
             AbstractCard c = CardLibrary.cards.get(key);
-            friendlyNames.add(c.name);
-            CardPoolHelper.cardNameToId.put(c.name, c.cardID);
+            String friendlyName = CardPoolHelper.englishCardNameToId.get(c.cardID);
+            friendlyNames.add(friendlyName);
+            CardPoolHelper.cardNameToId.put(friendlyName, c.cardID);
         }
         return friendlyNames;
     }

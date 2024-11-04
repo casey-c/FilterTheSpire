@@ -25,8 +25,6 @@ public class ShopRelicFilterScreen extends RelicBaseFilterScreen {
                 FontHelper.cardDescFont_N, Settings.CREAM_COLOR);
     }
 
-    void postRelicSetup() {}
-
     public void render(SpriteBatch sb){
         super.render(sb);
         sb.setColor(Color.WHITE);

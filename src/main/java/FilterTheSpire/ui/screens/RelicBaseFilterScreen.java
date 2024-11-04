@@ -31,7 +31,6 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
 
     private void setup() {
         populateRelics();
-        postRelicSetup();
         makeUIObjects();
     }
 
@@ -141,7 +140,4 @@ public abstract class RelicBaseFilterScreen extends BaseFilterScreen {
     public void resetUI(){
         clearAll();
     }
-
-    abstract void postRelicSetup();
-
 }
