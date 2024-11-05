@@ -3,9 +3,7 @@ package FilterTheSpire.ui.components;
 import FilterTheSpire.FilterTheSpire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.screens.options.DropdownMenu;
 import com.megacrit.cardcrawl.screens.options.DropdownMenuListener;
@@ -42,8 +40,7 @@ public class CardDropdown extends DropdownMenu {
     private static ArrayList<String> getFriendlyCardNames(List<String> cardKeys) {
         ArrayList<String> friendlyNames = new ArrayList<>();
         for (String key: cardKeys) {
-            AbstractCard c = CardLibrary.cards.get(key);
-            friendlyNames.add(c.name);
+            friendlyNames.add(FilterTheSpire.localizedCardIdToName.get(key));
         }
         return friendlyNames;
     }
