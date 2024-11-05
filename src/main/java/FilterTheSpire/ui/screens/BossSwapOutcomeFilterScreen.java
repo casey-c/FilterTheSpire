@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.ui.components.CardDropdown;
@@ -267,13 +268,13 @@ public class BossSwapOutcomeFilterScreen extends BaseFilterScreen implements Dro
     public ArrayList<String> getSelectedCardList(){
         ArrayList<String> possibleValues = new ArrayList<>();
         if (cardDropdown.getSelectedIndex() > 0){
-            possibleValues.add(cardDropdown.getSelectedCard());
+            possibleValues.add(FilterTheSpire.localizedCardNameToId.get(cardDropdown.getSelectedCard()));
         }
         if (cardDropdown2.getSelectedIndex() > 0){
-            possibleValues.add(cardDropdown2.getSelectedCard());
+            possibleValues.add(FilterTheSpire.localizedCardNameToId.get(cardDropdown2.getSelectedCard()));
         }
         if (cardDropdown3.getSelectedIndex() > 0){
-            possibleValues.add(cardDropdown3.getSelectedCard());
+            possibleValues.add(FilterTheSpire.localizedCardNameToId.get(cardDropdown3.getSelectedCard()));
         }
         return possibleValues;
     }

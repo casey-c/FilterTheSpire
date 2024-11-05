@@ -1,10 +1,9 @@
 package FilterTheSpire.ui.components;
 
-import FilterTheSpire.utils.helpers.CardPoolHelper;
+import FilterTheSpire.FilterTheSpire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.FontHelper;
@@ -44,16 +43,14 @@ public class CardDropdown extends DropdownMenu {
         ArrayList<String> friendlyNames = new ArrayList<>();
         for (String key: cardKeys) {
             AbstractCard c = CardLibrary.cards.get(key);
-            String friendlyName = CardPoolHelper.englishCardNameToId.get(c.cardID);
-            friendlyNames.add(friendlyName);
-            CardPoolHelper.cardNameToId.put(friendlyName, c.cardID);
+            friendlyNames.add(c.name);
         }
         return friendlyNames;
     }
 
     public int findIndexOfCard(String searchCard){
         for (int i = 0; i < this.cards.size(); i++) {
-            String cardId = CardPoolHelper.cardNameToId.getOrDefault(this.cards.get(i), null);
+            String cardId = FilterTheSpire.localizedCardNameToId.getOrDefault(this.cards.get(i), null);
             if (cardId.equals(searchCard)) {
                 return i + 1; // Add one to account for "Any"
             }

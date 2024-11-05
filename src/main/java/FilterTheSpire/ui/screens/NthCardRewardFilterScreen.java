@@ -1,5 +1,6 @@
 package FilterTheSpire.ui.screens;
 
+import FilterTheSpire.FilterTheSpire;
 import FilterTheSpire.factory.CharacterPoolFactory;
 import FilterTheSpire.factory.FilterObject;
 import FilterTheSpire.patches.DropdownMenuPatch;
@@ -154,7 +155,7 @@ public class NthCardRewardFilterScreen extends BaseFilterScreen implements Dropd
         if (cardDropdown.getSelectedIndex() > 0){
             filterObject.possibleEncounterIndices.clear();
             filterObject.character = characterDropdown.getCharacterFromIndex(characterDropdown.getSelectedIndex());
-            filterObject.possibleValues.add(cardDropdown.getSelectedCard());
+            filterObject.possibleValues.add(FilterTheSpire.localizedCardNameToId.get(cardDropdown.getSelectedCard()));
             filterObject.possibleEncounterIndices.add(combatDropdown.getSelectedIndex());
         }
     }

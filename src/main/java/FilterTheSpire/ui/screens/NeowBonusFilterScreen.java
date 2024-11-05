@@ -211,9 +211,9 @@ public class NeowBonusFilterScreen extends BaseFilterScreen implements DropdownM
             setCardDropdownValues();
         } else if (dropdownMenu == this.cardDropdown || dropdownMenu == this.cardDropdown2) {
             if (dropdownMenu == this.cardDropdown){
-                cards[0] = i != 0 ? CardPoolHelper.cardNameToId.get(s) : null;
+                cards[0] = i != 0 ? FilterTheSpire.localizedCardNameToId.get(s) : null;
             } else {
-                cards[1] = i != 0 ? CardPoolHelper.cardNameToId.get(s) : null;
+                cards[1] = i != 0 ? FilterTheSpire.localizedCardNameToId.get(s) : null;
             }
             filterObject.searchCards.clear();
             for (String cardId: cards) {

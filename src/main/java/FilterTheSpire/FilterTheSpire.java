@@ -28,6 +28,7 @@ import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.saveAndContinue.SaveAndContinue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
@@ -41,6 +42,9 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     private static Texture BG;
 
     private ModLabeledButton stopButton;
+
+    public static HashMap<String, String> localizedCardNameToId = new HashMap<>();
+    public static HashMap<String, String> localizedCardIdToName = new HashMap<>();
 
     public FilterTheSpire() {
         BaseMod.subscribe(this);
@@ -80,6 +84,7 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
         Config.setupConfigMenu();
 
         FilterManager.loadInitialFilters();
+        setLocalizedCardInfo();
     }
 
     // --------------------------------------------------------------------------------
@@ -227,6 +232,14 @@ public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInit
     public void receivePostUpdate() {
         if (searcherActive){
             stopButton.update();
+        }
+    }
+
+    private void setLocalizedCardInfo(){
+        ArrayList<AbstractCard> allCards = CardLibrary.getAllCards();
+        for (AbstractCard card: allCards) {
+            localizedCardNameToId.put(card.name, card.cardID);
+            localizedCardIdToName.put(card.cardID, card.name);
         }
     }
 }
