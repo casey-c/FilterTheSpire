@@ -88,6 +88,7 @@ public class SeedSearcher {
                 System.out.println("Timestamp: " + t.seedSourceTimestamp);
 
                 Settings.seed = t.seed;
+                Settings.seedSet = true;
                 Settings.seedSourceTimestamp = t.seedSourceTimestamp;
                 SeedHelper.cachedSeed = null;
 
