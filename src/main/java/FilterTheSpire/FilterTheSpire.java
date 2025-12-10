@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 @SpireInitializer
 public class FilterTheSpire implements PostInitializeSubscriber, PostDungeonInitializeSubscriber, RenderSubscriber, PostUpdateSubscriber {
-    private static final String version = "0.1.9";
+    private static final String version = "0.2.0";
     public static void initialize() { new FilterTheSpire(); }
 
     // Used by the patches to not double up VFX and SFX
