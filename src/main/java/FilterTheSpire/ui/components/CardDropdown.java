@@ -18,7 +18,7 @@ public class CardDropdown extends DropdownMenu {
     private CardDropdown(DropdownMenuListener listener, ArrayList<String> options, BitmapFont font, Color textColor){
         super(listener, options, font, textColor);
         if (options.size() > 1){
-            cards = options.subList(1, options.size() - 1);
+            cards = options.subList(1, options.size());
         } else {
             cards = new ArrayList<>();
         }
